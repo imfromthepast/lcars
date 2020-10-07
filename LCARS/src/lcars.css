@@ -1,0 +1,36 @@
+canvas{
+    /* display: block; */
+    max-width: 100%;
+    height: auto;
+}
+h1{
+    font-family: Okuda;
+}
+body{
+    background-color: #000;
+    padding-top: 20px;
+}
+@font-face {
+    font-family: "Okuda";
+    src: url(fonts/Okuda.otf) format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Okuda-italic";
+    src: url(fonts/Okuda_Italic.otf) format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Okuda-bold-italic";
+    src: url(fonts/Okuda_Bold_Italic.otf) format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Okuda-bold";
+    src: url(fonts/Okuda_Bold.otf) format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}

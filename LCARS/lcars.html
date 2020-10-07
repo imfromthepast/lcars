@@ -1,0 +1,34 @@
+<html>
+    <head>            
+        <script type="text/javascript" src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+        <script type="text/javascript" src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script>
+        <script type="text/javascript" src="src/isjs.js"></script>
+        <!-- <script type="text/javascript" src="https://code.createjs.com/soundjs-0.6.2.min.js"></script> -->
+        <!-- <script type="text/javascript" src="src/soundjs.min.js"></script> -->
+        <link rel="stylesheet" href="src/lcars.css"></link>
+    </head>
+    <body>
+        <canvas id="con"></canvas>        
+        <canvas id="ops"></canvas>      
+        <canvas id="tac"></canvas>    
+        <canvas id="mob"></canvas>    
+        <canvas id="pad"></canvas>    
+        <canvas id="pro"></canvas>
+    </body>
+    <script type="text/javascript" src="src/lcars.js"></script>
+    <script>        
+        const con = new LCARS('con');
+        const ops = new LCARS('ops');
+        const tac = new LCARS('tac');
+        const mob = new LCARS('mob');
+        const pad = new LCARS('pad');
+        const pro = new LCARS('pro');
+        
+        con.build(con.con);
+        ops.build(ops.ops);
+        tac.build(tac.tactical);
+        mob.build(mob.mobile);
+        pad.build(pad.padd);
+        pro.build(pro.paddPro);
+    </script>
+</html>
