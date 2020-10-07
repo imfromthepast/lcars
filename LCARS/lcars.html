@@ -8,27 +8,946 @@
         <link rel="stylesheet" href="src/lcars.css"></link>
     </head>
     <body>
-        <canvas id="con"></canvas>        
-        <canvas id="ops"></canvas>      
-        <canvas id="tac"></canvas>    
-        <canvas id="mob"></canvas>    
-        <canvas id="pad"></canvas>    
-        <canvas id="pro"></canvas>
+        <canvas id="tac"></canvas>        
+        <canvas id="con"></canvas>      
+        <canvas id="ops"></canvas>
     </body>
     <script type="text/javascript" src="src/lcars.js"></script>
     <script>        
+        const tac = new LCARS('tac');
         const con = new LCARS('con');
         const ops = new LCARS('ops');
-        const tac = new LCARS('tac');
-        const mob = new LCARS('mob');
-        const pad = new LCARS('pad');
-        const pro = new LCARS('pro');
-        
-        con.build(con.con);
-        ops.build(ops.ops);
+
+        // loading existing layouts:
         tac.build(tac.tactical);
-        mob.build(mob.mobile);
-        pad.build(pad.padd);
-        pro.build(pro.paddPro);
+
+        // using pre-built components to build layouts:
+        const conLayout = {
+            name:'con',
+            dim:{
+                w:2500,
+                h:700,
+                g:20
+            },
+            elements: [
+                con.scannerSection,
+                con.navRefSection,
+                con.flightSection,
+                con.joystickSection,
+                con.warpDriveSection,
+                con.impulseSection,
+                con.spacerSection,
+                con.overrideSection
+            ]
+        };
+        con.build(conLayout);
+
+        // passing in JSON to build layout from scratch
+        const opsJSON = {
+            "name": "ops",
+            "dim": {
+                "w": 2500,
+                "h": 700,
+                "g": 20
+            },
+            "elements": [
+                {
+                    "y": 0,
+                    "w": 200,
+                    "h": 650,
+                    "header": {
+                        "type": "header",
+                        "x": 0,
+                        "y": 0,
+                        "w": null,
+                        "h": 200,
+                        "c": "#e1eea4",
+                        "r": [
+                            20,
+                            0,
+                            0,
+                            20
+                        ],
+                        "t": {
+                            "x": 0,
+                            "y": 5,
+                            "t": "emergency override",
+                            "a": "end",
+                            "s": "22px",
+                            "c": null
+                        },
+                        "m": [
+                            0,
+                            20,
+                            100,
+                            0
+                        ]
+                    },
+                    "body": [
+                        {
+                            "type": "header",
+                            "x": 0,
+                            "y": 0,
+                            "w": 200,
+                            "h": 30,
+                            "c": "#eec331",
+                            "r": [
+                                15,
+                                0,
+                                0,
+                                15
+                            ],
+                            "t": {
+                                "x": 0,
+                                "y": 5,
+                                "t": "engineering systems",
+                                "a": "end",
+                                "s": "22px",
+                                "c": null
+                            },
+                            "m": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "type": "buttonGroups",
+                            "x": 10,
+                            "y": 40,
+                            "q": 3,
+                            "t": [
+                                "titled-pill-left"
+                            ],
+                            "s": 1
+                        },
+                        {
+                            "type": "buttonGroups",
+                            "x": 10,
+                            "y": 180,
+                            "q": 3,
+                            "t": [
+                                "titled-pill-right"
+                            ],
+                            "s": 1
+                        }
+                    ],
+                    "footer": {
+                        "type": "header",
+                        "x": 0,
+                        "y": 0,
+                        "w": null,
+                        "h": 15,
+                        "c": "#d7a474",
+                        "r": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "t": {
+                            "x": 0,
+                            "y": 5,
+                            "t": "",
+                            "a": "end",
+                            "s": "22px",
+                            "c": null
+                        },
+                        "m": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                {
+                    "y": 0,
+                    "w": 400,
+                    "h": 650,
+                    "header": {
+                        "type": "header",
+                        "x": 0,
+                        "y": 0,
+                        "w": null,
+                        "h": 200,
+                        "c": "#e1eea4",
+                        "r": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "t": {
+                            "x": 0,
+                            "y": 5,
+                            "t": "warp drive systems",
+                            "a": "end",
+                            "s": "22px",
+                            "c": null
+                        },
+                        "m": [
+                            0,
+                            40,
+                            100,
+                            0
+                        ]
+                    },
+                    "body": [
+                        {
+                            "type": "header",
+                            "x": 0,
+                            "y": 0,
+                            "w": 400,
+                            "h": 30,
+                            "c": "#e1eea4",
+                            "r": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ],
+                            "t": {
+                                "x": 0,
+                                "y": 5,
+                                "t": "power consumption",
+                                "a": "end",
+                                "s": "22px",
+                                "c": null
+                            },
+                            "m": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "type": "textblock",
+                            "header": "atmospheric process",
+                            "rows": 8,
+                            "cols": [
+                                6,
+                                2,
+                                6,
+                                6,
+                                2,
+                                6
+                            ],
+                            "x": 0,
+                            "y": 40
+                        },
+                        {
+                            "type": "textblock",
+                            "header": "",
+                            "rows": 8,
+                            "cols": [
+                                2,
+                                8,
+                                4
+                            ],
+                            "x": 210,
+                            "y": 40
+                        },
+                        {
+                            "type": "textblock",
+                            "header": "",
+                            "rows": 8,
+                            "cols": [
+                                3,
+                                2,
+                                4
+                            ],
+                            "x": 320,
+                            "y": 40
+                        }
+                    ],
+                    "footer": {
+                        "type": "header",
+                        "x": 0,
+                        "y": 0,
+                        "w": null,
+                        "h": 15,
+                        "c": "#d7a474",
+                        "r": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "t": {
+                            "x": 0,
+                            "y": 5,
+                            "t": "",
+                            "a": "end",
+                            "s": "22px",
+                            "c": null
+                        },
+                        "m": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                {
+                    "y": 0,
+                    "w": 200,
+                    "h": 650,
+                    "header": {
+                        "type": "header",
+                        "x": 0,
+                        "y": 0,
+                        "w": null,
+                        "h": 200,
+                        "c": "#e1eea4",
+                        "r": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "t": {
+                            "x": 0,
+                            "y": 5,
+                            "t": "operational priorities",
+                            "a": "end",
+                            "s": "22px",
+                            "c": null
+                        },
+                        "m": [
+                            0,
+                            20,
+                            100,
+                            0
+                        ]
+                    },
+                    "body": [
+                        {
+                            "type": "header",
+                            "x": 0,
+                            "y": 0,
+                            "w": 200,
+                            "h": 30,
+                            "c": "#eec331",
+                            "r": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ],
+                            "t": {
+                                "x": 0,
+                                "y": 5,
+                                "t": "lcars mode select",
+                                "a": "end",
+                                "s": "22px",
+                                "c": null
+                            },
+                            "m": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "type": "buttonGroups",
+                            "x": 10,
+                            "y": 40,
+                            "q": 6,
+                            "t": [
+                                "titled-pill-right"
+                            ],
+                            "s": 1
+                        }
+                    ],
+                    "footer": {
+                        "type": "header",
+                        "x": 0,
+                        "y": 0,
+                        "w": null,
+                        "h": 15,
+                        "c": "#d7a474",
+                        "r": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "t": {
+                            "x": 0,
+                            "y": 5,
+                            "t": "",
+                            "a": "end",
+                            "s": "22px",
+                            "c": null
+                        },
+                        "m": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                {
+                    "y": 0,
+                    "w": 360,
+                    "h": 650,
+                    "header": {
+                        "type": "header",
+                        "x": 0,
+                        "y": 0,
+                        "w": null,
+                        "h": 200,
+                        "c": "#e1eea4",
+                        "r": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "t": {
+                            "x": 0,
+                            "y": 5,
+                            "t": "operations management",
+                            "a": "left",
+                            "s": "22px",
+                            "c": null
+                        },
+                        "m": [
+                            0,
+                            0,
+                            100,
+                            0
+                        ]
+                    },
+                    "body": [
+                        {
+                            "type": "header",
+                            "x": 0,
+                            "y": 0,
+                            "w": 360,
+                            "h": 30,
+                            "c": "#e1eea4",
+                            "r": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ],
+                            "t": {
+                                "x": 0,
+                                "y": 5,
+                                "t": "",
+                                "a": "end",
+                                "s": "22px",
+                                "c": null
+                            },
+                            "m": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "type": "buttonGroups",
+                            "x": 10,
+                            "y": 40,
+                            "q": 6,
+                            "t": [
+                                "pill",
+                                "titled-pill-left"
+                            ],
+                            "s": 1
+                        }
+                    ],
+                    "footer": {
+                        "type": "header",
+                        "x": 0,
+                        "y": 0,
+                        "w": null,
+                        "h": 15,
+                        "c": "#e1eea4",
+                        "r": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "t": {
+                            "x": 0,
+                            "y": 5,
+                            "t": "",
+                            "a": "end",
+                            "s": "22px",
+                            "c": null
+                        },
+                        "m": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                {
+                    "y": 0,
+                    "w": 110,
+                    "h": 650,
+                    "header": {
+                        "type": "header",
+                        "x": 0,
+                        "y": 0,
+                        "w": null,
+                        "h": 240,
+                        "c": "#e1eea4",
+                        "r": [
+                            0,
+                            120,
+                            0,
+                            -40
+                        ],
+                        "t": {
+                            "x": 0,
+                            "y": 5,
+                            "t": "",
+                            "a": "end",
+                            "s": "22px",
+                            "c": null
+                        },
+                        "m": [
+                            0,
+                            20,
+                            0,
+                            0
+                        ]
+                    },
+                    "body": [
+                        {
+                            "type": "header",
+                            "x": 40,
+                            "y": 0,
+                            "w": 70,
+                            "h": 40,
+                            "c": "#e1eea4",
+                            "r": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ],
+                            "t": {
+                                "x": 0,
+                                "y": 5,
+                                "t": "",
+                                "a": "end",
+                                "s": "22px",
+                                "c": null
+                            },
+                            "m": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "type": "header",
+                            "x": 40,
+                            "y": 60,
+                            "w": 70,
+                            "h": 30,
+                            "c": "#a0c0de",
+                            "r": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ],
+                            "t": {
+                                "x": 0,
+                                "y": 5,
+                                "t": "",
+                                "a": "end",
+                                "s": "22px",
+                                "c": null
+                            },
+                            "m": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "type": "header",
+                            "x": 40,
+                            "y": 110,
+                            "w": 70,
+                            "h": 285,
+                            "c": "#e1eea4",
+                            "r": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ],
+                            "t": {
+                                "x": 0,
+                                "y": 5,
+                                "t": "",
+                                "a": "end",
+                                "s": "22px",
+                                "c": null
+                            },
+                            "m": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ]
+                        }
+                    ],
+                    "footer": {
+                        "type": "header",
+                        "x": 0,
+                        "y": 0,
+                        "w": null,
+                        "h": 15,
+                        "c": "#e1eea4",
+                        "r": [
+                            0,
+                            0,
+                            15,
+                            0
+                        ],
+                        "t": {
+                            "x": 0,
+                            "y": 5,
+                            "t": "",
+                            "a": "end",
+                            "s": "22px",
+                            "c": null
+                        },
+                        "m": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                {
+                    "y": 0,
+                    "w": 360,
+                    "h": 400,
+                    "m": [
+                        0,
+                        20,
+                        0,
+                        0
+                    ],
+                    "body": [
+                        {
+                            "type": "tabs",
+                            "titled": true,
+                            "a": "left",
+                            "x": 70,
+                            "y": 0,
+                            "c": [
+                                "#a0c0de",
+                                "#a0c0de",
+                                "#ece6c1",
+                                "#eec331"
+                            ],
+                            "t": [
+                                "departmental",
+                                "status",
+                                "communications",
+                                "mission status"
+                            ]
+                        },
+                        {
+                            "type": "header",
+                            "x": 0,
+                            "y": 300,
+                            "w": 350,
+                            "h": 350,
+                            "c": "#e1eea4",
+                            "r": [
+                                50,
+                                0,
+                                0,
+                                50
+                            ],
+                            "t": {
+                                "x": 0,
+                                "y": 5,
+                                "t": "",
+                                "a": "end",
+                                "s": "22px",
+                                "c": null
+                            },
+                            "m": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "type": "header",
+                            "x": 100,
+                            "y": 330,
+                            "w": 250,
+                            "h": 305,
+                            "c": "#000",
+                            "r": [
+                                30,
+                                0,
+                                0,
+                                10
+                            ],
+                            "t": {
+                                "x": 0,
+                                "y": 5,
+                                "t": "",
+                                "a": "end",
+                                "s": "22px",
+                                "c": null
+                            },
+                            "m": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "type": "buttonGroups",
+                            "x": 130,
+                            "y": 340,
+                            "q": 6,
+                            "t": [
+                                "pill",
+                                "pill"
+                            ],
+                            "s": 1
+                        }
+                    ]
+                },
+                {
+                    "y": 0,
+                    "w": 200,
+                    "h": 650,
+                    "header": {
+                        "type": "header",
+                        "x": 0,
+                        "y": 0,
+                        "w": null,
+                        "h": 200,
+                        "c": "#a0c0de",
+                        "r": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "t": {
+                            "x": 0,
+                            "y": 5,
+                            "t": "",
+                            "a": "end",
+                            "s": "22px",
+                            "c": null
+                        },
+                        "m": [
+                            0,
+                            20,
+                            100,
+                            0
+                        ]
+                    },
+                    "body": [
+                        {
+                            "type": "header",
+                            "x": 0,
+                            "y": 0,
+                            "w": 100,
+                            "h": 30,
+                            "c": "#e1eea4",
+                            "r": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ],
+                            "t": {
+                                "x": 0,
+                                "y": 5,
+                                "t": "",
+                                "a": "end",
+                                "s": "22px",
+                                "c": null
+                            },
+                            "m": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "type": "buttonGroups",
+                            "x": 10,
+                            "y": 40,
+                            "q": 6,
+                            "t": [
+                                "pill",
+                                "pill"
+                            ],
+                            "s": 1
+                        }
+                    ],
+                    "footer": {
+                        "type": "header",
+                        "x": 0,
+                        "y": 0,
+                        "w": null,
+                        "h": 15,
+                        "c": "#e1eea4",
+                        "r": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "t": {
+                            "x": 0,
+                            "y": 5,
+                            "t": "",
+                            "a": "end",
+                            "s": "22px",
+                            "c": null
+                        },
+                        "m": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                {
+                    "y": 0,
+                    "w": 400,
+                    "h": 650,
+                    "header": {
+                        "type": "header",
+                        "x": 0,
+                        "y": 0,
+                        "w": null,
+                        "h": 200,
+                        "c": "#e1eea4",
+                        "r": [
+                            0,
+                            20,
+                            20,
+                            0
+                        ],
+                        "t": {
+                            "x": 0,
+                            "y": 5,
+                            "t": "communications",
+                            "a": "end",
+                            "s": "22px",
+                            "c": null
+                        },
+                        "m": [
+                            0,
+                            20,
+                            100,
+                            0
+                        ]
+                    },
+                    "body": [
+                        {
+                            "type": "header",
+                            "x": 0,
+                            "y": 0,
+                            "w": 360,
+                            "h": 30,
+                            "c": "#e1eea4",
+                            "r": [
+                                0,
+                                15,
+                                15,
+                                0
+                            ],
+                            "t": {
+                                "x": 0,
+                                "y": 5,
+                                "t": "channel select",
+                                "a": "end",
+                                "s": "22px",
+                                "c": null
+                            },
+                            "m": [
+                                0,
+                                0,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "type": "buttonGroups",
+                            "x": 10,
+                            "y": 40,
+                            "q": 6,
+                            "t": [
+                                "rect-pill-left",
+                                "rect",
+                                "rect-pill-right"
+                            ],
+                            "s": 1
+                        }
+                    ],
+                    "footer": {
+                        "type": "header",
+                        "x": 0,
+                        "y": 0,
+                        "w": null,
+                        "h": 15,
+                        "c": "#e1eea4",
+                        "r": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "t": {
+                            "x": 0,
+                            "y": 5,
+                            "t": "",
+                            "a": "end",
+                            "s": "22px",
+                            "c": null
+                        },
+                        "m": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    }
+                }
+            ]
+        }
+        ops.build(opsJSON);
     </script>
 </html>
