@@ -10,7 +10,7 @@ This project is designed to allow the creation of LCARS style UI using the HTML 
 Examples for all three are included in the lcars.html example. The Tactical layout is loaded from an existing layout, the Ops, layout is built from existing components, and the Con layout is built from JSON.
 
 # Getting Started
-Include CreateJS, IsJs and the lcars.js files as wellas the lcars.css stylesheet:
+Include CreateJS, IsJs and the lcars.js files as well as the lcars.css stylesheet:
 
     <script type="text/javascript" src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
     <script type="text/javascript" src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script>
