@@ -18,9 +18,9 @@
         const con = new LCARS('con');
         const ops = new LCARS('ops');
         
-        tac.debug=true;
-        con.debug=true;
-        ops.debug=true;
+        tac.debug=false; // debug renders bounding boxes around the borders of elements
+        con.debug=false;
+        ops.debug=false;
         // loading existing layouts:
         tac.build(tac.tactical);
         function doOncePerSecond(){
