@@ -17,10 +17,15 @@
         const tac = new LCARS('tac');
         const con = new LCARS('con');
         const ops = new LCARS('ops');
-
+        
+        tac.debug=true;
+        con.debug=true;
+        ops.debug=true;
         // loading existing layouts:
         tac.build(tac.tactical);
-
+        function doOncePerSecond(){
+            console.log('test');
+        }
         // using pre-built components to build layouts:
         const conLayout = {
             name:'con',
@@ -54,7 +59,6 @@
                 {
                     "y": 0,
                     "w": 200,
-                    "h": 650,
                     "header": {
                         "type": "header",
                         "x": 0,
@@ -165,7 +169,6 @@
                 {
                     "y": 0,
                     "w": 400,
-                    "h": 650,
                     "header": {
                         "type": "header",
                         "x": 0,
@@ -295,7 +298,6 @@
                 {
                     "y": 0,
                     "w": 200,
-                    "h": 650,
                     "header": {
                         "type": "header",
                         "x": 0,
@@ -396,7 +398,6 @@
                 {
                     "y": 0,
                     "w": 360,
-                    "h": 650,
                     "header": {
                         "type": "header",
                         "x": 0,
@@ -498,7 +499,6 @@
                 {
                     "y": 0,
                     "w": 110,
-                    "h": 650,
                     "header": {
                         "type": "header",
                         "x": 0,
@@ -589,7 +589,7 @@
                             "x": 40,
                             "y": 110,
                             "w": 70,
-                            "h": 285,
+                            "h": 295,
                             "c": yellow,
                             "r": [
                                 0,
@@ -645,7 +645,6 @@
                 {
                     "y": 0,
                     "w": 360,
-                    "h": 400,
                     "m": [
                         0,
                         20,
@@ -677,7 +676,7 @@
                             "x": 0,
                             "y": 300,
                             "w": 350,
-                            "h": 350,
+                            "h": 360,
                             "c": yellow,
                             "r": [
                                 50,
@@ -705,7 +704,7 @@
                             "x": 100,
                             "y": 330,
                             "w": 250,
-                            "h": 305,
+                            "h": 315,
                             "c": black,
                             "r": [
                                 30,
@@ -744,7 +743,6 @@
                 {
                     "y": 0,
                     "w": 200,
-                    "h": 650,
                     "header": {
                         "type": "header",
                         "x": 0,
@@ -846,7 +844,6 @@
                 {
                     "y": 0,
                     "w": 400,
-                    "h": 650,
                     "header": {
                         "type": "header",
                         "x": 0,

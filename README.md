@@ -201,7 +201,7 @@ Elements share a basic layout and are built in the layout from left to right. Th
     {
         y: 0,           // vertical alignment (there is no x coordinate because this is calculated automatically by the system)
         w: 535,         // width
-        h: 650,         // height
+        h: 650,         // height (if not included the engine will calculate the height.)
         header: {               // top most header for the elements
             h: 0,               // height
             r: [0,0,0,0],       // array of radius values for each corner, starting at the top left and working around clockwise

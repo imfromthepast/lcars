@@ -34,6 +34,16 @@ use_namespace('createjs.*');
 
 })(this);
 
+/*
+   /$$$$$$   /$$$$$$  /$$        /$$$$$$  /$$$$$$$   /$$$$$$ 
+  /$$__  $$ /$$__  $$| $$       /$$__  $$| $$__  $$ /$$__  $$
+ | $$  \__/| $$  \ $$| $$      | $$  \ $$| $$  \ $$| $$  \__/
+ | $$      | $$  | $$| $$      | $$  | $$| $$$$$$$/|  $$$$$$ 
+ | $$      | $$  | $$| $$      | $$  | $$| $$__  $$ \____  $$
+ | $$    $$| $$  | $$| $$      | $$  | $$| $$  \ $$ /$$  \ $$
+ |  $$$$$$/|  $$$$$$/| $$$$$$$$|  $$$$$$/| $$  | $$|  $$$$$$/
+  \______/  \______/ |________/ \______/ |__/  |__/ \______/ 
+*/
 yellow = '#e1eea4';
 paleYellow = '#ece6c1';
 white = '#ece6c1';
@@ -45,12 +55,23 @@ salmon = 'salmon';
 gray = '#999';
 black = '#000';
 none = 'none';
+/*
+  /$$        /$$$$$$   /$$$$$$  /$$$$$$$   /$$$$$$ 
+ | $$       /$$__  $$ /$$__  $$| $$__  $$ /$$__  $$
+ | $$      | $$  \__/| $$  \ $$| $$  \ $$| $$  \__/
+ | $$      | $$      | $$$$$$$$| $$$$$$$/|  $$$$$$ 
+ | $$      | $$      | $$__  $$| $$__  $$ \____  $$
+ | $$      | $$    $$| $$  | $$| $$  \ $$ /$$  \ $$
+ | $$$$$$$$|  $$$$$$/| $$  | $$| $$  | $$|  $$$$$$/
+ |________/ \______/ |__/  |__/|__/  |__/ \______/ 
+*/
 class LCARS {
     constructor(canvasId){
         this.canvasId = canvasId;
-        this.lcarsCanvas = new createjs.Stage(canvasId);
-        createjs.Ticker.on("tick", this.lcarsCanvas);
+        this.lcarsCanvas = new Stage(canvasId);
+        Ticker.on("tick", this.lcarsCanvas);
     }
+    debug = false;
     canvasId;
     json ={};
     yellow = yellow;
@@ -66,61 +87,45 @@ class LCARS {
     none = none;
     btnTypes=['pill','pill-left','pill-right','rect'];
     lcarsCanvas;
+    height;
+    width;
     playSound(soundID) {
-        createjs.Sound.play(soundID.toString());
+        Sound.play(soundID.toString());
     }
-    colors = [this.white,this.yellow,this.gold,this.blue,this.tan,this.red,this.salmon,this.gray,'none'];
+    colors = [this.white,this.yellow,this.gold,this.blue,this.tan,this.red,this.salmon,this.gray,this.none];
     circleColors = [this.white,this.yellow,this.gold];
     buttonMargin = 12;
 
-    bg = new createjs.Shape();
-    uilayer = new createjs.Container();
+    bg = new Shape();
+    uilayer = new Container();
 
-    // scannerSectionBody = new createjs.Container();
-    // scannerSection = new createjs.Container();
-    i = 0;
     build(json){
         this.json = json;
-        let cvs = document.getElementById(this.canvasId);
-        cvs.width = this.json.dim.w;
-        cvs.height = this.json.dim.h;
+        let cnvs = document.getElementById(this.canvasId);
+        cnvs.width = this.json.dim.w;
+        cnvs.height = this.json.dim.h;
         this.buildUI();
     }
+    tick = 0;
     handleTick(event){
         if (!event.paused) {
             // 4 times a second
-            if(this.i==0 || this.i==6 || this.i==12 || this.i == 18){
-    
-                // for (var ii = 0; ii < screen.children.length; ii++) {
-                //     var x = screen.getChildAt(ii).x;
-                    
-                //     if(x<5){
-                //         screen.getChildAt(ii).x = 50;
-                //         //screen.getChildAt(ii).y = rifi(0,50);
-                //     }else{
-                //         screen.getChildAt(ii).x = x - screen.getChildAt(ii).name;
-                //     }
-                // }
-                
+            if(this.tick==0 || this.tick==6 || this.tick==12 || this.tick == 18){
+                doFourTimesPerSecond();
             }
             // twice a second
-            if(this.i==0 || this.i==12){
-
-                // scannerSection.getChildByName('body').removeAllChildren();
-                // scannerSection.getChildByName('body').addChild(lcarsScanner(0,390,288,260,[white,tan,gold,white,tan],rifi(50,200),100));                    
+            if(this.tick==0 || this.tick==12){
+                doTwicePerSecond();
             }
             // once a second
-            if(this.i==0){
-                // scanner = lcarsScanner(0,390,288,260,[white,tan,gold,white,tan],rifi(50,200),100);
-                // scannerSectionBody.removeChildAt(3);
-                // scannerSectionBody.addChildAt(scanner,3);                                    
+            if(this.tick==0){  
+                doOncePerSecond();                                  
             }
             this.lcarsCanvas.update();
             var top = 24;
-            this.i = this.i<top?this.i+1:0;
+            this.tick = this.tick<top?this.tick+1:0;
         }
     }
-
     handleClick(event){
         playSound(this.rifi(1,4));
         if(this.rifi(0,10)>7) buildUI();
@@ -183,6 +188,8 @@ class LCARS {
         this.lcarsCanvas.addChild(this.bg);
         this.uilayer.removeAllChildren();
         // set up uilayer
+        this.height = this.json.dim.h - (this.json.dim.g*2);
+        this.width = this.json.dim.w - (this.json.dim.g*2);
         this.uilayer.name = 'uilayer';
         this.uilayer.x = this.json.dim.g;
         this.uilayer.y = this.json.dim.g;
@@ -217,12 +224,12 @@ class LCARS {
         return {x:0,y:0,w:200,h:650,header:{h:210,r:[0,0,0,0],c:yellow,m:[0,0,100,0],t:''},leftSidebar:{w:0,r:[0,0,0,0],c:gold},body:{},rightSidebar:{w:0,r:[0,0,0,0],c:gold},footer:{h:15,r:[0,0,0,0],c:tan,m:[0,0,0,0]}}
     }
     lcarsScanner(x,y,w,h,c,rx,ry,id){
-        var scannerCont = new createjs.Container();
+        var scannerCont = new Container();
         scannerCont.name='lcarsScanner'+id;
-        var topLeftFrame = new createjs.Shape();
-        var frame = new createjs.Shape();
-        var reticule = new createjs.Shape();
-        var screen = new createjs.Container();
+        var topLeftFrame = new Shape();
+        var frame = new Shape();
+        var reticule = new Shape();
+        var screen = new Container();
         scannerCont.x=x;
         scannerCont.y=y;
         topLeftFrame.graphics.f(c[0])
@@ -267,7 +274,7 @@ class LCARS {
         // var stars = ;
         screen.removeAllChildren();
         for (var i = 0; i < this.rifi(10,20); i++) {
-            var star = new createjs.Shape();
+            var star = new Shape();
             var r = this.rifi(2,7);
             star.graphics.beginFill(this.rae(this.circleColors)).dc(this.rifi(20,w-20),this.rifi(20,h-20),r);
             star.name=r;
@@ -277,6 +284,7 @@ class LCARS {
         return scannerCont;
     }
     lcarsSection(x,y,o,s){
+        if(is.undefined(o.h)) o.h=this.height;
         var headerMargins = [0,0,0,0];
         if(is.not.undefined(o.header)){
             if(o.header.m!=null){
@@ -289,16 +297,15 @@ class LCARS {
                 footerMargins = o.footer.m;
             }
         }
-        var cont = new createjs.Container();
-        
+        var cont = new Container();
         // header
-        var header = new createjs.Container();
+        var header = new Container();
         var headerHeight = is.not.undefined(o.header)?o.header.h+headerMargins[0]+headerMargins[2]:0;
         
-        var leftSidebar = new createjs.Container();
-        var body = new createjs.Container();
-        var rightSidebar = new createjs.Container();
-        var footer = new createjs.Container();
+        var leftSidebar = new Container();
+        var body = new Container();
+        var rightSidebar = new Container();
+        var footer = new Container();
 
         var rightSidebarWidth = is.not.undefined(o.rightSidebar)?o.rightSidebar.w:0;
         var leftSidebarWidth = is.not.undefined(o.leftSidebar)?o.leftSidebar.w:0;
@@ -309,7 +316,9 @@ class LCARS {
         var midY = headerHeight;
         var footerY = headerHeight+bodyHeight+(is.not.undefined(o.footer)?footerMargins[0]:0);
 
-        
+        var boundingBox = new Shape();
+        boundingBox.graphics.ss(2).beginStroke(white).drawRect(0,0,o.w,o.h);
+        console.log(o.h)
         cont.x = x; //o.x;
         cont.y = y; //o.y;
         leftSidebar.y=midY;
@@ -390,16 +399,17 @@ class LCARS {
         if(is.not.undefined(o.footer)) footer.addChild(this.buildHeader(0,0,o.w,o.footer.h,o.footer.c,o.footer.r))
         //body.addChild(s);
         cont.addChild(header,leftSidebar,body,rightSidebar,footer);
+        if(this.debug) cont.addChild(boundingBox);
         return cont;
     }
     buildJoystick(el){
-        var js = new createjs.Container();
+        var js = new Container();
         js.x=el.x;
         js.y=el.y;
-        var base = new createjs.Shape();
+        var base = new Shape();
         base.graphics.beginFill(this.blue).dc(100,100,100);
-        var buttons = new createjs.Container();
-        var cross = new createjs.Shape();    
+        var buttons = new Container();
+        var cross = new Shape();    
         var w = 40;
         var l = 130;
         var w1 = 100-(w/2);
@@ -407,7 +417,7 @@ class LCARS {
         var l1 = (200-l)/2;
         var l2 = l1+l;
         cross.graphics.beginFill(this.yellow).setStrokeStyle(4).beginStroke('black').lt(w1,l1).lt(w2,l1).lt(w2,w1).lt(l2,w1).lt(l2,w2).lt(w2,w2).lt(w2,l2).lt(w1,l2).lt(w1,w2).lt(l1,w2).lt(l1,w1).lt(w1,w1).cp().beginFill(el.c1).dr(w1,0-5,w,w).beginFill(el.c2).dr(l2,w1,w,w).beginFill(el.c3).dr(w1,l2,w,w).beginFill(el.c4).dr(l1-w,w1,w,w);
-        var accents = new createjs.Shape();
+        var accents = new Shape();
         accents.graphics.ss(2).beginStroke('black').mt(w1,74).lt(w2,74).mt(w1,152).lt(w2,152).ss(3).mt(w1,45).lt(w2,45).mt(w1,69).lt(w2,69).mt(w1,128).lt(w2,128).mt(w1,138).lt(w2,138).mt(w1+16,15).lt(w1+16,30).mt(w1+23,15).lt(w1+23,30).ss(6).mt(w1+30,15).lt(w1+30,30).mt(l2+5,w2-10).lt(l2+20,w2-10).mt(w1+10,l2+5).lt(w1+10,l2+20).mt(l1-w+20,w1+10).lt(l1-w+35,w1+10)
         cross.clip = base;  
         cross.name = el.n;              
@@ -425,10 +435,10 @@ class LCARS {
         return js;
     }
     buildHeader(x,y,w,h,c,r,t){
-        var hdrCont = new createjs.Container();
+        var hdrCont = new Container();
         hdrCont.x=x;
         hdrCont.y=y;
-        var hdr = new createjs.Shape();
+        var hdr = new Shape();
         var headerRadius = [0,0,0,0];
         if(r!=null){
             headerRadius = r;
@@ -446,7 +456,7 @@ class LCARS {
         a = a==null?'end':a;
         s = s==null?'18px':s;
         c = c==null?'#000':c;
-        var txt = new createjs.Text(this.makeCap(t),s+" Okuda",c);
+        var txt = new Text(this.makeCap(t),s+" Okuda",c);
         txt.x = x;
         txt.y = y;
         txt.textAlign=a; //Any of "start", "end", "left", "right", and "center"
@@ -455,14 +465,14 @@ class LCARS {
     }
     buildButton(x,y,w,h,c,t,l,s){
         // console.log("w", w);
-        var btnCont = new createjs.Container();
+        var btnCont = new Container();
         btnCont.x=x;
         btnCont.y=y;
         x=0;
         y=0;
         var txtWidth; 
         var textAlign = 'end';
-        var btn = new createjs.Shape();
+        var btn = new Shape();
         if(t=='pill'){
             btn.graphics.beginFill(c).rc(x,y,w,h,h*0.5,h*0.5,h*0.5,h*0.5); //.drawRoundRect(x,y,w,h,h*.5);
             // console.log("pill-h", h);
@@ -537,7 +547,7 @@ class LCARS {
     }
     addRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,s){
         // console.log("x", x);
-        var btnCont = new createjs.Container();
+        var btnCont = new Container();
         btnCont.x = x;
         btnCont.y = y;
         btnCont.addChild(this.addRectButton(0,0,c,buttonWidth-20,buttonHeight,s));
@@ -545,7 +555,7 @@ class LCARS {
         return btnCont;
     }
     addRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,s){
-        var btnCont = new createjs.Container();
+        var btnCont = new Container();
         btnCont.x = x;
         btnCont.y = y;
         btnCont.addChild(this.addRectButton(buttonHeight,0,c,buttonWidth-20,buttonHeight,s));
@@ -554,7 +564,7 @@ class LCARS {
     }
     addTinyRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,s){
         // console.log("x", x);
-        var btnCont = new createjs.Container();
+        var btnCont = new Container();
         btnCont.x = x;
         btnCont.y = y;
         btnCont.addChild(this.addRectButton(0,0,c,(buttonWidth*0.20),buttonHeight,s));
@@ -562,7 +572,7 @@ class LCARS {
         return btnCont;
     }
     addTinyRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,s){
-        var btnCont = new createjs.Container();
+        var btnCont = new Container();
         btnCont.x = x;
         btnCont.y = y;
         btnCont.addChild(this.addRectButton(buttonHeight,0,c,(buttonWidth*0.20),buttonHeight,s,''));
@@ -570,7 +580,7 @@ class LCARS {
         return btnCont;
     }
     addRectWithPillLeftButton(x,y,c,buttonWidth,buttonHeight,s){
-        var btnCont = new createjs.Container();
+        var btnCont = new Container();
         btnCont.x = x-30;
         btnCont.y = y;
         btnCont.addChild(this.addPillLeftButton(0,0,c,buttonWidth,buttonHeight,s));
@@ -578,7 +588,7 @@ class LCARS {
         return btnCont;
     }
     addRectWithPillRightButton(x,y,c,buttonWidth,buttonHeight,s){
-        var btnCont = new createjs.Container();
+        var btnCont = new Container();
         btnCont.x = x-30;
         btnCont.y = y;
         btnCont.addChild(this.addPillRightButton(25,0,c,buttonWidth,buttonHeight,s));
@@ -586,7 +596,7 @@ class LCARS {
         return btnCont;
     }
     addTitledLeftPillButton(x,y,c,buttonWidth,buttonHeight,s){
-        var cont = new createjs.Container();
+        var cont = new Container();
         var crbtn = this.addRectWithCapLeftButton(x,0,c,buttonWidth,buttonHeight,s);
         crbtn.x = 0;
         cont.addChild(crbtn);
@@ -595,7 +605,7 @@ class LCARS {
         return cont;
     }
     addTitledRightPillButton(x,y,c,buttonWidth,buttonHeight,s){
-        var cont = new createjs.Container();
+        var cont = new Container();
         var crbtn = this.addRectWithCapRightButton(x,0,c,buttonWidth,buttonHeight,s);
         crbtn.x = s==1?75:85;
         cont.addChild(crbtn);
@@ -605,7 +615,7 @@ class LCARS {
     }
 
     addTitledLeftButton(x,y,c,buttonWidth,buttonHeight,s){
-        var cont = new createjs.Container();
+        var cont = new Container();
         var crbtn = this.addRectButton(x,0,c,buttonWidth,buttonHeight,s);
         crbtn.x = 0;
         cont.addChild(crbtn);
@@ -614,7 +624,7 @@ class LCARS {
         return cont;
     }
     addTitledRightButton(x,y,c,buttonWidth,buttonHeight,s){
-        var cont = new createjs.Container();
+        var cont = new Container();
         var crbtn = this.addRectButton(x,0,c,buttonWidth,buttonHeight,s);
         crbtn.x = s==1?75:85;
         cont.addChild(crbtn);
@@ -625,7 +635,7 @@ class LCARS {
 
     addTitledRightTab(x,y,c,buttonWidth,buttonHeight,l){
         var s=2;
-        var cont = new createjs.Container();
+        var cont = new Container();
 
         cont.addChild(this.addRectButton(0,0,c,150,buttonHeight,s,l));
         cont.addChild(this.addText(155,-8,this.randomButtonTitle()+this.randomButtonTitle(),'start','56px',c))
@@ -636,7 +646,7 @@ class LCARS {
     }
     addTitledLeftTab(x,y,c,buttonWidth,buttonHeight,l){
         var s=2;
-        var cont = new createjs.Container();
+        var cont = new Container();
 
         cont.addChild(this.addCapLeftButton(0,0,c,buttonHeight,buttonHeight,s,''));
         cont.addChild(this.addText(130,-8,this.randomButtonTitle()+this.randomButtonTitle(),null,'56px',c))
@@ -646,14 +656,14 @@ class LCARS {
     }
     addRightTab(x,y,c,buttonWidth,buttonHeight,l){
         var s=2;
-        var cont = new createjs.Container();
+        var cont = new Container();
         cont.addChild(this.addRectButton(0,0,c,275,buttonHeight,s,l));
         cont.addChild(this.addCapRightButton(280,0,c,buttonHeight,buttonHeight,s,''));
         return cont;
     }
     addLeftTab(x,y,c,buttonWidth,buttonHeight,l){
         var s=2;
-        var cont = new createjs.Container();
+        var cont = new Container();
         cont.addChild(this.addCapLeftButton(0,0,c,buttonHeight,buttonHeight,s,''));
         cont.addChild(this.addRectButton(buttonHeight,0,c,275,buttonHeight,s,l));
         return cont;
@@ -674,7 +684,7 @@ class LCARS {
         scale=scale==1?1:1.25;
         var buttonWidth = (bw==null?85:bw)*scale;
         var buttonHeight = (bh==null?33:bh)*scale;
-        var btns = new createjs.Container();
+        var btns = new Container();
         btns.x=x;
         btns.y=y;
 
@@ -710,8 +720,8 @@ class LCARS {
         var buttonHeightPlusMargin = buttonHeight+this.buttonMargin;
         var buttonWidthPlusMargin = buttonWidth+(this.buttonMargin*2);
 
-        var btn = new createjs.Container();
-        var btnbg = new createjs.Shape();
+        var btn = new Container();
+        var btnbg = new Shape();
         if(t=='pill'){
             btn = this.addPillButton(x,y,c,buttonWidth,buttonHeight,scale);
             // btn.name=btn.id+'_btn';
@@ -893,7 +903,7 @@ class LCARS {
     }
     buildDynamicText(el){
         
-        var header = new createjs.Text();
+        var header = new Text();
         header.font='20px Okuda';
         header.text = el.header==''?this.makeDatum(6).text:this.makeCap(el.header);
         header.color = this.white;
@@ -979,7 +989,7 @@ class LCARS {
             datum += this.rifi(0,9);
             datumval = parseInt(datum)
         }
-        var txt = new createjs.Text();
+        var txt = new Text();
         txt.font='16px Okuda';
         txt.text = datum;
         txt.color=this.rae(this.datumColors);
@@ -1655,7 +1665,7 @@ class LCARS {
             },
             elements: [
                 {
-                    y:0,w:300,h:650,
+                    y:0,w:300,
                     header: new LCARS__Header().H(200).T('phaser power status').C(this.tan).R([20,0,0,20]).M([0,20,100,0]),
                     body:[
                         new LCARS__Subheader().R([15,0,0,15]),
@@ -1667,7 +1677,7 @@ class LCARS {
                     ]
                 },
                 {
-                    y:0,w:100,h:650,
+                    y:0,w:100,
                     header: new LCARS__Header().C(this.gold).H(200).T('ro esc').R([0,0,0,0]).M([0,30,100,0]),
                     body:[
                         new LCARS__Subheader().C(this.white),
@@ -1675,7 +1685,7 @@ class LCARS {
                     ]
                 },
                 {
-                    y:0,w:420,h:650,
+                    y:0,w:420,
                     header: new LCARS__Header().H(200).C(this.white).T('weapons systems').R([0,0,0,0]).M([0,20,100,0]),
                     body:[
                         new LCARS__Readout().Y(-90).R(4).C([6,9,2]),
@@ -1686,7 +1696,7 @@ class LCARS {
                     ]
                 },
                 {
-                    y:0,w:400,h:650,
+                    y:0,w:400,
                     m:[0,20,0,0],
                     body: [
                         this.joystick(0,0,[this.red,this.red,this.red,this.red]),
@@ -1699,7 +1709,7 @@ class LCARS {
                     ]
                 },
                 {
-                    y:0,w:200,h:650,
+                    y:0,w:200,
                     header: new LCARS__Header().C(this.tan).H(200).R([0,90,0,0]).M([0,20,0,0]),
                     body:[
                         new LCARS__Header().X(30).W(170).C(this.tan).H(80).R([0,0,0,-80]).M([0,20,0,0]),
@@ -1708,7 +1718,7 @@ class LCARS {
                     ]
                 },
                 {
-                    y:0,w:400,h:650,
+                    y:0,w:400,
                     m:[0,20,0,0],
                     body:[
                         new LCARS__Tabs().X(85).Titled(false)
@@ -1722,7 +1732,7 @@ class LCARS {
                     ]
                 },
                 {
-                    y:0,w:400,h:650,
+                    y:0,w:400,
                     header: new LCARS__Header().C(this.blue).H(200).M([0,20,100,0]).T('auxilliary targeting scanners','start'),
                     body:[
                         new LCARS__Readout().Y(-90).R(4).C([6,9,2,5,11,5,3,7,7,3]),
@@ -1734,14 +1744,14 @@ class LCARS {
                     ]
                 },
                 {
-                    y:0,w:80,h:650,
+                    y:0,w:80,
                     header: new LCARS__Header().C(this.tan).H(200).M([0,20,0,0]).T('ge rod','left'),
                     body:[
                         
                     ]
                 },
                 {
-                    y:0,w:190,h:650,
+                    y:0,w:190,
                     header: new LCARS__Header().C(this.yellow).H(200).M([0,30,100,0]).T('mode select','left'),
                     body:[
                         new LCARS__Subheader().C(this.blue).T('ae bfd','start'),
@@ -1749,7 +1759,7 @@ class LCARS {
                     ]
                 },
                 {
-                    y:0,w:370,h:650,
+                    y:0,w:370,
                     header: new LCARS__Header().C(this.tan).H(200).M([0,20,100,0]).R([0,20,20,0]).T('tactical analysis','left'),
                     body:[
                         new LCARS__Subheader().W(370).C(this.tan).T('ga pdf','start').R([0,10,10,0]),
@@ -1768,8 +1778,7 @@ class LCARS {
             elements: [
                 {
                     y: 0,
-                    w: 200,
-                    h: 650,
+                    w: 200, 
                     header: new LCARS__Header()
                         .H(200)
                         .R([20,0,0,20])
@@ -1788,7 +1797,6 @@ class LCARS {
                 {
                     y: 0,
                     w: 400,
-                    h: 650,
                     header: new LCARS__Header()
                         .H(200)
                         .R([0,0,0,0])
@@ -1831,7 +1839,6 @@ class LCARS {
                 {
                     y: 0,
                     w: 200,
-                    h: 650,
                     header: new LCARS__Header()
                         .H(200)
                         .R([0,0,0,0])
@@ -1848,7 +1855,6 @@ class LCARS {
                 {
                     y:0,
                     w:360,
-                    h:650,
                     header: new LCARS__Header()
                         .H(200)
                         .R([0,0,0,0])
@@ -1864,7 +1870,6 @@ class LCARS {
                 {
                     y:0,
                     w:110,
-                    h:650,
                     header: new LCARS__Header()
                         .H(240)
                         .R([0,120,0,-40])
@@ -1881,7 +1886,6 @@ class LCARS {
                 {
                     y:0,
                     w:360,
-                    h:400,
                     m:[0,20,0,0],
                     body:[
                         new LCARS__Tabs().X(70)
@@ -1898,7 +1902,6 @@ class LCARS {
                 {
                     y:0,
                     w:200,
-                    h:650,
                     header: new LCARS__Header()
                         .H(200)
                         .R([0,0,0,0])
@@ -1913,7 +1916,6 @@ class LCARS {
                 {
                     y:0,
                     w:400,
-                    h:650,
                     header: new LCARS__Header()
                         .H(200)
                         .R([0,20,20,0])
@@ -2481,6 +2483,9 @@ function LCARS__Scanner(){
         return this;
     }
 }
+function doFourTimesPerSecond(){}
+function doTwicePerSecond(){}
+function doOncePerSecond(){}
 function LCARS__Text(){
     this.type='text';
     this.x=0,
