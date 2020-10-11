@@ -43,14 +43,14 @@ Then load your layout using one of the three methods listed in the Intrduction:
                 g:20
             },
             elements: [
-                con.scannerSection,
-                con.navRefSection,
-                con.flightSection,
-                con.joystickSection,
-                con.warpDriveSection,
-                con.impulseSection,
-                con.spacerSection,
-                con.overrideSection
+                new LCARS_scannerSection(),
+                new LCARS_navRefSection(),
+                new LCARS_flightSection(),
+                new LCARS_joystickSection(),
+                new LCARS_warpDriveSection(),
+                new LCARS_impulseSection(),
+                new LCARS_spacerSection(),
+                new LCARS_overrideSection()
             ]
     };
     con.build(conLayout);
