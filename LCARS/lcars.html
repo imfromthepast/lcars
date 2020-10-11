@@ -29,7 +29,17 @@
         exp.height = 700;
         exp.width = 2500;
         exp.gutters = 20;
-        exp.elements.push(new LCARS__Section().addHeader(new LCARS__Elbow()));
+        exp.elements.push(
+			new LCARS__Section()
+				.addHeader(
+					new LCARS__Header()
+						.H(200)
+                        .R([0,0,0,0])
+                        .C(this.yellow)
+                        .M([0,40,100,0])
+                        .T('warp drive systems')
+				)
+			);
 
         exp.build();
 

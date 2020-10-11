@@ -2275,11 +2275,11 @@ function LCARS__Elbow(){
 		this.c=c;
 		return this;
 	}
-	this.m=function(m){
+	this.M=function(m){
 		this.m=m;
 		return this;
 	}
-	this.t=function(t){
+	this.T=function(t){
 		this.t=t;
 		return this;
 	}
