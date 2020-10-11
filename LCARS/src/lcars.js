@@ -2228,6 +2228,62 @@ class LCARS {
     } 
 }
 
+function LCARS__Section(){
+	this.header={};
+	this.leftSidebar={};
+	this.body={};
+	this.rightSidebar={};
+	this.footer={};
+	
+	this.addHeader=function(header){
+		this.header=header;
+		return this;
+	}
+	this.addLeftSidebar=function(leftSidebar){
+		this.leftSidebar=leftSidebar;
+		return this;
+	}
+	this.addBody=function(body){
+		this.body=body;
+		return this;
+	}
+	this.addRightSidebar=function(rightSidebar){
+		this.rightSidebar=rightSidebar;
+		return this;
+	}
+	this.footer=function(footer){
+		this.footer=footer;
+		return this;
+	}
+}
+function LCARS__Elbow(){
+	this.h=250;
+    this.r= [120,0,-40,0];
+    this.c= yellow;
+    this.m= [0,0,0,0];
+    this.t= null;
+    
+	this.H=function(h){
+		this.h=h;
+		return this;
+	}
+	this.R=function(r){
+		this.r=r;
+		return this;
+	}
+	this.C=function(c){
+		this.c=c;
+		return this;
+	}
+	this.m=function(m){
+		this.m=m;
+		return this;
+	}
+	this.t=function(t){
+		this.t=t;
+		return this;
+	}
+}
 function LCARS__Joystick(){
     this.type='joystick';
     this.n=null;
