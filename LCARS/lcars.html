@@ -11,16 +11,28 @@
         <canvas id="tac"></canvas>        
         <canvas id="con"></canvas>      
         <canvas id="ops"></canvas>
+        <canvas id="exp"></canvas>
     </body>
     <script type="text/javascript" src="src/lcars.js"></script>
     <script>        
         const tac = new LCARS('tac');
         const con = new LCARS('con');
         const ops = new LCARS('ops');
+        const exp = new LCARS('exp');
         
-        tac.debug=false; // debug renders bounding boxes around the borders of elements
-        con.debug=false;
-        ops.debug=false;
+        tac.debug=true; // debug renders bounding boxes around the borders of elements
+        con.debug=true;
+        ops.debug=true;
+        exp.debug=true;
+
+        // experimental stuff:
+        exp.height = 700;
+        exp.width = 2500;
+        exp.gutters = 20;
+        exp.elements.push(exp.scannerSection);
+
+        exp.build();
+
         // loading existing layouts:
         tac.build(tac.tactical);
         function doOncePerSecond(){

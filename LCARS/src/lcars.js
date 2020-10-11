@@ -72,8 +72,14 @@ class LCARS {
         Ticker.on("tick", this.lcarsCanvas);
     }
     debug = false;
+    lcarsCanvas;
+    height;
+    width;
+    gutters;
+    elements=[];
+    innerHeight;
+    innerWidth;
     canvasId;
-    json ={};
     yellow = yellow;
     paleYellow = paleYellow;
     white = white;
@@ -86,26 +92,14 @@ class LCARS {
     black = black;
     none = none;
     btnTypes=['pill','pill-left','pill-right','rect'];
-    lcarsCanvas;
-    height;
-    width;
     playSound(soundID) {
         Sound.play(soundID.toString());
     }
     colors = [this.white,this.yellow,this.gold,this.blue,this.tan,this.red,this.salmon,this.gray,this.none];
     circleColors = [this.white,this.yellow,this.gold];
     buttonMargin = 12;
-
     bg = new Shape();
     uilayer = new Container();
-
-    build(json){
-        this.json = json;
-        let cnvs = document.getElementById(this.canvasId);
-        cnvs.width = this.json.dim.w;
-        cnvs.height = this.json.dim.h;
-        this.buildUI();
-    }
     tick = 0;
     handleTick(event){
         if (!event.paused) {
@@ -182,23 +176,38 @@ class LCARS {
         }
     }
     joystickButtonFunction(bid,name){}
+
+    build(json){
+        let cnvs = document.getElementById(this.canvasId);
+        if(json){                
+            this.height = json.dim.h;
+            this.width = json.dim.w;
+            this.gutters = json.dim.g;
+            this.elements = json.elements;
+        }
+        cnvs.width = this.width;
+        cnvs.height = this.height;
+        this.buildUI();
+    }
     buildUI(){
         // add black background to canvas
-        this.bg.graphics.beginFill('#000').drawRect(0, 0, this.json.dim.w, this.json.dim.h);
+        if(this.debug)
+            this.bg.graphics.ss(2).beginStroke(white).drawRect(0,0,this.width,this.height);;
+        this.bg.graphics.beginFill('#000').drawRect(0, 0, this.width, this.height);
         this.lcarsCanvas.addChild(this.bg);
         this.uilayer.removeAllChildren();
         // set up uilayer
-        this.height = this.json.dim.h - (this.json.dim.g*2);
-        this.width = this.json.dim.w - (this.json.dim.g*2);
+        this.innerHeight = this.height - (this.gutters*2);
+        this.innerWidth = this.width - (this.gutters*2);
         this.uilayer.name = 'uilayer';
-        this.uilayer.x = this.json.dim.g;
-        this.uilayer.y = this.json.dim.g;
-        this.uilayer.width = this.json.dim.w-(this.json.dim.g*2);
-        this.uilayer.height = this.json.dim.h-(this.json.dim.g*2);
+        this.uilayer.x = this.gutters;
+        this.uilayer.y = this.gutters;
+        this.uilayer.width = this.width-(this.gutters*2);
+        this.uilayer.height = this.height-(this.gutters*2);
         // loop through json elements and create sections to add to uilayer
         var x = 0,y = 0;
-        for (var i = 0; i < this.json.elements.length; i++) {
-            var el = this.json.elements[i];
+        for (var i = 0; i < this.elements.length; i++) {
+            var el = this.elements[i];
             var header = el.header;
             var headerMargins = [0,0,0,0];
             if(is.not.undefined(header)){
@@ -219,72 +228,29 @@ class LCARS {
         this.lcarsCanvas.addChild(this.uilayer);
         this.lcarsCanvas.update();
     }
+/*
+   /$$$$$$                                  /$$                                     /$$     /$$                    
+  /$$__  $$                                | $$                                    | $$    |__/                    
+ | $$  \__/  /$$$$$$  /$$$$$$$   /$$$$$$$ /$$$$$$    /$$$$$$  /$$   /$$  /$$$$$$$ /$$$$$$   /$$  /$$$$$$  /$$$$$$$ 
+ | $$       /$$__  $$| $$__  $$ /$$_____/|_  $$_/   /$$__  $$| $$  | $$ /$$_____/|_  $$_/  | $$ /$$__  $$| $$__  $$
+ | $$      | $$  \ $$| $$  \ $$|  $$$$$$   | $$    | $$  \__/| $$  | $$| $$        | $$    | $$| $$  \ $$| $$  \ $$
+ | $$    $$| $$  | $$| $$  | $$ \____  $$  | $$ /$$| $$      | $$  | $$| $$        | $$ /$$| $$| $$  | $$| $$  | $$
+ |  $$$$$$/|  $$$$$$/| $$  | $$ /$$$$$$$/  |  $$$$/| $$      |  $$$$$$/|  $$$$$$$  |  $$$$/| $$|  $$$$$$/| $$  | $$
+  \______/  \______/ |__/  |__/|_______/    \___/  |__/       \______/  \_______/   \___/  |__/ \______/ |__/  |__/
+*/
 
-    lcarsSectionOptions(){
-        return {x:0,y:0,w:200,h:650,header:{h:210,r:[0,0,0,0],c:yellow,m:[0,0,100,0],t:''},leftSidebar:{w:0,r:[0,0,0,0],c:gold},body:{},rightSidebar:{w:0,r:[0,0,0,0],c:gold},footer:{h:15,r:[0,0,0,0],c:tan,m:[0,0,0,0]}}
-    }
-    lcarsScanner(x,y,w,h,c,rx,ry,id){
-        var scannerCont = new Container();
-        scannerCont.name='lcarsScanner'+id;
-        var topLeftFrame = new Shape();
-        var frame = new Shape();
-        var reticule = new Shape();
-        var screen = new Container();
-        scannerCont.x=x;
-        scannerCont.y=y;
-        topLeftFrame.graphics.f(c[0])
-        .mt(0,0)
-        .lt(rx-25,0)
-        .lt(rx-25,30)
-        .lt(0,30)
-        .cp();
-        frame.graphics.f(c[1])
-        .mt(rx+25,0)
-        .lt(w,0)
-        .lt(w,h)
-        .lt(0,h)
-        .lt(0,h-15)
-        .lt(w-20,h-15)
-        .lt(w-20,30)
-        .lt(rx+25,30)
-        .cp();
-        reticule.graphics.f(c[2])
-        .mt(rx-20,0)
-        .lt(rx+20,0)
-        .lt(rx+20,ry-30)
-        .lt(w-40,ry-30)
-        .lt(w-40,ry)
-        .lt(w-50,ry)
-        .lt(w-50,ry-20)
-        .lt(40,ry-20)
-        .lt(40,ry)
-        .lt(30,ry)
-        .lt(30,ry-30)
-        .lt(rx-20,ry-30)
-        .cp()
-        .f(c[3])
-        .dr(30,ry+70,w-70,10)
-        .f(this.black)
-        .dr(rx-20,20,40,2)
-        .dr(rx-20,30,40,2)
-        .dr(rx-20,40,40,5)
-        .f(c[3])
-        .ss(5).s(this.black)
-        .dr(rx-22,h-38,45,40);
-        // var stars = ;
-        screen.removeAllChildren();
-        for (var i = 0; i < this.rifi(10,20); i++) {
-            var star = new Shape();
-            var r = this.rifi(2,7);
-            star.graphics.beginFill(this.rae(this.circleColors)).dc(this.rifi(20,w-20),this.rifi(20,h-20),r);
-            star.name=r;
-            screen.addChild(star);
-        }
-        scannerCont.addChild(screen,frame,topLeftFrame,reticule);
-        return scannerCont;
-    }
+/*
+  /$$                                          /$$$$$$                        /$$     /$$                       /$$$ /$$$  
+ | $$                                         /$$__  $$                      | $$    |__/                      /$$_/|_  $$ 
+ | $$  /$$$$$$$  /$$$$$$   /$$$$$$   /$$$$$$$| $$  \__/  /$$$$$$   /$$$$$$$ /$$$$$$   /$$  /$$$$$$  /$$$$$$$  /$$/    \  $$
+ | $$ /$$_____/ |____  $$ /$$__  $$ /$$_____/|  $$$$$$  /$$__  $$ /$$_____/|_  $$_/  | $$ /$$__  $$| $$__  $$| $$      | $$
+ | $$| $$        /$$$$$$$| $$  \__/|  $$$$$$  \____  $$| $$$$$$$$| $$        | $$    | $$| $$  \ $$| $$  \ $$| $$      | $$
+ | $$| $$       /$$__  $$| $$       \____  $$ /$$  \ $$| $$_____/| $$        | $$ /$$| $$| $$  | $$| $$  | $$|  $$     /$$/
+ | $$|  $$$$$$$|  $$$$$$$| $$       /$$$$$$$/|  $$$$$$/|  $$$$$$$|  $$$$$$$  |  $$$$/| $$|  $$$$$$/| $$  | $$ \  $$$ /$$$/ 
+ |__/ \_______/ \_______/|__/      |_______/  \______/  \_______/ \_______/   \___/  |__/ \______/ |__/  |__/  \___/|___/  
+*/
     lcarsSection(x,y,o,s){
-        if(is.undefined(o.h)) o.h=this.height;
+        if(is.undefined(o.h)) o.h=this.innerHeight;
         var headerMargins = [0,0,0,0];
         if(is.not.undefined(o.header)){
             if(o.header.m!=null){
@@ -401,6 +367,70 @@ class LCARS {
         cont.addChild(header,leftSidebar,body,rightSidebar,footer);
         if(this.debug) cont.addChild(boundingBox);
         return cont;
+    }
+
+    lcarsSectionOptions(){
+        return {x:0,y:0,w:200,h:650,header:{h:210,r:[0,0,0,0],c:yellow,m:[0,0,100,0],t:''},leftSidebar:{w:0,r:[0,0,0,0],c:gold},body:{},rightSidebar:{w:0,r:[0,0,0,0],c:gold},footer:{h:15,r:[0,0,0,0],c:tan,m:[0,0,0,0]}}
+    }
+    lcarsScanner(x,y,w,h,c,rx,ry,id){
+        var scannerCont = new Container();
+        scannerCont.name='lcarsScanner'+id;
+        var topLeftFrame = new Shape();
+        var frame = new Shape();
+        var reticule = new Shape();
+        var screen = new Container();
+        scannerCont.x=x;
+        scannerCont.y=y;
+        topLeftFrame.graphics.f(c[0])
+        .mt(0,0)
+        .lt(rx-25,0)
+        .lt(rx-25,30)
+        .lt(0,30)
+        .cp();
+        frame.graphics.f(c[1])
+        .mt(rx+25,0)
+        .lt(w,0)
+        .lt(w,h)
+        .lt(0,h)
+        .lt(0,h-15)
+        .lt(w-20,h-15)
+        .lt(w-20,30)
+        .lt(rx+25,30)
+        .cp();
+        reticule.graphics.f(c[2])
+        .mt(rx-20,0)
+        .lt(rx+20,0)
+        .lt(rx+20,ry-30)
+        .lt(w-40,ry-30)
+        .lt(w-40,ry)
+        .lt(w-50,ry)
+        .lt(w-50,ry-20)
+        .lt(40,ry-20)
+        .lt(40,ry)
+        .lt(30,ry)
+        .lt(30,ry-30)
+        .lt(rx-20,ry-30)
+        .cp()
+        .f(c[3])
+        .dr(30,ry+70,w-70,10)
+        .f(this.black)
+        .dr(rx-20,20,40,2)
+        .dr(rx-20,30,40,2)
+        .dr(rx-20,40,40,5)
+        .f(c[3])
+        .ss(5).s(this.black)
+        .dr(rx-22,h-38,45,40);
+        // var stars = ;
+        screen.removeAllChildren();
+        for (var i = 0; i < this.rifi(10,20); i++) {
+            var star = new Shape();
+            var r = this.rifi(2,7);
+            star.graphics.beginFill(this.rae(this.circleColors)).dc(this.rifi(20,w-20),this.rifi(20,h-20),r);
+            star.name=r;
+            screen.addChild(star);
+        }
+        scannerCont.addChild(screen,frame,topLeftFrame,reticule);
+        return scannerCont;
     }
     buildJoystick(el){
         var js = new Container();
