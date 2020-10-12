@@ -216,13 +216,16 @@ class LCARS {
                 }
             }
             var elementMargins = [0,0,0,0];
-            if(el!=null){
+            if(el.m!=null){
                 elementMargins = el.m;
             }
-            x+=is.not.undefined(header)?headerMargins[3]:elementMargins[3];
-            y+=is.not.undefined(header)?headerMargins[0]:elementMargins[0];
+			const margin_left = header?headerMargins[3]:elementMargins[3];
+			const margin_right = header?headerMargins[1]:elementMargins[1];
+			const margin_top = header?headerMargins[0]:elementMargins[0];
+            x+=margin_left;
+            y+=margin_top;
             this.uilayer.addChild(this.lcarsSection(x,y,el,null));
-            x+=el.w+(is.not.undefined(header)?headerMargins[1]:elementMargins[1]);
+            x+=el.w+(margin_right);
         }
         // add uilayer to canvas
         this.lcarsCanvas.addChild(this.uilayer);
@@ -365,7 +368,7 @@ class LCARS {
         if(is.not.undefined(o.rightSidebar)) rightSidebar.addChild(this.buildHeader(0,0,o.rightSidebar.w,bodyHeight,o.rightSidebar.c,o.rightSidebar.r))
         if(is.not.undefined(o.footer)) footer.addChild(this.buildHeader(0,0,o.w,o.footer.h,o.footer.c,o.footer.r))
         //body.addChild(s);
-        console.log('body y',body.y);
+        console.log('cont x',cont.x);
         cont.addChild(header,leftSidebar,body,rightSidebar,footer);
         if(this.debug) cont.addChild(boundingBox);
         return cont;
@@ -1036,6 +1039,7 @@ class LCARS {
         }
         return retval; //randomFromArray(buttonTitles);
     }
+	
     // changeRandomColors(){  
     //     $j('.random-color').each(function(){
     //         this.changeColor(this);
@@ -1060,7 +1064,8 @@ class LCARS {
  |  $$$$$$/|  $$$$$$/| $$ \/  | $$| $$      |  $$$$$$/| $$ \  $$| $$$$$$$$| $$ \  $$   | $$  |  $$$$$$/
   \______/  \______/ |__/     |__/|__/       \______/ |__/  \__/|________/|__/  \__/   |__/   \______/
 */
-    elbow_lg_right = {
+    
+	elbow_lg_right = {
         h: 250,
         r: [120,0,-40,0],
         c: this.yellow,
@@ -1745,7 +1750,7 @@ class LCARS {
                     header: new LCARS__Header().C(this.gold).H(200).T('ro esc').R([0,0,0,0]).M([0,30,100,0]),
                     body:[
                         new LCARS__Subheader().C(this.white),
-                        new LCARS__ReadoutDisplay().Y(35).R(5).C([6,6,2]).H('status 2')
+                        new LCARS__ReadoutDisplay().Y(35).setRows(5).setCols([6,6,2]).setHeader('status 2')
                     ]
                 },
                 {
@@ -1766,7 +1771,7 @@ class LCARS {
                         this.joystick(0,0,[this.red,this.red,this.red,this.red]),
                         new LCARS__Scanner().X(200).C([this.white,this.yellow,this.red,this.red,this.yellow]).R([100,80]),
                         new LCARS__Subheader().C(this.white).Y(300).W(510),
-                        new LCARS__ReadoutDisplay().Y(335).R(5).C([6,2,6,6,2]).H('tactical analysis'),
+                        new LCARS__ReadoutDisplay().Y(335).setRows(5).setCols([6,2,6,6,2]).setHeader('tactical analysis'),
                         new LCARS__Header().X(340).Y(350).W(280).C(this.tan).H(200).R([0,0,30,0]),
                         new LCARS__Header().X(335).Y(350).W(200).C(this.black).H(180).R([0,0,0,0]),
                         new LCARS__ButtonGroups().X(200).Y(350).Q(4).T(['pill','titled-pill-left']) 
@@ -1803,7 +1808,7 @@ class LCARS {
                         new LCARS__Subheader().C(this.yellow).W(500),
                         new LCARS__Header().C(this.tan).X(300).Y(50).W(200).R([0,0,40,0]),
                         new LCARS__Header().C(this.black).X(300).Y(50).W(120).H(190).R([0,0,20,0]),
-                        new LCARS__ReadoutDisplay().Y(35).R(5).C([6,6,4,3,2,5,3,6]).H('shield harmonics'),
+                        new LCARS__ReadoutDisplay().Y(35).setRows(5).setCols([6,6,4,3,2,5,3,6]).setHeader('shield harmonics'),
                         new LCARS__ButtonGroups().X(300).Y(50).Q(4).T(['rect-cap-left'])
                     ]
                 },
@@ -2276,12 +2281,12 @@ function LCARS__Section(){
     this.y=0;
     this.w=100;
     //this.h=768;
-    this.m=[0,0,100,0];
-	this.header={};
-	this.leftSidebar={};
+    this.m=[0,0,0,20];
+	this.header;
+	this.leftSidebar;
 	this.body=[];
-	this.rightSidebar={};
-	this.footer={};
+	this.rightSidebar;
+	this.footer;
     
     this.Y=function(y){
         this.y=y;
@@ -2585,15 +2590,15 @@ function LCARS__ReadoutDisplay(){
         this.y=y;
         return this;
     }
-    this.R=function(r){
+    this.setRows=function(r){
         this.rows=r;
         return this;
     }
-    this.C=function(c){
+    this.setCols=function(c){
         this.cols=c;
         return this;
     }
-    this.H=function(h){
+    this.setHeader=function(h){
         this.header=h;
         return this;
     }

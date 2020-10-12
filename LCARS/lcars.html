@@ -17,37 +17,19 @@
     <script>        
         //const tac = new LCARS('tac');
         //const con = new LCARS('con');
-        //const ops = new LCARS('ops');
+        const ops = new LCARS('ops');
         const exp = new LCARS('exp');
         
         //tac.debug=true; // debug renders bounding boxes around the borders of elements
         //con.debug=true;
-        //ops.debug=true;
+        ops.debug=true;
         exp.debug=true;
 
         // experimental stuff:
         exp.height = 700;
         exp.width = 2500;
         exp.gutters = 20;
-        const sec1a = {
-            y: 0,
-            w: 200, 
-            header: new LCARS__Header()
-                .H(200)
-                .R([20,0,0,20])
-                .C(this.yellow)
-                .M([0,20,100,0])
-                .T('emergency override'),
-            body: [               
-                new LCARS__Subheader().W(200).C(this.gold).R([15,0,0,15]).T('engineering systems'),
-                new LCARS__ButtonGroups().X(10).Y(40).Q(3).T(['titled-pill-left']),
-                new LCARS__ButtonGroups().X(10).Y(180).Q(3).T(['titled-pill-right'])
-            ],
-            footer: new LCARS__Header()
-                .H('xs')
-                .C(this.tan)
-        };
-        const sec1b = new LCARS__Section()
+        const sec1 = new LCARS__Section()
                 .Y(0)
                 .W(200)
 				.setHeader(
@@ -59,7 +41,7 @@
                         .T('emergency override')
                 )
                 .setBody([
-                        new LCARS__Subheader().Y(300).W(200).C(this.gold).R([15,0,0,15]).T('engineering systems'),
+                        new LCARS__Subheader().W(200).C(this.gold).R([15,0,0,15]).T('engineering systems'),
                         new LCARS__ButtonGroups().X(10).Y(40).Q(3).T(['titled-pill-left']),
                         new LCARS__ButtonGroups().X(10).Y(180).Q(3).T(['titled-pill-right'])
                     ]
@@ -69,11 +51,38 @@
                     .H('xs')
                     .C(this.tan)
                 );
-        console.log(sec1a);
-        console.log(sec1b);
+		const sec2 = new LCARS__Section();
+		sec2.W(400)
+		.setHeader(
+			new LCARS__Header()
+	            .H(200)
+	            .R([0,0,0,0])
+	            .C(this.yellow)
+	            .M([0,40,100,0])
+	            .T('warp drive systems')
+		)
+		// type:'textblock',
+        //                     header:'atmospheric process',
+        //                     rows:8,
+        //                     cols:[6,2,6,6,2,6],
+        //                     x:0,
+        //                     y:40
+		.setBody(
+			[
+				new LCARS__Subheader().W(400).C(this.yellow).T('power consumption'),
+				new LCARS__ReadoutDisplay().setHeader('Atmospheric Process').setRows(8).setCols([6,2,6,6,2,6]).Y(40),
+				new LCARS__ReadoutDisplay().setRows(8).setCols([2,8,4]).Y(40).X(210),
+				new LCARS__ReadoutDisplay().setRows(8).setCols([3,2,4]).Y(40).X(320)
+			]
+		)
+		.setFooter(
+			new LCARS__Header()
+                .H('xs')
+                .C(this.tan)
+		)
         exp.elements.push(
-                sec1a,
-                sec1b
+                sec1,
+				sec2
 			);
 
         exp.build();
@@ -103,7 +112,7 @@
             ]
         };
         con.build(conLayout);
-
+*/
         // passing in JSON to build layout from scratch
         const opsJSON = {
             "name": "ops",
@@ -1002,6 +1011,6 @@
                 }
             ]
         }
-        ops.build(opsJSON);*/
+        ops.build(opsJSON);
     </script>
 </html>
