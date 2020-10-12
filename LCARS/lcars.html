@@ -15,34 +15,69 @@
     </body>
     <script type="text/javascript" src="src/lcars.js"></script>
     <script>        
-        const tac = new LCARS('tac');
-        const con = new LCARS('con');
-        const ops = new LCARS('ops');
+        //const tac = new LCARS('tac');
+        //const con = new LCARS('con');
+        //const ops = new LCARS('ops');
         const exp = new LCARS('exp');
         
-        tac.debug=true; // debug renders bounding boxes around the borders of elements
-        con.debug=true;
-        ops.debug=true;
+        //tac.debug=true; // debug renders bounding boxes around the borders of elements
+        //con.debug=true;
+        //ops.debug=true;
         exp.debug=true;
 
         // experimental stuff:
         exp.height = 700;
         exp.width = 2500;
         exp.gutters = 20;
-        exp.elements.push(
-			new LCARS__Section()
-				.addHeader(
+        const sec1a = {
+            y: 0,
+            w: 200, 
+            header: new LCARS__Header()
+                .H(200)
+                .R([20,0,0,20])
+                .C(this.yellow)
+                .M([0,20,100,0])
+                .T('emergency override'),
+            body: [               
+                new LCARS__Subheader().W(200).C(this.gold).R([15,0,0,15]).T('engineering systems'),
+                new LCARS__ButtonGroups().X(10).Y(40).Q(3).T(['titled-pill-left']),
+                new LCARS__ButtonGroups().X(10).Y(180).Q(3).T(['titled-pill-right'])
+            ],
+            footer: new LCARS__Header()
+                .H('xs')
+                .C(this.tan)
+        };
+        const sec1b = new LCARS__Section()
+                .Y(0)
+                .W(200)
+				.setHeader(
 					new LCARS__Header()
-						.H(200)
-                        .R([0,0,0,0])
+                        .H(200)
+                        .R([20,0,0,20])
                         .C(this.yellow)
-                        .M([0,40,100,0])
-                        .T('warp drive systems')
-				)
+                        .M([0,20,100,0])
+                        .T('emergency override')
+                )
+                .setBody([
+                        new LCARS__Subheader().Y(300).W(200).C(this.gold).R([15,0,0,15]).T('engineering systems'),
+                        new LCARS__ButtonGroups().X(10).Y(40).Q(3).T(['titled-pill-left']),
+                        new LCARS__ButtonGroups().X(10).Y(180).Q(3).T(['titled-pill-right'])
+                    ]
+                )
+                .setFooter(
+                    new LCARS__Header()
+                    .H('xs')
+                    .C(this.tan)
+                );
+        console.log(sec1a);
+        console.log(sec1b);
+        exp.elements.push(
+                sec1a,
+                sec1b
 			);
 
         exp.build();
-
+/*
         // loading existing layouts:
         tac.build(tac.tactical);
         function doOncePerSecond(){
@@ -967,6 +1002,6 @@
                 }
             ]
         }
-        ops.build(opsJSON);
+        ops.build(opsJSON);*/
     </script>
 </html>

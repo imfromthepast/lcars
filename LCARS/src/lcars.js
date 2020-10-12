@@ -293,6 +293,7 @@ class LCARS {
         body.name='body';
         for (var i = 0; i < o.body.length; i++) {
             var el = o.body[i];
+            //console.log('el',el)
             if(el.type=='joystick') body.addChild(this.buildJoystick(el));
             if(el.type=='header'){
                 var w = el.w==null?o.w:el.w;
@@ -364,6 +365,7 @@ class LCARS {
         if(is.not.undefined(o.rightSidebar)) rightSidebar.addChild(this.buildHeader(0,0,o.rightSidebar.w,bodyHeight,o.rightSidebar.c,o.rightSidebar.r))
         if(is.not.undefined(o.footer)) footer.addChild(this.buildHeader(0,0,o.w,o.footer.h,o.footer.c,o.footer.r))
         //body.addChild(s);
+        console.log('body y',body.y);
         cont.addChild(header,leftSidebar,body,rightSidebar,footer);
         if(this.debug) cont.addChild(boundingBox);
         return cont;
@@ -465,6 +467,7 @@ class LCARS {
         return js;
     }
     buildHeader(x,y,w,h,c,r,t){
+        console.log('header y',y);
         var hdrCont = new Container();
         hdrCont.x=x;
         hdrCont.y=y;
@@ -1046,6 +1049,17 @@ class LCARS {
     // changeColor(el){
     //     $j(el).removeClass('orange gray salmon tan blue peach purple pink white red yellow pale-yellow gold').addClass(this.randomColor());
     // }
+
+/*
+   /$$$$$$   /$$$$$$  /$$      /$$ /$$$$$$$   /$$$$$$  /$$   /$$ /$$$$$$$$ /$$   /$$ /$$$$$$$$ /$$$$$$ 
+  /$$__  $$ /$$__  $$| $$$    /$$$| $$__  $$ /$$__  $$| $$$ | $$| $$_____/| $$$ | $$|__  $$__//$$__  $$
+ | $$  \__/| $$  \ $$| $$$$  /$$$$| $$  \ $$| $$  \ $$| $$$$| $$| $$      | $$$$| $$   | $$  | $$  \__/
+ | $$      | $$  | $$| $$ $$/$$ $$| $$$$$$$/| $$  | $$| $$ $$ $$| $$$$$   | $$ $$ $$   | $$  |  $$$$$$ 
+ | $$      | $$  | $$| $$  $$$| $$| $$____/ | $$  | $$| $$  $$$$| $$__/   | $$  $$$$   | $$   \____  $$
+ | $$    $$| $$  | $$| $$\  $ | $$| $$      | $$  | $$| $$\  $$$| $$      | $$\  $$$   | $$   /$$  \ $$
+ |  $$$$$$/|  $$$$$$/| $$ \/  | $$| $$      |  $$$$$$/| $$ \  $$| $$$$$$$$| $$ \  $$   | $$  |  $$$$$$/
+  \______/  \______/ |__/     |__/|__/       \______/ |__/  \__/|________/|__/  \__/   |__/   \______/
+*/
     elbow_lg_right = {
         h: 250,
         r: [120,0,-40,0],
@@ -1668,6 +1682,16 @@ class LCARS {
         //     w:[lcars__sec_w_md,lcars__sec_w_lg,lcars__sec_w_md,lcars__sec_w_lg,lcars__sec_w_sm,lcars__sec_w_lg,lcars__sec_w_sm,lcars__sec_w_lg]
         
         // }
+/*
+   /$$$$$$   /$$$$$$  /$$   /$$ /$$   /$$
+  /$$__  $$ /$$__  $$| $$$ | $$| $$$ | $$
+ | $$  \__/| $$  \ $$| $$$$| $$| $$$$| $$
+ | $$      | $$  | $$| $$ $$ $$| $$ $$ $$
+ | $$      | $$  | $$| $$  $$$$| $$  $$$$
+ | $$    $$| $$  | $$| $$\  $$$| $$\  $$$
+ |  $$$$$$/|  $$$$$$/| $$ \  $$| $$ \  $$
+  \______/  \______/ |__/  \__/|__/  \__/
+*/
         con = {
             name:'con',
             dim:{
@@ -1686,6 +1710,16 @@ class LCARS {
                 this.overrideSection
             ]
         } 
+/*
+  /$$$$$$$$ /$$$$$$   /$$$$$$  /$$$$$$$$ /$$$$$$  /$$$$$$   /$$$$$$  /$$      
+ |__  $$__//$$__  $$ /$$__  $$|__  $$__/|_  $$_/ /$$__  $$ /$$__  $$| $$      
+    | $$  | $$  \ $$| $$  \__/   | $$     | $$  | $$  \__/| $$  \ $$| $$      
+    | $$  | $$$$$$$$| $$         | $$     | $$  | $$      | $$$$$$$$| $$      
+    | $$  | $$__  $$| $$         | $$     | $$  | $$      | $$__  $$| $$      
+    | $$  | $$  | $$| $$    $$   | $$     | $$  | $$    $$| $$  | $$| $$      
+    | $$  | $$  | $$|  $$$$$$/   | $$    /$$$$$$|  $$$$$$/| $$  | $$| $$$$$$$$
+    |__/  |__/  |__/ \______/    |__/   |______/ \______/ |__/  |__/|________/
+*/
         tactical = {
             name:'tactical',
             dim:{
@@ -1798,6 +1832,16 @@ class LCARS {
                 }
             ]
         }
+/*
+   /$$$$$$  /$$$$$$$   /$$$$$$ 
+  /$$__  $$| $$__  $$ /$$__  $$
+ | $$  \ $$| $$  \ $$| $$  \__/
+ | $$  | $$| $$$$$$$/|  $$$$$$ 
+ | $$  | $$| $$____/  \____  $$
+ | $$  | $$| $$       /$$  \ $$
+ |  $$$$$$/| $$      |  $$$$$$/
+  \______/ |__/       \______/ 
+*/
         ops = {
             name:'ops',
             dim:{
@@ -2229,29 +2273,49 @@ class LCARS {
 }
 
 function LCARS__Section(){
+    this.y=0;
+    this.w=100;
+    //this.h=768;
+    this.m=[0,0,100,0];
 	this.header={};
 	this.leftSidebar={};
-	this.body={};
+	this.body=[];
 	this.rightSidebar={};
 	this.footer={};
-	
-	this.addHeader=function(header){
+    
+    this.Y=function(y){
+        this.y=y;
+        return this;
+    }
+    // this.H=function(h){
+    //     this.h=h;
+    //     return this;
+    // }
+    this.W=function(w){
+        this.w=w;
+        return this;
+    }
+    this.M=function(m){
+        this.m=m;
+        return this;
+    }
+	this.setHeader=function(header){
 		this.header=header;
 		return this;
 	}
-	this.addLeftSidebar=function(leftSidebar){
+	this.setLeftSidebar=function(leftSidebar){
 		this.leftSidebar=leftSidebar;
 		return this;
 	}
-	this.addBody=function(body){
+	this.setBody=function(body){
 		this.body=body;
 		return this;
 	}
-	this.addRightSidebar=function(rightSidebar){
+	this.setRightSidebar=function(rightSidebar){
 		this.rightSidebar=rightSidebar;
 		return this;
 	}
-	this.footer=function(footer){
+	this.setFooter=function(footer){
 		this.footer=footer;
 		return this;
 	}
