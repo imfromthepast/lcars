@@ -2,7 +2,7 @@
     <head>            
         <script type="text/javascript" src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
         <script type="text/javascript" src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script>
-        <script type="text/javascript" src="src/isjs.js"></script>
+        <script type="text/javascript" src="src/js/isjs.js"></script>
         <!-- <script type="text/javascript" src="https://code.createjs.com/soundjs-0.6.2.min.js"></script> -->
         <!-- <script type="text/javascript" src="src/soundjs.min.js"></script> -->
         <link rel="stylesheet" href="src/lcars.css"></link>
@@ -13,14 +13,18 @@
         <canvas id="ops"></canvas>
         <canvas id="exp"></canvas>
     </body>
-    <script type="text/javascript" src="src/lcars.js"></script>
+    <script type="text/javascript" src="src/js/lcars.js"></script>
+    <script type="text/javascript" src="src/configs/tactical.js"></script>
+    <script type="text/javascript" src="src/configs/conn.js"></script>
+    <script type="text/javascript" src="src/configs/ops.js"></script>
+    <script type="text/javascript" src="src/configs/mobile.js"></script>
     <script>        
-        //const tac = new LCARS('tac');
-        //const con = new LCARS('con');
+        const tac = new LCARS();
+        const con = new LCARS('con',true);
         const ops = new LCARS('ops');
         const exp = new LCARS('exp');
-        
-        //tac.debug=true; // debug renders bounding boxes around the borders of elements
+        tac.bind('tac');
+        tac.debug=true; // debug renders bounding boxes around the borders of elements
         //con.debug=true;
         ops.debug=true;
         exp.debug=true;
@@ -82,13 +86,38 @@
 		)
         exp.elements.push(
                 sec1,
-				sec2
+                sec2,
+                new LCARS__Section().W(300).N('elbows')
+                .setHeader(
+                    new LCARS__Elbow().H(250).setType('lg-right')
+                ),
+                new LCARS__Section().W(300).N('elbows')
+                .setHeader(
+                    new LCARS__Elbow().H(250).setType('lg-left').M([0,20,0,0])
+                ),
+                new LCARS__Section().W(200).N('elbows')
+                .setHeader(
+                    new LCARS__Elbow().H(100).setType('md-right')
+                ),
+                new LCARS__Section().W(200).N('elbows')
+                .setHeader(
+                    new LCARS__Elbow().H(100).setType('md-left').M([0,20,0,0])
+                ),
+                new LCARS__Section().W(100).N('elbows')
+                .setHeader(
+                    new LCARS__Elbow().H(50).setType('sm-right')
+                ),
+                new LCARS__Section().W(100).N('elbows')
+                .setHeader(
+                    new LCARS__Elbow().H(50).setType('sm-left').M([0,20,0,0])
+                )
 			);
 
         exp.build();
-/*
+        console.log(JSON.stringify(exp.output()));
+/**/
         // loading existing layouts:
-        tac.build(tac.tactical);
+        tac.build(tactical);
         function doOncePerSecond(){
             console.log('test');
         }
@@ -101,18 +130,18 @@
                 g:20
             },
             elements: [
-                con.scannerSection,
-                con.navRefSection,
-                con.flightSection,
-                con.joystickSection,
-                con.warpDriveSection,
-                con.impulseSection,
-                con.spacerSection,
-                con.overrideSection
+                scannerSection,
+                navRefSection,
+                flightSection,
+                joystickSection,
+                warpDriveSection,
+                impulseSection,
+                spacerSection,
+                overrideSection
             ]
         };
         con.build(conLayout);
-*/
+/**/
         // passing in JSON to build layout from scratch
         const opsJSON = {
             "name": "ops",
