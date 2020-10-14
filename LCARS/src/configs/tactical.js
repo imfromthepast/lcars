@@ -8,7 +8,7 @@
     | $$  | $$  | $$|  $$$$$$/   | $$    /$$$$$$|  $$$$$$/| $$  | $$| $$$$$$$$
     |__/  |__/  |__/ \______/    |__/   |______/ \______/ |__/  |__/|________/
 */
-const tactical = {
+let tacLayout = {
     name:'tactical',
     dim:{
         w:3100,
@@ -16,7 +16,7 @@ const tactical = {
         g:20
     },
     elements: [
-        new LCARS__Section().N('Phaser Power').W(300)
+        new LCARS__Section('lg').N('Phaser Power')
         .setHeader(new LCARS__Header().H(200).T('phaser power status').C(tan).R([20,0,0,20]).M([0,20,100,0]))
         .setBody([
             new LCARS__Subheader().R([15,0,0,15]),
@@ -26,7 +26,7 @@ const tactical = {
                 .addTab('ma kal',gold)
                 .addTab('we kep',yellow) 
         ]),
-        new LCARS__Section().N('Status').W(100)
+        new LCARS__Section().N('Status')
         .setHeader(new LCARS__Header().C(gold).H(200).T('ro esc').R([0,0,0,0]).M([0,30,100,0]))
         .setBody([
             new LCARS__Subheader().C(white),

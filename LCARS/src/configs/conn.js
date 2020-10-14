@@ -1,8 +1,15 @@
 
+/*
+/$$$$$$   /$$$$$$  /$$   /$$ /$$   /$$
+/$$__  $$ /$$__  $$| $$$ | $$| $$$ | $$
+| $$  \__/| $$  \ $$| $$$$| $$| $$$$| $$
+| $$      | $$  | $$| $$ $$ $$| $$ $$ $$
+| $$      | $$  | $$| $$  $$$$| $$  $$$$
+| $$    $$| $$  | $$| $$\  $$$| $$\  $$$
+|  $$$$$$/|  $$$$$$/| $$ \  $$| $$ \  $$
+\______/  \______/ |__/  \__/|__/  \__/
+*/
 const scannerSection = new LCARS__Section().N('scanners').W(535)
-    .setHeader(
-        //new LCARS__Header().C(yellow)
-    )
     .setBody([
         new LCARS__Joystick().X(95).Y(0).C(gold),
         new LCARS__Header().X(298).Y(310).W(237).H(30).C(gold),
@@ -13,476 +20,60 @@ const scannerSection = new LCARS__Section().N('scanners').W(535)
     ])
 
 const navRefSection = new LCARS__Section().N('nav ref').W(335)
-    .setHeader(
-        new LCARS__Elbow()
-    )
+    .setHeader(new LCARS__Elbow('lg-right'))
     .setBody([
-        new LCARS__Header().W(295).H(40).T('navigation reference'),
-        new LCARS__Header().Y(60).W(295).H(30).T('cache select').C(gold),
-        new LCARS__Header().Y(140).W(295).H(270).T('lcars mode select').R([0,0,20,0]),
+        new LCARS__Header('navigation reference').W(295).H(40),
+        new LCARS__Header('cache select').Y(60).W(295).H(30).C(gold),
+        new LCARS__Header('lcars mode select').Y(140).W(295).H(270).R([0,0,20,0]),
         new LCARS__ButtonGroups().X(-33).Y(140).Q(5).T(['titled-pill-left'])
     ])
 
-// {
-//     y: 0,
-//     w: 335,
-//     h: 660,
-//     header: elbow_lg_right,
-//     leftSidebar: {
-//         w: 0,
-//         r: [0,0,0,0],
-//         c: gold
-//     },
-//     body: [
-//         {
-//             type:'header',
-//             x:0,
-//             y:0,
-//             w:295,
-//             h:40,
-//             c:yellow,
-//             r:[0,0,0,0],
-//             t:{
-//                 x:290,
-//                 y:5,
-//                 t:'navigation reference',
-//                 a:null,
-//                 s:'30px',
-//                 c:null
-//             }
-//         },
-//         {
-//             type:'header',
-//             x:0,
-//             y:60,
-//             w:295,
-//             h:30,
-//             c:gold,
-//             r:[0,0,0,0],
-//             t:{
-//                 x:290,
-//                 y:5,
-//                 t:'cache select',
-//                 a:null,
-//                 s:'22px',
-//                 c:null
-//             }
-//         },
-//         {
-//             type:'header',
-//             x:0,
-//             y:140,
-//             w:295,
-//             h:260,
-//             c:yellow,
-//             r:[0,0,20,0],
-//             t:{
-//                 x:290,
-//                 y:10,
-//                 t:'lcars mode select',
-//                 a:null,
-//                 s:'22px',
-//                 c:null
-//             }
-//         },
-//         {
-//             type:'buttons',
-//             x:-33,
-//             y:140,
-//             q:5,
-//             t:'titled-pill-left',
-//             c:null
-//         }
-    
-//     ],
-//     rightSidebar: {
-//         w: 0,
-//         r: [0,0,0,0],
-//         c: gold
-//     },
-//     footer: {
-//         h: 0,
-//         r: [0,0,0,0],
-//         c: tan,
-//         m: [0,0,0,0]
-//     }
-// }
-const flightSection = {
-    y: 0,
-    w: 420,
-    h: 660,
-    header: {
-        h: 210,
-        r: [0,0,0,0],
-        c: yellow,
-        m: [0,40,100,0],
-        t: {
-            x: -10,
-            y: 5,
-            t: "FLIGHT CONTROL",
-            a: "end",
-            s: "22px",
-            c: null
-        }
-    },
-    leftSidebar: {
-        w: 0,
-        r: [0,0,0,0],
-        c: gold
-    },
-    body: [
-        {
-            type:'header',
-            x:0,
-            y:0,
-            w:420,
-            h:340,
-            c:yellow,
-            r:[50,0,0,50],
-            t:{
-                x:410,
-                y:5,
-                t:'navigation to cache',
-                a:null,
-                s:'20px',
-                c:null
-            }
-        },
-        {
-            type:'header',
-            x:85,
-            y:30,
-            w:445,
-            h:295,
-            c:'#000',
-            r:[50,0,0,10],
-            t:null
-        },
-        {
-            type:'buttons',
-            x:110,
-            y:80,
-            q:5,
-            t:'rect-pill-right',
-            c:[white,gold,yellow,yellow,gold]
-        },
-        {
-            type:'buttons',
-            x:235,
-            y:80,
-            q:5,
-            t:'pill',
-            c:[blue,none,white,none,none]
-        },
-        {
-            type:'buttons',
-            x:335,
-            y:80,
-            q:5,
-            t:'pill',
-            c:[white,none,blue,none,gold]
-        }
-    ],
-    rightSidebar: {
-        w: 0,
-        r: [0,0,0,0],
-        c: gold
-    },
-    footer: {
-        h: 0,
-        r: [0,0,0,0],
-        c: tan,
-        m: [0,0,0,0]
-    }
-}
-const joystickSection = {
-    y: 0,
-    w: 200,
-    h: 660,
-    header: {
-        h: 210,
-        r: [0,0,0,0],
-        c: blue,
-        m: [0,25,100,0],
-        t: null
-    },
-    leftSidebar: {
-        w: 0,
-        r: [0,0,0,0],
-        c: gold
-    },
-    body: [
-        {
-            type:'header',
-            x:0,
-            y:0,
-            w:200,
-            h:30,
-            c:blue,
-            r:[0,0,0,0],
-            t:null
-        },
+const flightSection = new LCARS__Section().N('flight').W(420)
+    .setHeader(new LCARS__Header().H(210).M([0,40,100,0]).T('flight control'))
+    .setBody([
+        new LCARS__Header('navigation to cache').H(350).R([50,0,0,50]),
+        new LCARS__Header().H(295).W(445).X(75).Y(30).C(black).R([50,0,0,10]),
+        new LCARS__ButtonGroups().X(90).Y(80).Q(5).T(['rect-pill-right','pill','pill'])
+    ])
+
+const joystickSection = new LCARS__Section().N('joystick').W(200)
+    .setHeader( new LCARS__Header().H(210).C(blue).M([0,25,100,0]))
+    .setBody([
+        new LCARS__Header().H(30).C(blue),
         new LCARS__Joystick().Y(75).C([red,gold,gold,gold])
-    ],
-    rightSidebar: {
-        w: 0,
-        r: [0,0,0,0],
-        c: gold
-    },
-    footer: {
-        h: 15,
-        r: [0,0,0,0],
-        c: tan,
-        m: [0,0,0,0]
-    }
-}
-//function btnClickFunc(){alert('func')}
-const warpDriveSection = {
-    y: 0,
-    w: 410,
-    h: 660,
-    header: {
-        h: 210,
-        r: [0,0,0,0],
-        c: yellow,
-        m: [0,20,100,0],
-        t: {
-            "x": -10,
-            "y": 5,
-            "t": "warp drive systems",
-            "a": "end",
-            "s": "22px",
-            "c": null
-        }
-    },
-    leftSidebar: {
-        w: 0,
-        r: [0,0,0,0],
-        c: gold
-    },
-    body: [                
-        {
-            type:'header',
-            x:0,
-            y:0,
-            w:410,
-            h:30,
-            c:yellow,
-            r:[0,0,0,0],
-            t:{
-                x:400,
-                y:5,
-                t:'option select',
-                a:null,
-                s:'22px',
-                c:null
-            }
-        },
-        {
-            type:'buttons',
-            x:15,
-            y:80,
-            q:5,
-            t:'pill',
-            c:[yellow,gold,white,blue,white]
-        },
-        {
-            type:'buttons',
-            x:120,
-            y:80,
-            q:5,
-            t:'titled-pill-left',
-            c:[gold,yellow,gold,gold,blue]
-        },
-        {
-            type:'buttons',
-            x:360,
-            y:80,
-            q:5,
-            t:'tiny-rect-cap-left',
-            c:[yellow,none,yellow,blue,tan]
-        }
-    ],
-    rightSidebar: {
-        w: 0,
-        r: [0,0,0,0],
-        c: gold
-    },
-    footer: {
-        h: 15,
-        r: [0,0,0,0],
-        c: tan,
-        m: [0,0,0,0]
-    }
-}
-const impulseSection = {
-    y: 0,
-    w: 177,
-    h: 660,
-    header: {
-        h: 210,
-        r: [0,0,0,0],
-        c: yellow,
-        m: [0,12,100,0],
-        t: {
-            "x": -10,
-            "y": 5,
-            "t": "impulse systems",
-            "a": "end",
-            "s": "22px",
-            "c": null
-        }
-    },
-    leftSidebar: {
-        w: 0,
-        r: [0,0,0,0],
-        c: gold
-    },
-    body: [                
-        {
-            type:'header',
-            x:0,
-            y:0,
-            w:177,
-            h:30,
-            c:gold,
-            r:[0,0,0,0],
-            t:{
-                x:167,
-                y:5,
-                t:'mode select',
-                a:null,
-                s:'22px',
-                c:null
-            }
-        },               
-        {
-            type:'header',
-            x:0,
-            y:80,
-            w:50,
-            h:220,
-            c:tan,
-            r:[0,20,20,0],
-            t:null
-        },              
-        {
-            type:'header',
-            x:0,
-            y:110,
-            w:30,
-            h:160,
-            c:black,
-            r:[0,10,10,0],
-            t:null
-        }
-    ],
-    rightSidebar: {
-        w: 0,
-        r: [0,0,0,0],
-        c: gold
-    },
-    footer: {
-        h: 15,
-        r: [0,0,0,0],
-        c: tan,
-        m: [0,0,0,0]
-    }
-}
-const spacerSection = {
-    y: 0,
-    w: 45,
-    h: 660,
-    header: {
-        h: 210,
-        r: [0,0,0,0],
-        c: blue,
-        m: [0,15,100,0],
-        t: null
-    },
-    leftSidebar: {
-        w: 0,
-        r: [0,0,0,0],
-        c: gold
-    },
-    body: [
-        {
-            type:'header',
-            x:0,
-            y:0,
-            w:45,
-            h:30,
-            c:tan,
-            r:[0,0,0,0],
-            t:null
-        }
-    ],
-    rightSidebar: {
-        w: 0,
-        r: [0,0,0,0],
-        c: gold
-    },
-    footer: {
-        h: 0,
-        r: [0,0,0,0],
-        c: tan,
-        m: [0,0,0,0]
-    }
-}
-const overrideSection = {
-    y: 0,
-    w: 200,
-    h: 660,
-    header: {
-        h: 210,
-        r: [0,20,20,0],
-        c: yellow,
-        m: [0,0,100,0],
-        t: {
-            "x": -10,
-            "y": 5,
-            "t": "emergency override",
-            "a": "end",
-            "s": "22px",
-            "c": null
-        }
-    },
-    leftSidebar: {
-        w: 0,
-        r: [0,0,0,0],
-        c: gold
-    },
-    body: [               
-        {
-            type:'header',
-            x:0,
-            y:0,
-            w:200,
-            h:30,
-            c:gold,
-            r:[0,0,0,0],
-            t:{
-                x:190,
-                y:5,
-                t:'helm / navigation',
-                a:null,
-                s:'22px',
-                c:null
-            }
-        }
-    ],
-    rightSidebar: {
-        w: 0,
-        r: [0,0,0,0],
-        c: gold
-    },
-    footer: {
-        h: 15,
-        r: [0,0,0,0],
-        c: tan,
-        m: [0,0,0,0]
-    }
-}
+    ])
+    .setFooter(new LCARS__Header().H('xs').C(tan))
+
+const warpDriveSection = new LCARS__Section().N('warp drive systems').W(410)
+    .setHeader(new LCARS__Header('warp drive systems').H(210).M([0,20,100,0]))
+    .setBody([
+        new LCARS__Header('option select').H(30),
+        new LCARS__ButtonGroups().X(15).Y(80).Q(5).T(['pill','titled-pill-left','tiny-rect-cap-left'])
+    ])
+    .setFooter(new LCARS__Header().H('xs').C(tan))
+
+const impulseSection = new LCARS__Section().N('impulse').W(177)
+    .setHeader(new LCARS__Header('impulse systems').H(210).M([0,12,100,0]))
+    .setBody([
+        new LCARS__Header('mode select').H(30).C(gold),
+        new LCARS__ButtonGroups().X(0).Y(50).Q(6).T(['titled-pill-right'])
+    ])
+    .setFooter(new LCARS__Header().H('xs').C(tan))
+
+const spacerSection = new LCARS__Section().W(45)
+    .setHeader(new LCARS__Header().H(210).M([0,15,100,0]).C(blue))
+    .setBody([
+        new LCARS__Header().H('sm').C(tan)
+    ])
+
+const overrideSection = new LCARS__Section().W(200)
+    .setHeader(new LCARS__Header('emergency override').H(210).M([0,0,100,0]).R([0,20,20,0]))
+    .setBody([
+        new LCARS__Header('helm / navigation').C(gold).H(30),
+        new LCARS__ButtonGroups().X(0).Y(50).Q(6).T(['pill','pill'])
+    ])
+    .setFooter(new LCARS__Header().H('xs').C(tan))
+
 
 // lcars__sec_h_xl = 200;
 // lcars__sec_h_lg = 100;
@@ -495,38 +86,3 @@ const overrideSection = {
 // lcars__sec_w_md = 200;
 // lcars__sec_w_sm = 110;
 // lcars__sec_w_xs = 50;
-
-// lcars__sec_gutter = 20;
-
-    // opsDims = {
-    //     w:[lcars__sec_w_md,lcars__sec_w_lg,lcars__sec_w_md,lcars__sec_w_lg,lcars__sec_w_sm,lcars__sec_w_lg,lcars__sec_w_sm,lcars__sec_w_lg]
-    
-    // }
-/*
-/$$$$$$   /$$$$$$  /$$   /$$ /$$   /$$
-/$$__  $$ /$$__  $$| $$$ | $$| $$$ | $$
-| $$  \__/| $$  \ $$| $$$$| $$| $$$$| $$
-| $$      | $$  | $$| $$ $$ $$| $$ $$ $$
-| $$      | $$  | $$| $$  $$$$| $$  $$$$
-| $$    $$| $$  | $$| $$\  $$$| $$\  $$$
-|  $$$$$$/|  $$$$$$/| $$ \  $$| $$ \  $$
-\______/  \______/ |__/  \__/|__/  \__/
-*/
-con = {
-    name:'con',
-    dim:{
-        w:2500,
-        h:700,
-        g:20
-    },
-    elements: [
-        scannerSection,
-        navRefSection,
-        flightSection,
-        joystickSection,
-        warpDriveSection,
-        impulseSection,
-        spacerSection,
-        overrideSection
-    ]
-} 

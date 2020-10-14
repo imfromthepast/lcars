@@ -66,13 +66,21 @@ none = 'none';
  |________/ \______/ |__/  |__/|__/  |__/ \______/ 
 */
 class LCARS {
-    constructor(canvasId,debug){
-        this.debug = false;
-        if(canvasId){
-            this.bind(canvasId);
+    constructor(a,b){
+        if(typeof(a)==='string'){
+            // is canvasId
+            this.bind(a);
         }
-        if(debug){
-            this.debug = debug;
+        if(typeof(a)==='object'){
+            if(a.n) this.name=a.n;
+            if(a.h) this.height=a.h;
+            if(a.w) this.width=a.w;
+            if(a.g) this.gutters=a.g;
+            if(a.id) this.bind(a.id);
+        }
+        this.debug = false;
+        if(typeof(b)==='boolean'){
+            this.debug = b;
         }
     }
     bind(canvasId){
@@ -83,9 +91,9 @@ class LCARS {
     debug = false;
     lcarsCanvas;
     name;
-    height;
-    width;
-    gutters;
+    height=700;
+    width=2500;
+    gutters=20;
     elements=[];
     innerHeight;
     innerWidth;
@@ -128,7 +136,18 @@ class LCARS {
             this.tick = this.tick<top?this.tick+1:0;
         }
     }
-
+    setHeight(h){
+        this.height=h;
+    }
+    setWidth(w){
+        this.width=w;
+    }
+    addElement(el){
+        this.elements.push(el);
+    }
+    setElements(els){
+        this.elements = els;
+    }
     build(json){
         let cnvs = document.getElementById(this.canvasId);
         if(json){                
@@ -1161,17 +1180,26 @@ function joystickButtonFunction(bid,name){}
 //     return def;
 // }
 
-function LCARS__Section(){
+function LCARS__Section(size){
     this.n='';
     this.y=0;
-    this.w=100;
+    this.w=0;
     //this.h=768;
     this.m=[0,0,0,20];
 	this.header;
 	this.leftSidebar;
 	this.body=[];
 	this.rightSidebar;
-	this.footer;
+    this.footer;
+    if(is.undefined(size)){
+        this.w=100;
+    }
+    if(size=='xs'){
+        this.w=50
+    }
+    if(size=='lg'){
+        this.w=300;
+    }
     this.N=function(n){
         this.n=n;
         return this;
@@ -1256,7 +1284,7 @@ const elbow_sm_left = {
     // m: [0,0,0,0],
     t: null
 }
-function LCARS__Elbow(){
+function LCARS__Elbow(type){
     this.h=250;
     this.rr=[30,0,-10,0];
     this.lr=[0,30,0,-10];
@@ -1264,24 +1292,19 @@ function LCARS__Elbow(){
     this.c= yellow;
     this.m= [0,0,0,0];
     this.t= null;
-    this.setType=function(type){
-        const sizes = ['sm','md','','lg'];
-        const s = sizes.indexOf(type.split('-')[0])+1;
-        const d = type.split('-')[1];
-        console.log('s',s);
-        console.log('d',d)
-        if(d=='left'){
-            this.lr.forEach(e=>{
-                this.r.push(e*s)
-            });
-        }
-        if(d=='right'){
-            this.rr.forEach(e=>{
-                this.r.push(e*s)
-            });
-        }
-        console.log('this.r',this.r);
-        return this;
+    type = is.undefined(type)?'sm-right':type;
+    const sizes = ['sm','md','','lg'];
+    const s = sizes.indexOf(type.split('-')[0])+1;
+    const d = type.split('-')[1];
+    if(d=='left'){
+        this.lr.forEach(e=>{
+            this.r.push(e*s)
+        });
+    }
+    if(d=='right'){
+        this.rr.forEach(e=>{
+            this.r.push(e*s)
+        });
     }
 	this.H=function(h){
 		this.h=h;
@@ -1374,7 +1397,7 @@ function LCARS__HeaderText(t){
     }
 }
 
-function LCARS__Header(){
+function LCARS__Header(t){
     this.type='header';
     this.x=0; //x==null?0:x;
     this.y=0; //y==null?0:y;
@@ -1382,7 +1405,7 @@ function LCARS__Header(){
     this.h=200; //h==null?30:h;
     this.c=yellow; //c==null?this.tan:c;
     this.r=[0,0,0,0]; //r==null?[0,0,0,0]:r;
-    this.t=new LCARS__HeaderText('');
+    this.t=new LCARS__HeaderText(t);
     this.m=[0,0,0,0];
     this.X=function(x){
         this.x = x;
