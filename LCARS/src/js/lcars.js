@@ -312,10 +312,8 @@ class LCARS {
                     body.addChild(btns[iii]);
                 }
             }    
-            if(el.type=='buttons'){
-                body.addChild(this.addButtonsTo(el.x,el.y,el.q,el.t,el.c));
-            }
-            if(el.type=='scanner')body.addChild(this.lcarsScanner(el.x,el.y,el.w,el.h,el.c,el.rx,el.ry,i));
+            if(el.type=='buttons')body.addChild(this.addButtonsTo(el.x,el.y,el.q,el.t,el.c));
+			if(el.type=='scanner')body.addChild(this.lcarsScanner(el.x,el.y,el.w,el.h,el.c,el.rx,el.ry,i));
             if(el.type=='tabs')body.addChild(this.addTabsTo(el));
             if(el.type=='text')body.addChild(this.buildText(el));
             if(el.type=='textblock')body.addChild(this.buildDynamicText(el));
