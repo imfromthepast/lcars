@@ -223,6 +223,7 @@ class LCARS {
         }
         return outputJson;
     }
+
 /*
    /$$$$$$                                  /$$                                     /$$     /$$                    
   /$$__  $$                                | $$                                    | $$    |__/                    
@@ -1147,6 +1148,346 @@ function handleJoystickClick(event){
         joystickButtonFunction(4,event.target.name);
     }
 }
+/*
+  /$$$$$$$$ /$$$$$$   /$$$$$$  /$$$$$$$$ /$$$$$$  /$$$$$$   /$$$$$$  /$$      
+ |__  $$__//$$__  $$ /$$__  $$|__  $$__/|_  $$_/ /$$__  $$ /$$__  $$| $$      
+    | $$  | $$  \ $$| $$  \__/   | $$     | $$  | $$  \__/| $$  \ $$| $$      
+    | $$  | $$$$$$$$| $$         | $$     | $$  | $$      | $$$$$$$$| $$      
+    | $$  | $$__  $$| $$         | $$     | $$  | $$      | $$__  $$| $$      
+    | $$  | $$  | $$| $$    $$   | $$     | $$  | $$    $$| $$  | $$| $$      
+    | $$  | $$  | $$|  $$$$$$/   | $$    /$$$$$$|  $$$$$$/| $$  | $$| $$$$$$$$
+    |__/  |__/  |__/ \______/    |__/   |______/ \______/ |__/  |__/|________/
+*/
+class LCARS__TACTICAL extends LCARS{
+    constructor(id,debug){
+        super({n:'tactical',w:3100,h:600,g:20,id:id},debug);
+        this.setElements([
+            new LCARS__Section('lg').N('Phaser Power')
+            .setHeader(new LCARS__Header().H(200).T('phaser power status').C(tan).R([20,0,0,20]).M([0,20,100,0]))
+            .setBody([
+                new LCARS__Subheader().R([15,0,0,15]),
+                new LCARS__Tabs().X(10).Y(50)
+                    .addTab('al hoc',blue)
+                    .addTab('rh jus',white)
+                    .addTab('ma kal',gold)
+                    .addTab('we kep',yellow) 
+            ]),
+            new LCARS__Section().N('Status')
+            .setHeader(new LCARS__Header().C(gold).H(200).T('ro esc').R([0,0,0,0]).M([0,30,100,0]))
+            .setBody([
+                new LCARS__Subheader().C(white),
+                new LCARS__ReadoutDisplay().Y(35).setRows(5).setCols([6,6,2]).setHeader('status 2')
+            ]),
+            new LCARS__Section().N('Weapons').W(420)
+            .setHeader(new LCARS__Header().H(200).C(white).T('weapons systems').R([0,0,0,0]).M([0,20,100,0]))
+            .setBody([
+                new LCARS__Readout().Y(-90).R(4).C([6,9,2]),
+                new LCARS__Subheader().C(blue),
+                new LCARS__Header().C(tan).R([0,0,0,35]).Y(50).H(200),
+                new LCARS__Header().C(black).Y(50).X(80).H(185),
+                new LCARS__ButtonGroups().X(100).Y(50).Q(4).T(['rect-cap-right','pill','pill'])
+            ]),
+            new LCARS__Section().N('Targeting').W(400).M([0,20,0,0])
+            .setBody([
+                new LCARS__Joystick().C(red),
+                new LCARS__Scanner().X(200).C([white,yellow,red,red,yellow]).R([100,80]),
+                new LCARS__Subheader().C(white).Y(300).W(510),
+                new LCARS__ReadoutDisplay().Y(335).setRows(5).setCols([6,2,6,6,2]).setHeader('tactical analysis'),
+                new LCARS__Header().X(340).Y(350).W(280).C(tan).H(200).R([0,0,30,0]),
+                new LCARS__Header().X(335).Y(350).W(200).C(black).H(180).R([0,0,0,0]),
+                new LCARS__ButtonGroups().X(200).Y(350).Q(4).T(['pill','titled-pill-left']) 
+            ]),
+            new LCARS__Section().N('Elbow').W(200)
+            .setHeader(new LCARS__Header().C(tan).H(200).R([0,90,0,0]).M([0,20,0,0]))
+            .setBody([
+                new LCARS__Header().X(30).W(170).C(tan).H(80).R([0,0,0,-80]).M([0,20,0,0]),
+                new LCARS__Header().X(110).Y(100).W(90).C(blue).H(30).R([0,0,0,0]).M([0,20,0,0])
+                //new LCARS__ButtonGroups().X(10).Y(40).Q(3).T(['titled-pill-left']) 
+            ]),
+            new LCARS__Section().N('Tabs').W(400).M([0,20,0,0])
+            .setBody([
+                new LCARS__Tabs().X(85).Titled(false)
+                    .addTab('torpedo control',white)
+                    .addTab('intruder scan',gold)
+                    .addTab('Long Range scan analysis',blue)
+                    .addTab('deflector shield',blue),
+                new LCARS__Header().Y(300).W(400).C(tan).H(250).R([50,0,0,30]),   
+                new LCARS__Header().X(80).Y(330).W(400).C(black).H(210).R([30,0,0,0]),
+                new LCARS__ButtonGroups().X(90).Y(360).Q(4).T(['medium-rect-cap-right','pill']) 
+            ]),
+            new LCARS__Section().N('Scanners').W(400)
+            .setHeader(new LCARS__Header().C(blue).H(200).M([0,20,100,0]).T('auxilliary targeting scanners','start'))
+            .setBody([
+                new LCARS__Readout().Y(-90).R(4).C([6,9,2,5,11,5,3,7,7,3]),
+                new LCARS__Subheader().C(yellow).W(500),
+                new LCARS__Header().C(tan).X(300).Y(50).W(200).R([0,0,40,0]),
+                new LCARS__Header().C(black).X(300).Y(50).W(120).H(190).R([0,0,20,0]),
+                new LCARS__ReadoutDisplay().Y(35).setRows(5).setCols([6,6,4,3,2,5,3,6]).setHeader('shield harmonics'),
+                new LCARS__ButtonGroups().X(300).Y(50).Q(4).T(['rect-cap-left'])
+            ]),
+            new LCARS__Section().W(80).setHeader(new LCARS__Header().C(tan).H(200).M([0,20,0,0]).T('ge rod','left')),
+            
+            new LCARS__Section().N('Mode').W(190)
+            .setHeader(new LCARS__Header().C(yellow).H(200).M([0,30,100,0]).T('mode select','left'))
+            .setBody([
+                new LCARS__Subheader().C(blue).T('ae bfd','start'),
+                new LCARS__ButtonGroups().Y(50).Q(4).T(['titled-left'])
+            ]),
+            new LCARS__Section().N('Tac Analyst').W(370)
+            .setHeader(new LCARS__Header().C(tan).H(200).M([0,20,100,0]).R([0,20,20,0]).T('tactical analysis','left'))
+            .setBody([
+                new LCARS__Subheader().W(370).C(tan).T('ga pdf','start').R([0,10,10,0]),
+                new LCARS__Scanner().Y(50).W(370).C([white,white,blue,tan,white]).R([200,80])
+            ])
+        ]);
+        this.build();
+    }
+}
+/*
+   /$$$$$$   /$$$$$$  /$$   /$$
+  /$$__  $$ /$$__  $$| $$$ | $$
+ | $$  \__/| $$  \ $$| $$$$| $$
+ | $$      | $$  | $$| $$ $$ $$
+ | $$      | $$  | $$| $$  $$$$
+ | $$    $$| $$  | $$| $$\  $$$
+ |  $$$$$$/|  $$$$$$/| $$ \  $$
+  \______/  \______/ |__/  \__/
+*/
+class LCARS__CON extends LCARS{
+    constructor(id,debug){
+        super({n:'con',w:2500,h:700,g:20,id:id},debug);
+        this.setElements([
+            new LCARS__Section().N('scanners').W(535)
+            .setBody([
+                new LCARS__Joystick().X(95).Y(0).C(gold),
+                new LCARS__Header().X(298).Y(310).W(237).H(30).C(gold),
+                new LCARS__Header().X(0).Y(310).W(288).H(30).C(blue),
+                new LCARS__Header().X(0).Y(645).W(288).H(14).C(tan),
+                new LCARS__ButtonGroups().X(395).Y(390).Q(5).T(['pill']),
+                new LCARS__Scanner().X(0).Y(390).W(288).H(220).C([white,tan,gold,white,tan]).R([194,80])
+            ]),
+            new LCARS__Section().N('nav ref').W(335)
+            .setHeader(new LCARS__Elbow('lg-right'))
+            .setBody([
+                new LCARS__Header('navigation reference').W(295).H(40),
+                new LCARS__Header('cache select').Y(60).W(295).H(30).C(gold),
+                new LCARS__Header('lcars mode select').Y(140).W(295).H(270).R([0,0,20,0]),
+                new LCARS__ButtonGroups().X(-33).Y(140).Q(5).T(['titled-pill-left'])
+            ]),
+            new LCARS__Section().N('flight').W(420)
+            .setHeader(new LCARS__Header().H(210).M([0,40,100,0]).T('flight control'))
+            .setBody([
+                new LCARS__Header('navigation to cache').H(350).R([50,0,0,50]),
+                new LCARS__Header().H(295).W(445).X(75).Y(30).C(black).R([50,0,0,10]),
+                new LCARS__ButtonGroups().X(90).Y(80).Q(5).T(['rect-pill-right','pill','pill'])
+            ]),
+            new LCARS__Section().N('joystick').W(200)
+            .setHeader( new LCARS__Header().H(210).C(blue).M([0,25,100,0]))
+            .setBody([
+                new LCARS__Header().H(30).C(blue),
+                new LCARS__Joystick().Y(75).C([red,gold,gold,gold])
+            ])
+            .setFooter(new LCARS__Header().H('xs').C(tan)),
+            new LCARS__Section().N('warp drive systems').W(410)
+            .setHeader(new LCARS__Header('warp drive systems').H(210).M([0,20,100,0]))
+            .setBody([
+                new LCARS__Header('option select').H(30),
+                new LCARS__ButtonGroups().X(15).Y(80).Q(5).T(['pill','titled-pill-left','tiny-rect-cap-left'])
+            ])
+            .setFooter(new LCARS__Header().H('xs').C(tan)),
+            new LCARS__Section().N('impulse').W(177)
+            .setHeader(new LCARS__Header('impulse systems').H(210).M([0,12,100,0]))
+            .setBody([
+                new LCARS__Header('mode select').H(30).C(gold),
+                new LCARS__ButtonGroups().X(0).Y(50).Q(6).T(['titled-pill-right'])
+            ])
+            .setFooter(new LCARS__Header().H('xs').C(tan)),
+            new LCARS__Section().W(45)
+            .setHeader(new LCARS__Header().H(210).M([0,15,100,0]).C(blue))
+            .setBody([
+                new LCARS__Header().H('sm').C(tan)
+            ]),
+            new LCARS__Section().W(200)
+            .setHeader(new LCARS__Header('emergency override').H(210).M([0,0,100,0]).R([0,20,20,0]))
+            .setBody([
+                new LCARS__Header('helm / navigation').C(gold).H(30),
+                new LCARS__ButtonGroups().X(0).Y(50).Q(6).T(['pill','pill'])
+            ])
+            .setFooter(new LCARS__Header().H('xs').C(tan))
+        ]);
+        this.build();
+    }
+}
+/*
+   /$$$$$$  /$$$$$$$   /$$$$$$ 
+  /$$__  $$| $$__  $$ /$$__  $$
+ | $$  \ $$| $$  \ $$| $$  \__/
+ | $$  | $$| $$$$$$$/|  $$$$$$ 
+ | $$  | $$| $$____/  \____  $$
+ | $$  | $$| $$       /$$  \ $$
+ |  $$$$$$/| $$      |  $$$$$$/
+  \______/ |__/       \______/ 
+*/
+class LCARS__OPS extends LCARS{
+    constructor(id,debug){
+        super({n:'ops',w:2500,h:690,g:20,id:id},debug);
+        this.setElements([
+            {
+                y: 0,
+                w: 200, 
+                header: new LCARS__Header()
+                    .H(200)
+                    .R([20,0,0,20])
+                    .C(yellow)
+                    .M([0,20,100,0])
+                    .T('emergency override'),
+                body: [               
+                    new LCARS__Subheader().W(200).C(gold).R([15,0,0,15]).T('engineering systems'),
+                    new LCARS__ButtonGroups().X(10).Y(40).Q(3).T(['titled-pill-left']),
+                    new LCARS__ButtonGroups().X(10).Y(180).Q(3).T(['titled-pill-right'])
+                ],
+                footer: new LCARS__Header()
+                    .H('xs')
+                    .C(tan)
+            },
+            {
+                y: 0,
+                w: 400,
+                header: new LCARS__Header()
+                    .H(200)
+                    .R([0,0,0,0])
+                    .C(yellow)
+                    .M([0,40,100,0])
+                    .T('warp drive systems'),
+                body: [                
+                    new LCARS__Subheader().W(400).C(yellow).T('power consumption'),
+                    // new LCARS__ButtonGroups().X(10).Y(40).Q(6).T(['pill','titled-pill-right'])
+                    {
+                        type:'textblock',
+                        header:'atmospheric process',
+                        rows:8,
+                        cols:[6,2,6,6,2,6],
+                        x:0,
+                        y:40
+                    },
+                    {
+                        type:'textblock',
+                        header:'',
+                        rows:8,
+                        cols:[2,8,4],
+                        x:210,
+                        y:40
+                    },
+                    {
+                        type:'textblock',
+                        header:'',
+                        rows:8,
+                        cols:[3,2,4],
+                        x:320,
+                        y:40
+                    }
+                ],
+                footer: new LCARS__Header()
+                    .H('xs')
+                    .C(tan)
+            },
+            // spacerSection,
+            {
+                y: 0,
+                w: 200,
+                header: new LCARS__Header()
+                    .H(200)
+                    .R([0,0,0,0])
+                    .C(yellow)
+                    .M([0,20,100,0])
+                    .T('operational priorities'),
+                body: [               
+                    new LCARS__Subheader().W(200).C(gold).T('lcars mode select'),
+                    new LCARS__ButtonGroups().X(10).Y(40).Q(6).T(['titled-pill-right'])
+                ],
+                footer: new LCARS__Header().H('xs').C(tan)
+            },
+            // joystickSection,
+            {
+                y:0,
+                w:360,
+                header: new LCARS__Header()
+                    .H(200)
+                    .R([0,0,0,0])
+                    .C(yellow)
+                    .M([0,0,100,0])
+                    .T('operations management','left'),
+                body: [               
+                    new LCARS__Subheader().W(360),
+                    new LCARS__ButtonGroups().X(10).Y(40).Q(6).T(['pill','titled-pill-left'])
+                ],
+                footer: new LCARS__Header().H('xs').C(yellow)
+            },
+            {
+                y:0,
+                w:110,
+                header: new LCARS__Header()
+                    .H(240)
+                    .R([0,120,0,-40])
+                    .C(yellow)
+                    .M([0,20,0,0]),
+                    //elbow_lg_left,
+                body: [                                               
+                    new LCARS__Header().X(40).W(70).H(40),                                             
+                    new LCARS__Header().X(40).Y(60).W(70).H(30).C(blue),                                             
+                    new LCARS__Header().X(40).Y(110).W(70).H(285)
+                ],
+                footer:  new LCARS__Header().H('xs').C(yellow).R([0,0,15,0])
+            },
+            {
+                y:0,
+                w:360,
+                m:[0,20,0,0],
+                body:[
+                    new LCARS__Tabs().X(70)
+                        .addTab('departmental',blue)
+                        .addTab('status',blue)
+                        .addTab('communications',white)
+                        .addTab('mission status',gold),
+                    new LCARS__Header().Y(300).W(350).R([50,0,0,50]).H(350),                        
+                    new LCARS__Header().Y(330).W(250).R([30,0,0,10]).H(305).X(100).C(black),
+                    new LCARS__ButtonGroups().X(130).Y(340).Q(6).T(['pill','pill'])
+    
+                ]
+            },
+            {
+                y:0,
+                w:200,
+                header: new LCARS__Header()
+                    .H(200)
+                    .R([0,0,0,0])
+                    .C(blue)
+                    .M([0,20,100,0]),
+                body: [ 
+                    new LCARS__Subheader().W(100), 
+                    new LCARS__ButtonGroups().X(10).Y(40).Q(6).T(['pill','pill'])
+                ],
+                footer: new LCARS__Header().H('xs').C(yellow)
+            },
+            {
+                y:0,
+                w:400,
+                header: new LCARS__Header()
+                    .H(200)
+                    .R([0,20,20,0])
+                    .C(yellow)
+                    .M([0,20,100,0])
+                    .T('communications'),
+                body: [ 
+                    new LCARS__Subheader().W(360).T('channel select').R([0,15,15,0]), 
+                    new LCARS__ButtonGroups().X(10).Y(40).Q(6).T(['rect-pill-left','rect','rect-pill-right'])
+                ],
+                footer: new LCARS__Header().H('xs').C(yellow)
+            }
+        ])
+        this.build();
+    }
+}
 function joystickButtonFunction(bid,name){}
 /*
    /$$$$$$   /$$$$$$  /$$      /$$ /$$$$$$$   /$$$$$$  /$$   /$$ /$$$$$$$$ /$$   /$$ /$$$$$$$$ /$$$$$$ 
@@ -1179,7 +1520,127 @@ function joystickButtonFunction(bid,name){}
 //     }
 //     return def;
 // }
+class LCARS_Object{
+    name='';
+    type;
+    x=0;
+    y=0;
+    width=0;
+    height;
+    margin=[0,0,0,0];
+    radius=[0,0,0,0];
+    color=yellow;
+    text;
+    config={};
+    constructor(opt){
+        if(opt.type)    this.type=opt.type;
+        if(opt.name)    this.name=opt.name;
+        if(opt.x)       this.x=opt.x;
+        if(opt.y)       this.y=opt.y;
+        if(opt.width)   this.width=opt.width;
+        if(opt.height)  this.height=opt.height;
+        if(opt.margin)  this.margin=opt.margin;
+        if(opt.radius)  this.radius=opt.radius;
+        if(opt.color)   this.color=opt.color;
+        if(opt.text)    this.text=opt.text;
+        this.config = {
+            type:this.type,
+            n:this.name,
+            x:this.x,
+            y:this.y,
+            w:this.width,
+            h:this.height,
+            m:this.margin,
+            r:this.radius,
+            c:this.color
+        }
+    }
+    get config(){return this.config;}
+    get isObject(){return true;}
+}
+class LCARS_Element extends LCARS_Object{
+    constructor(opt){
+        super(opt);
+        this.config.type=this.type;
+    }
+}
+class LCARS_Section extends LCARS_Element {
+    header={};
+    body=[];
+    leftSidebar={};
+    rightSidebar={};
+    footer={};
+    margin=[0,0,0,20];
+    constructor(opt){
+        super(opt);
+        if(opt.header)          this.config.header=opt.header.isObject?opt.header.config:opt.header;
+        if(opt.leftSidebar)     this.config.leftSidebar=opt.leftSidebar.isObject?opt.leftSidebar.config:opt.leftSidebar;
+        if(opt.body)            this.body=opt.body;
+        if(opt.rightSidebar)    this.config.rightSidebar=opt.rightSidebar.isObject?opt.rightSidebar.config:opt.rightSidebar;
+        if(opt.footer)          this.config.footer=opt.footer.isObject?opt.footer.config:opt.footer;
+        if(opt.margin)          this.config.margin=opt.margin;
+        this.config.body=this.body;
+    }
+    set body(arr){
+        arr.forEach(el =>{
+            this.addElement(el);
+        });
+    }
+    addElement(el){
+        this.config.body.push(el.isObject?el.config:el);
+    }
+}
+class LCARS_HeaderText extends LCARS_Element{ 
+    alignment='end';
+    size='22px';
+    color=black;
+    y=5;
+    constructor(opt){
+        if(opt.alignment)this.alignment=opt.alignment;
+        if(opt.size)this.size=opt.size;
+        super(opt);
+        this.config.y=this.y;
+        this.config.t=this.text;
+        this.config.a=this.alignment;
+        this.config.s=this.size;
+    }
+}
+class LCARS_Header extends LCARS_Element{    
+    constructor(opt){
+        super(opt);
+        this.config.type='header';
+        this.config.t=new LCARS_HeaderText({text:this.text}).config;
+    }
+}
+class LCARS_Elbow extends LCARS_Header{
+    size;
+    dir;
+    color=yellow;
+    constructor(opt){
+        super(opt);
+        if(opt.size)    this.size=opt.size;
+        if(opt.dir)     this.dir=opt.dir;
+        if(opt.color)   this.color=opt.color;
 
+        const rr=[30,0,-10,0];
+        const lr=[0,30,0,-10];
+        const sizes = ['sm','md','','lg'];
+        const s = sizes.indexOf(this.size)+1;
+        this.radius = [];
+        if(this.dir=='left'){
+            lr.forEach(e=>{
+                this.radius.push(e*s)
+            });
+        }
+        if(this.dir=='right'){
+            rr.forEach(e=>{
+                this.radius.push(e*s)
+            });
+        }
+        this.config.r=this.radius;
+
+    }
+}
 function LCARS__Section(size){
     this.n='';
     this.y=0;
@@ -1262,7 +1723,6 @@ const elbow_sm_right = {
     m: [0,0,0,0],
     t: null
 }
-
 const elbow_lg_left = {
     h: 250,
     r: [0,120,0,-40],
