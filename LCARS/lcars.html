@@ -29,9 +29,12 @@
     <script type="text/javascript" src="src/configs/ops.js"></script>
     <script type="text/javascript" src="src/configs/mobile.js"></script>
     <script>        
-        let tac = new LCARS__TACTICAL('tac');
+        let tac = new LCARS_TACTICAL('tac');
         let con = new LCARS__CON('con');
         let ops = new LCARS__OPS('ops');
+        console.log('tac',tac.output());
+        console.log('con',con.output());
+        console.log('ops',ops.output());
         // loading existing layouts:
         //const tac = new LCARS();
         //tac.bind('tac');
@@ -54,127 +57,109 @@
         //ops.build(opsLayout);
 
        
-        let sub = new LCARS_Header({width:200,height:30,color:gold,radius:[15,0,0,15],text:'engineering system'});
-        console.log('sub:',sub.config)
         const exp = new LCARS('exp',true); // debug renders bounding boxes around the borders of elements
 
         // experimental stuff:
         exp.height = 700;
         exp.width = 2500;
-        exp.gutters = 20;
-        const sec1a = new LCARS_Section({
-            width:200,
-            margin: [0,0,0,20],
-            header: new LCARS_Header({
-                height:200,
-                radius:[20,0,0,20],
-                color:yellow,
-                margin:[0,20,100,0],
-                text:'emergency overrides'
-            }),
-            body:[
-                sub.config,
-                new LCARS__ButtonGroups().X(10).Y(40).Q(3).T(['titled-pill-left']),
-                new LCARS__ButtonGroups().X(10).Y(180).Q(3).T(['titled-pill-right'])
-            ],
-            footer: new LCARS_Header({
-                height:15,
-                color:tan
-            })
-        }).config
-        console.log('sec1a')
-        console.log(sec1a)
-        const sec3 = new LCARS_Section({
-            width:300,
-            name:'elbows',
-            header: new LCARS_Elbow({
-                size:'lg',
-                dir:'right',
-                height:250
-            })
-        }).config
-        const sec1 = new LCARS__Section()
-                .Y(0)
-                .W(200)
-				.setHeader(
-					new LCARS__Header()
-                        .H(200)
-                        .R([20,0,0,20])
-                        .C(this.yellow)
-                        .M([0,20,100,0])
-                        .T('emergency override')
-                )
-                .setBody([
-                        //new LCARS__Subheader().W(200).C(this.gold).R([15,0,0,15]).T('engineering systems'),
-                        sub.config,
-                        new LCARS__ButtonGroups().X(10).Y(40).Q(3).T(['titled-pill-left']),
-                        new LCARS__ButtonGroups().X(10).Y(180).Q(3).T(['titled-pill-right'])
-                    ]
-                )
-                .setFooter(
-                    new LCARS__Header()
-                    .H('xs')
-                    .C(this.tan)
-                );
-
-		const sec2 = new LCARS__Section();
-		sec2.W(400)
-		.setHeader(
-			new LCARS__Header()
-	            .H(200)
-	            .R([0,0,0,0])
-	            .C(this.yellow)
-	            .M([0,40,100,0])
-	            .T('warp drive systems')
-		)
-		.setBody(
-			[
-				new LCARS__Subheader().W(400).C(this.yellow).T('power consumption'),
-				new LCARS__ReadoutDisplay().setHeader('Atmospheric Process').setRows(8).setCols([6,2,6,6,2,6]).Y(40),
-				new LCARS__ReadoutDisplay().setRows(8).setCols([2,8,4]).Y(40).X(210),
-				new LCARS__ReadoutDisplay().setRows(8).setCols([3,2,4]).Y(40).X(320)
-			]
-		)
-		.setFooter(
-			new LCARS__Header()
-                .H('xs')
-                .C(this.tan)
-		)
+        exp.gutters = 20;		
         exp.elements.push(
-                sec1a,
-                sec2,
-                sec3,
-                new LCARS__Section().W(300).N('elbows')
-                .setHeader(
-                    //new LCARS__Elbow('lg-right').H(250)
-                    new LCARS_Elbow({size:'lg',dir:'right',height:250}).config
-                ),
-                new LCARS__Section().W(300).N('elbows')
-                .setHeader(
-                    new LCARS__Elbow('lg-left').H(250).M([0,20,0,0])
-                ),
-                new LCARS__Section().W(200).N('elbows')
-                .setHeader(
-                    new LCARS__Elbow('md-right').H(100)
-                ),
-                new LCARS__Section().W(200).N('elbows')
-                .setHeader(
-                    new LCARS__Elbow('md-left').H(100).M([0,20,0,0])
-                ),
-                new LCARS__Section().W(100).N('elbows')
-                .setHeader(
-                    new LCARS__Elbow('sm-right').H(50)
-                ),
-                new LCARS__Section().W(100).N('elbows')
-                .setHeader(
-                    new LCARS__Elbow('sm-left').H(50).M([0,20,0,0])
-                )
-			);
+            new LCARS_Section({
+                width:200,
+                margin: [0,0,0,20],
+                header: new LCARS_Header({
+                    height:200,
+                    radius:[20,0,0,20],
+                    color:yellow,
+                    margin:[0,20,100,0],
+                    text:'emergency overrides'
+                }),
+                body:[
+                    new LCARS_Subheader({width:200,color:gold,radius:[15,0,0,15],text:'engineering system'}),
+                    new LCARS__ButtonGroups().X(10).Y(40).Q(3).T(['titled-pill-left']),
+                    new LCARS__ButtonGroups().X(10).Y(180).Q(3).T(['titled-pill-right'])
+                ],
+                footer: new LCARS_Footer({
+                    color:tan
+                })
+            }),
+            new LCARS_Section({
+                width:400,
+                header:new LCARS_Header({
+                    height:200,
+                    margin:[0,20,100,0],
+                    text:'warp drive systems'
+                }),
+                body:[
+                    new LCARS__Subheader().W(400).C(this.yellow).T('power consumption'),
+                    new LCARS__ReadoutDisplay().setHeader('Atmospheric Process').setRows(8).setCols([6,2,6,6,2,6]).Y(40),
+                    new LCARS__ReadoutDisplay().setRows(8).setCols([2,8,4]).Y(40).X(210),
+                    new LCARS__ReadoutDisplay().setRows(8).setCols([3,2,4]).Y(40).X(320)
+                ],
+                footer: new LCARS_Footer({
+                    color:tan
+                })
+            }),
+            new LCARS_Section({
+                width:300,
+                name:'elbows',
+                header: new LCARS_Elbow({
+                    size:'lg',
+                    dir:'right',
+                    height:250
+                })
+            }),                
+            new LCARS_Section({
+                width:300,
+                name:'elbows',
+                header: new LCARS_Elbow({
+                    size:'lg',
+                    dir:'left',
+                    height:250,
+                    margin:[0,20,0,0]
+                })
+            }),                
+            new LCARS_Section({
+                width:200,
+                name:'elbows',
+                header: new LCARS_Elbow({
+                    size:'md',
+                    dir:'right',
+                    height:100
+                })
+            }),
+            new LCARS_Section({
+                width:200,
+                name:'elbows',
+                header: new LCARS_Elbow({
+                    size:'md',
+                    dir:'left',
+                    height:100,
+                    margin:[0,20,0,0]
+                })
+            }),              
+            new LCARS_Section({
+                width:100,
+                name:'elbows',
+                header: new LCARS_Elbow({
+                    size:'sm',
+                    dir:'right',
+                    height:50
+                })
+            }),            
+            new LCARS_Section({
+                width:100,
+                name:'elbows',
+                header: new LCARS_Elbow({
+                    size:'sm',
+                    dir:'left',
+                    height:50
+                })
+            })
+        );
 
         exp.build();
-        console.log(exp.output());
-        function doOncePerSecond(){
-            console.log('test');
-        }
+        console.log('exp',exp.output());
+        
     </script>
 </html>
