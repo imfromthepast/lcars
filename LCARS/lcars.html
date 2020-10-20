@@ -14,27 +14,27 @@
         </style>
     </head>
     <body>
-        <h2>Tactical Layout</h2>
+        <!-- <h2>Tactical Layout</h2> -->
         <canvas id="tac"></canvas> 
-        <h2>Conn Layout</h2>       
+        <!-- <h2>Conn Layout</h2>       
         <canvas id="con"></canvas>    
         <h2>OPS Layout</h2>  
         <canvas id="ops"></canvas>
         <h2>Excperimental Layout</h2>
-        <canvas id="exp"></canvas>
+        <canvas id="exp"></canvas> -->
     </body>
     <script type="text/javascript" src="src/js/lcars.js"></script>
-    <!-- <script type="text/javascript" src="src/configs/tactical.js"></script> -->
-    <script type="text/javascript" src="src/configs/conn.js"></script>
+    <script type="text/javascript" src="src/configs/tactical.js"></script>
+    <!-- <script type="text/javascript" src="src/configs/conn.js"></script>
     <script type="text/javascript" src="src/configs/ops.js"></script>
-    <script type="text/javascript" src="src/configs/mobile.js"></script>
+    <script type="text/javascript" src="src/configs/mobile.js"></script> -->
     <script>        
         let tac = new LCARS_TACTICAL('tac');
-        let con = new LCARS__CON('con');
-        let ops = new LCARS__OPS('ops');
-        console.log('tac',tac.output());
-        console.log('con',con.output());
-        console.log('ops',ops.output());
+        //let con = new LCARS__CON('con');
+        //let ops = new LCARS__OPS('ops');
+        // console.log('tac',tac.output());
+        //console.log('con',con.output());
+        //console.log('ops',ops.output());
         // loading existing layouts:
         //const tac = new LCARS();
         //tac.bind('tac');
@@ -57,10 +57,10 @@
         //ops.build(opsLayout);
 
        
-        const exp = new LCARS('exp',true); // debug renders bounding boxes around the borders of elements
+        // const exp = new LCARS('exp',true); // debug renders bounding boxes around the borders of elements
 
         // experimental stuff:
-        exp.height = 700;
+        /* exp.height = 700;
         exp.width = 2500;
         exp.gutters = 20;		
         exp.elements.push(
@@ -160,6 +160,6 @@
 
         exp.build();
         console.log('exp',exp.output());
-        
+        */
     </script>
 </html>
