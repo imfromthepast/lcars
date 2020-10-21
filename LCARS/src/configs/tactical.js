@@ -28,7 +28,7 @@ class LCARS_TACTICAL extends LCARS{
                     margin:[0,20,100,0]
                 }),
                 body:[
-                    new LCARS_ButtonGroups({cols:['rect','pill','pill'],rows:5,x:0,y:50}),
+                    new LCARS_ButtonGroups({cols:['pill','rect-pill-right'],rows:5,x:50,y:50}),
                     
                     new LCARS_Subheader({radius:[15,0,0,15]}),
                     new LCARS_TitledTabs({x:10,y:50,tabs:[

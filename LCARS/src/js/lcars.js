@@ -574,37 +574,37 @@ class LCARS {
     addPillButton(x,y,c,w,h,s,t){
         // w = w==null?buttonWidth:w;
         // h = h==null?buttonHeight:h;
-        t = t==null?this.randomButtonLabel():t;
+        t = t==null?randomButtonLabel():t;
         return this.buildButton(x,y,w,h,c,'pill',t,s);
     }
     addPillLeftButton(x,y,c,w,h,s,t){
         // w = w==null?buttonWidth:w;
         // h = h==null?buttonHeight:h;
-        t = t==null?this.randomButtonLabel():t;
+        t = t==null?randomButtonLabel():t;
         return this.buildButton(x,y,w,h,c,'pill-left',t,s);
     }
     addPillRightButton(x,y,c,w,h,s,t){
         // w = w==null?buttonWidth:w;
         // h = h==null?buttonHeight:h;
-        t = t==null?this.randomButtonLabel():t;
+        t = t==null?randomButtonLabel():t;
         return this.buildButton(x,y,w,h,c,'pill-right',t,s);
     }
     addCapLeftButton(x,y,c,w,h,s,t){
         // w = w==null?buttonWidth:w;
         // h = h==null?buttonHeight:h;
-        t = t==null?this.randomButtonLabel():t;
+        t = t==null?randomButtonLabel():t;
         return this.buildButton(x,y,w,h,c,'cap-left',null,s);
     }
     addCapRightButton(x,y,c,w,h,s,t){
         // w = w==null?buttonWidth:w;
         // h = h==null?buttonHeight:h;
-        t = t==null?this.randomButtonLabel():t;
+        t = t==null?randomButtonLabel():t;
         return this.buildButton(x,y,w,h,c,'cap-right',null,s);
     }
     addRectButton(x,y,c,w,h,s,t){
         // w = w==null?buttonWidth:w;
         // h = h==null?buttonHeight:h;
-        t = t==null?this.randomButtonLabel():t;
+        t = t==null?randomButtonLabel():t;
         return this.buildButton(x,y,w,h,c,'rect',t,s);
     }
     addRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,s,l){
@@ -1201,252 +1201,8 @@ function tabClick(i){
     //console.log('tab click',i);
 }
 
-/*
-   /$$$$$$   /$$$$$$  /$$   /$$
-  /$$__  $$ /$$__  $$| $$$ | $$
- | $$  \__/| $$  \ $$| $$$$| $$
- | $$      | $$  | $$| $$ $$ $$
- | $$      | $$  | $$| $$  $$$$
- | $$    $$| $$  | $$| $$\  $$$
- |  $$$$$$/|  $$$$$$/| $$ \  $$
-  \______/  \______/ |__/  \__/
-*/
-class LCARS__CON extends LCARS{
-    constructor(id,debug){
-        super({n:'con',w:2500,h:700,g:20,id:id},debug);
-        this.setSections([
-            new LCARS__Section().N('scanners').W(535)
-            .setBody([
-                new LCARS__Joystick().X(95).Y(0).C(gold),
-                new LCARS__Header().X(298).Y(310).W(237).H(30).C(gold),
-                new LCARS__Header().X(0).Y(310).W(288).H(30).C(blue),
-                new LCARS__Header().X(0).Y(645).W(288).H(14).C(tan),
-                new LCARS__ButtonGroups().X(395).Y(390).Q(5).T(['pill']),
-                new LCARS__Scanner().X(0).Y(390).W(288).H(220).C([white,tan,gold,white,tan]).R([194,80])
-            ]),
-            new LCARS__Section().N('nav ref').W(335)
-            .setHeader(new LCARS__Elbow('lg-right'))
-            .setBody([
-                new LCARS__Header('navigation reference').W(295).H(40),
-                new LCARS__Header('cache select').Y(60).W(295).H(30).C(gold),
-                new LCARS__Header('lcars mode select').Y(140).W(295).H(270).R([0,0,20,0]),
-                new LCARS__ButtonGroups().X(-33).Y(140).Q(5).T(['titled-pill-left'])
-            ]),
-            new LCARS__Section().N('flight').W(420)
-            .setHeader(new LCARS__Header().H(210).M([0,40,100,0]).T('flight control'))
-            .setBody([
-                new LCARS__Header('navigation to cache').H(350).R([50,0,0,50]),
-                new LCARS__Header().H(295).W(445).X(75).Y(30).C(black).R([50,0,0,10]),
-                new LCARS__ButtonGroups().X(90).Y(80).Q(5).T(['rect-pill-right','pill','pill'])
-            ]),
-            new LCARS__Section().N('joystick').W(200)
-            .setHeader( new LCARS__Header().H(210).C(blue).M([0,25,100,0]))
-            .setBody([
-                new LCARS__Header().H(30).C(blue),
-                new LCARS__Joystick().Y(75).C([red,gold,gold,gold])
-            ])
-            .setFooter(new LCARS__Header().H('xs').C(tan)),
-            new LCARS__Section().N('warp drive systems').W(410)
-            .setHeader(new LCARS__Header('warp drive systems').H(210).M([0,20,100,0]))
-            .setBody([
-                new LCARS__Header('option select').H(30),
-                new LCARS__ButtonGroups().X(15).Y(80).Q(5).T(['pill','titled-pill-left','tiny-rect-cap-left'])
-            ])
-            .setFooter(new LCARS__Header().H('xs').C(tan)),
-            new LCARS__Section().N('impulse').W(177)
-            .setHeader(new LCARS__Header('impulse systems').H(210).M([0,12,100,0]))
-            .setBody([
-                new LCARS__Header('mode select').H(30).C(gold),
-                new LCARS__ButtonGroups().X(0).Y(50).Q(6).T(['titled-pill-right'])
-            ])
-            .setFooter(new LCARS__Header().H('xs').C(tan)),
-            new LCARS__Section().W(45)
-            .setHeader(new LCARS__Header().H(210).M([0,15,100,0]).C(blue))
-            .setBody([
-                new LCARS__Header().H('sm').C(tan)
-            ]),
-            new LCARS__Section().W(200)
-            .setHeader(new LCARS__Header('emergency override').H(210).M([0,0,100,0]).R([0,20,20,0]))
-            .setBody([
-                new LCARS__Header('helm / navigation').C(gold).H(30),
-                new LCARS__ButtonGroups().X(0).Y(50).Q(6).T(['pill','pill'])
-            ])
-            .setFooter(new LCARS__Header().H('xs').C(tan))
-        ]);
-        this.build();
-    }
-}
-/*
-   /$$$$$$  /$$$$$$$   /$$$$$$ 
-  /$$__  $$| $$__  $$ /$$__  $$
- | $$  \ $$| $$  \ $$| $$  \__/
- | $$  | $$| $$$$$$$/|  $$$$$$ 
- | $$  | $$| $$____/  \____  $$
- | $$  | $$| $$       /$$  \ $$
- |  $$$$$$/| $$      |  $$$$$$/
-  \______/ |__/       \______/ 
-*/
-class LCARS__OPS extends LCARS{
-    constructor(id,debug){
-        super({n:'ops',w:2500,h:690,g:20,id:id},debug);
-        this.setSections([
-            {
-                y: 0,
-                w: 200, 
-                header: new LCARS__Header()
-                    .H(200)
-                    .R([20,0,0,20])
-                    .C(yellow)
-                    .M([0,20,100,0])
-                    .T('emergency override'),
-                body: [               
-                    new LCARS__Subheader().W(200).C(gold).R([15,0,0,15]).T('engineering systems'),
-                    new LCARS__ButtonGroups().X(10).Y(40).Q(3).T(['titled-pill-left']),
-                    new LCARS__ButtonGroups().X(10).Y(180).Q(3).T(['titled-pill-right'])
-                ],
-                footer: new LCARS__Header()
-                    .H('xs')
-                    .C(tan)
-            },
-            {
-                y: 0,
-                w: 400,
-                header: new LCARS__Header()
-                    .H(200)
-                    .R([0,0,0,0])
-                    .C(yellow)
-                    .M([0,40,100,0])
-                    .T('warp drive systems'),
-                body: [                
-                    new LCARS__Subheader().W(400).C(yellow).T('power consumption'),
-                    // new LCARS__ButtonGroups().X(10).Y(40).Q(6).T(['pill','titled-pill-right'])
-                    {
-                        type:'textblock',
-                        header:'atmospheric process',
-                        rows:8,
-                        cols:[6,2,6,6,2,6],
-                        x:0,
-                        y:40
-                    },
-                    {
-                        type:'textblock',
-                        header:'',
-                        rows:8,
-                        cols:[2,8,4],
-                        x:210,
-                        y:40
-                    },
-                    {
-                        type:'textblock',
-                        header:'',
-                        rows:8,
-                        cols:[3,2,4],
-                        x:320,
-                        y:40
-                    }
-                ],
-                footer: new LCARS__Header()
-                    .H('xs')
-                    .C(tan)
-            },
-            // spacerSection,
-            {
-                y: 0,
-                w: 200,
-                header: new LCARS__Header()
-                    .H(200)
-                    .R([0,0,0,0])
-                    .C(yellow)
-                    .M([0,20,100,0])
-                    .T('operational priorities'),
-                body: [               
-                    new LCARS__Subheader().W(200).C(gold).T('lcars mode select'),
-                    new LCARS__ButtonGroups().X(10).Y(40).Q(6).T(['titled-pill-right'])
-                ],
-                footer: new LCARS__Header().H('xs').C(tan)
-            },
-            // joystickSection,
-            {
-                y:0,
-                w:360,
-                header: new LCARS__Header()
-                    .H(200)
-                    .R([0,0,0,0])
-                    .C(yellow)
-                    .M([0,0,100,0])
-                    .T('operations management','left'),
-                body: [               
-                    new LCARS__Subheader().W(360),
-                    new LCARS__ButtonGroups().X(10).Y(40).Q(6).T(['pill','titled-pill-left'])
-                ],
-                footer: new LCARS__Header().H('xs').C(yellow)
-            },
-            {
-                y:0,
-                w:110,
-                header: new LCARS__Header()
-                    .H(240)
-                    .R([0,120,0,-40])
-                    .C(yellow)
-                    .M([0,20,0,0]),
-                    //elbow_lg_left,
-                body: [                                               
-                    new LCARS__Header().X(40).W(70).H(40),                                             
-                    new LCARS__Header().X(40).Y(60).W(70).H(30).C(blue),                                             
-                    new LCARS__Header().X(40).Y(110).W(70).H(285)
-                ],
-                footer:  new LCARS__Header().H('xs').C(yellow).R([0,0,15,0])
-            },
-            {
-                y:0,
-                w:360,
-                m:[0,20,0,0],
-                body:[
-                    new LCARS_TitledTabs({x:70,tabs:[
-                        {text:'departmental',color:blue},
-                        {text:'status',color:blue},
-                        {text:'communications',color:white},
-                        {text:'mission status',color:gold},
-                    ]}),
-                    new LCARS__Header().Y(300).W(350).R([50,0,0,50]).H(350),                        
-                    new LCARS__Header().Y(330).W(250).R([30,0,0,10]).H(305).X(100).C(black),
-                    new LCARS__ButtonGroups().X(130).Y(340).Q(6).T(['pill','pill'])
-    
-                ]
-            },
-            {
-                y:0,
-                w:200,
-                header: new LCARS__Header()
-                    .H(200)
-                    .R([0,0,0,0])
-                    .C(blue)
-                    .M([0,20,100,0]),
-                body: [ 
-                    new LCARS__Subheader().W(100), 
-                    new LCARS__ButtonGroups().X(10).Y(40).Q(6).T(['pill','pill'])
-                ],
-                footer: new LCARS__Header().H('xs').C(yellow)
-            },
-            {
-                y:0,
-                w:400,
-                header: new LCARS__Header()
-                    .H(200)
-                    .R([0,20,20,0])
-                    .C(yellow)
-                    .M([0,20,100,0])
-                    .T('communications'),
-                body: [ 
-                    new LCARS__Subheader().W(360).T('channel select').R([0,15,15,0]), 
-                    new LCARS__ButtonGroups().X(10).Y(40).Q(6).T(['rect-pill-left','rect','rect-pill-right'])
-                ],
-                footer: new LCARS__Header().H('xs').C(yellow)
-            }
-        ])
-        this.build();
-    }
-}
+
+
 function joystickButtonFunction(bid,name){}
 /*
  
@@ -1798,6 +1554,7 @@ class LCARS_ButtonGroups extends LCARS_Element{
             this.x+=incWidth;
             //console.log('x',x)
             let btnCol = new LCARS_ButtonCol({x:this.x,type:colType,rows:this.rows}).build();
+            console.log(btnCol);
             incWidth=btnCol.getBounds().width;
             buttonCont.addChild(btnCol);
         }
@@ -1828,11 +1585,13 @@ class LCARS_ReadoutDisplay extends LCARS_Readout{
         return super.build();
     }
 }
-class LCARS_Button extends LCARS_Element{
+class LCARS_Button extends LCARS_Element{   
     height=33;
     width=85;
     btn;
     btnbg;
+    btnCont;
+    buttonParts;
     buttonMargin=12;
     buttonWidthPlusMargin;
     buttonHeightPlusMargin;
@@ -1840,123 +1599,122 @@ class LCARS_Button extends LCARS_Element{
     txtWidth;
     constructor(opt){
         super(opt);
-        if(opt.text==null) this.text=randomButtonLabel();
+        if(opt.text) this.text = opt.text;
+        if(opt.width) this.width=opt.width;
         if(opt.txtWidth) this.txtWidth=opt.txtWidth;
         if(opt.alignment) this.alignment=opt.alignment;
         this.btn = new Shape();
         this.btnbg = new Shape();
-        this.text = opt.text==null?randomButtonLabel():opt.text;
+        this.btnCont = new Container();
+        this.buttonParts = new Container();
+        this.text = is.undefined(this.text)?randomButtonLabel():this.text;
+        this.buttonHeightPlusMargin=this.height+this.buttonMargin;
+        this.buttonWidthPlusMargin=this.width+(this.buttonMargin*2);
         this.buttonHeightPlusMargin=this.height+this.buttonMargin;
         this.buttonWidthPlusMargin=this.width+(this.buttonMargin*2);
     }
+    
     build(){
-        let s = 1;
-        var btnCont = new Container();
-        btnCont.x=this.x;
-        btnCont.y=this.y;
-        this.x=0;
-        this.y=0;
+        super.build();
+        return this.addButtonType(this.x,this.y,this.color,this.type,this.width,this.height,1,this.text);
+    }
+    addText(x,y,t,a,s,c){
+        // console.log("t", t);
+        a = a==null?'end':a;
+        s = s==null?'18px':s;
+        c = c==null?'#000':c;
+        var txt = new Text(makeCap(t),s+" Okuda",c);
+        txt.x = x;
+        txt.y = y;
+        txt.textAlign=a; //Any of "start", "end", "left", "right", and "center"
+        txt.textBaseLine = 'bottom';
+        return txt;
+    }
+    addButtonType(x,y,c,t,buttonWidth,buttonHeight,scale,l){
+        
+        // var buttonWidth = (bw==null?85:bw)*scale;
+        // var buttonHeight = (bh==null?33:bh)*scale;
+        var buttonHeightPlusMargin = buttonHeight+this.buttonMargin;
+        var buttonWidthPlusMargin = buttonWidth+(this.buttonMargin*2);
 
-        if(this.type=='pill'){
-            // btn = this.addPillButton(x,y,c,buttonWidth,buttonHeight,scale);
-            // btnbg.graphics.beginFill('#000').r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
-            // btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
-            // btn.addEventListener("click", handlePillClick);
-            this.btn.graphics.beginFill(this.color).rc(0,0,this.width,this.height,this.height*0.5,this.height*0.5,this.height*0.5,this.height*0.5);
-            this.btnbg.graphics.beginFill(black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),this.buttonWidthPlusMargin,this.buttonHeightPlusMargin);
-            this.btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),this.buttonWidthPlusMargin,this.buttonHeightPlusMargin);
-            this.txtWidth = this.width-15;        
+        var btn = new Container();
+        var btnbg = new Shape();
+        if(t=='pill'){
+            btn = this.addPillButton(x,y,c,buttonWidth,buttonHeight,scale);
+            // btn.name=btn.id+'_btn';
+            // console.log("btn", btn);
+            btnbg.graphics.beginFill('#000').r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
+            btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
+            btn.addEventListener("click", handlePillClick);
         }
-        if(this.type=='pill-left'){
-            // btn = this.addPillLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
-            // btnbg.graphics.beginFill('#000').r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
-            // btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
-            // btn.addEventListener("click", handlePillClick);
-            this.btn.graphics.beginFill(this.color).rc(0,0,this.width,this.height,this.height*0.5,0,0,this.height*0.5);
-            this.btnbg.graphics.beginFill(black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),this.buttonWidthPlusMargin,this.buttonHeightPlusMargin);
-            this.btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),this.buttonWidthPlusMargin,this.buttonHeightPlusMargin);
-            this.txtWidth = this.width-10;
+        if(t=='pill-left'){
+            btn = this.addPillLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btnbg.graphics.beginFill('#000').r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
+            btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
+            btn.addEventListener("click", handlePillClick);
         }
-        if(this.type=='pill-right'){
-            // btn = this.addPillRightButton(x,y,c,buttonWidth,buttonHeight,scale); 
-            // btnbg.graphics.beginFill('#000').r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
-            // btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
-            // btn.addEventListener("click", handlePillClick);
-            this.btn.graphics.beginFill(this.color).rc(0,0,this.width,this.height,0,this.height*0.5,this.height*0.5,0);
-            this.btnbg.graphics.beginFill(black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),this.buttonWidthPlusMargin,this.buttonHeightPlusMargin);
-            this.btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),this.buttonWidthPlusMargin,this.buttonHeightPlusMargin);
-            this.txtWidth = 5;
-            this.alignment='start';
+        if(t=='pill-right'){
+            btn = this.addPillRightButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btnbg.graphics.beginFill('#000').r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
+            btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
+            btn.addEventListener("click", handlePillClick);
         }
-        if(this.type=='cap-left'){
-            // btn = this.addCapLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
-            // btnbg.graphics.beginFill('#000').r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
-            // btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
-            // btn.addEventListener("click", handleCapClick);
-            this.btn.graphics.beginFill(this.color).rc(-10,0,this.height,this.height,this.height*0.5,0,0,this.height*0.5);
-            this.btnbg.graphics.beginFill(black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),this.buttonWidthPlusMargin,this.buttonHeightPlusMargin);
-            this.btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),this.buttonWidthPlusMargin,this.buttonHeightPlusMargin);
-            this.txtWidth = this.width-10;
+        if(t=='cap-left'){
+            btn = this.addCapLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btnbg.graphics.beginFill('#000').r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
+            btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
+            btn.addEventListener("click", handleCapClick);
         }
-        if(this.type=='cap-right'){
-            // btn = this.addCapRightButton(x,y,c,buttonWidth,buttonHeight,scale); 
-            // btnbg.graphics.beginFill('#000').r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
-            // btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
-            // btn.addEventListener("click", handleCapClick);
-            this.btn.graphics.beginFill(this.color).rc(10,0,this.height,this.height,0,this.height*0.5,this.height*0.5,0);
-            this.btnbg.graphics.beginFill(black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),this.buttonWidthPlusMargin,this.buttonHeightPlusMargin);
-            this.btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),this.buttonWidthPlusMargin,this.buttonHeightPlusMargin);
-            this.txtWidth = 5;
-            this.alignment='start';
+        if(t=='cap-right'){
+            btn = this.addCapRightButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btnbg.graphics.beginFill('#000').r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
+            btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
+            btn.addEventListener("click", handleCapClick);
         }
-        if(this.type=='rect'){
-            // btn = this.addRectButton(x,y,c,buttonWidth,buttonHeight,scale); 
-            // btnbg.graphics.beginFill('#000').r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
-            // btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
-            // btn.addEventListener("click", handleRectClick);
-            this.btn.graphics.beginFill(this.color).rect(0,0,this.width,this.height);
-            this.btnbg.graphics.beginFill(black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),this.buttonWidthPlusMargin,this.buttonHeightPlusMargin);
-            this.btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),this.buttonWidthPlusMargin,this.buttonHeightPlusMargin);
-            this.txtWidth = this.width-10;
+        if(t=='rect'){
+            btn = this.addRectButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btnbg.graphics.beginFill('#000').r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
+            btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
+            btn.addEventListener("click", handleRectClick);
         }
-        /* button types
-        if(this.type=='rect-pill-right'){
+        // button types
+        if(t=='rect-pill-right'){
             btn = this.addRectWithPillRightButton(x,y,c,buttonWidth,buttonHeight,scale); 
             btnbg.graphics.beginFill('#000').r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectPillClick);
         }
-        if(this.type=='rect-pill-left'){
+        if(t=='rect-pill-left'){
             btn = this.addRectWithPillLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
             btnbg.graphics.beginFill('#000').r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectPillClick);
         }
-        if(this.type=='rect-cap-right'){
+        if(t=='rect-cap-right'){
             btn = this.addRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill('#000').r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin+15,buttonHeightPlusMargin)
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin+15,buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectCapClick);
         }
-        if(this.type=='rect-cap-left'){
+        if(t=='rect-cap-left'){
             btn = this.addRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
             btnbg.graphics.beginFill('#000').r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),buttonWidthPlusMargin+15,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),buttonWidthPlusMargin+15,buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectCapClick);
         }
-        if(this.type=='tiny-rect-cap-right'){
+        if(t=='tiny-rect-cap-right'){
             btn = this.addTinyRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,scale); 
             btnbg.graphics.beginFill('#000').r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),(buttonWidth*0.20)+15+(this.buttonMargin*2),buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),(buttonWidth*0.20)+15+(this.buttonMargin*2),buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectCapClick);
         }
-        if(this.type=='tiny-rect-cap-left'){
+        if(t=='tiny-rect-cap-left'){
             btn = this.addTinyRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
             btnbg.graphics.beginFill('#000').r(-(this.buttonMargin/2),-(this.buttonMargin/2),(buttonWidth*0.20)+15+(this.buttonMargin*2),buttonHeightPlusMargin)
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),(buttonWidth*0.20)+15+(this.buttonMargin*2),buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectCapClick);
         }
-        if(this.type=='medium-rect-cap-right'){
+        if(t=='medium-rect-cap-right'){
             buttonWidthPlusMargin = buttonWidthPlusMargin+buttonWidth;
             buttonWidth = buttonWidth*2;
             btn = this.addRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,scale); 
@@ -1964,14 +1722,14 @@ class LCARS_Button extends LCARS_Element{
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectCapClick);
         }
-        if(this.type=='medium-rect-cap-left'){
+        if(t=='medium-rect-cap-left'){
             buttonWidth = buttonWidth*2;
             btn = this.addRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
             btnbg.graphics.beginFill('#000').r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectCapClick);
         }
-        if(this.type=='wide-rect-cap-right'){
+        if(t=='wide-rect-cap-right'){
             buttonWidthPlusMargin = buttonWidthPlusMargin+(buttonWidth*2);
             buttonWidth = buttonWidth*3;
             btn = this.addRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,scale); 
@@ -1979,73 +1737,271 @@ class LCARS_Button extends LCARS_Element{
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectCapClick);
         }
-        if(this.type=='wide-rect-cap-left'){
+        if(t=='wide-rect-cap-left'){
             buttonWidth = buttonWidth*3;
             btn = this.addRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
             btnbg.graphics.beginFill('#000').r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectCapClick);
         }
-        if(this.type=='titled-pill-left'){
+        if(t=='titled-pill-left'){
             btn = this.addTitledLeftPillButton(x,y,c,buttonWidth,buttonHeight,scale); 
             btnbg.graphics.beginFill('#000').r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleTitledPillClick);
         }
-        if(this.type=='titled-pill-right'){
+        if(t=='titled-pill-right'){
             btn = this.addTitledRightPillButton(x,y,c,buttonWidth,buttonHeight,scale); 
             btnbg.graphics.beginFill('#000').r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleTitledPillClick);
         }
 
-        if(this.type=='titled-left'){
+        if(t=='titled-left'){
             btn = this.addTitledLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
             btnbg.graphics.beginFill('#000').r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleTitledPillClick);
         }
-        if(this.type=='titled-right'){
+        if(t=='titled-right'){
             btn = this.addTitledRightButton(x,y,c,buttonWidth,buttonHeight,scale); 
             btnbg.graphics.beginFill('#000').r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleTitledPillClick);
         }
 
-        if(this.type=='titled-tab-left'){
+        if(t=='titled-tab-left'){
             btn = this.addTitledLeftTab(x,y,c,buttonWidth,buttonHeight,l); 
             btnbg.graphics.beginFill('#000').r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleTabClick);
         }
-        if(this.type=='titled-tab-right'){
+        if(t=='titled-tab-right'){
             btn = this.addTitledRightTab(x,y,c,buttonWidth,buttonHeight,l); 
             btnbg.graphics.beginFill('#000').r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleTabClick);
         }
-        if(this.type=='tab-left'){
+        if(t=='tab-left'){
             btn = this.addLeftTab(x,y,c,buttonWidth,buttonHeight,l); 
             btnbg.graphics.beginFill('#000').r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleTabClick);
         }
-        if(this.type=='tab-right'){
+        if(t=='tab-right'){
             btn = this.addRightTab(x,y,c,buttonWidth,buttonHeight,l); 
             btnbg.graphics.beginFill('#000').r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleTabClick);
         }
-*/
-        var txt = new LCARS_Label({x:this.txtWidth,y:(this.height/2)-10,text:this.text,alignment:this.alignment,size:(s==1?18:30)+'px'}).build(); // this.addText(txtWidth,(h/2)-10,l,textAlign,(s==1?18:30)+'px');
-        console.log('txt',txt)
-        if(this.color!=none){
-            btnCont.addChild(this.btnbg);
-            btnCont.addChild(this.btn);
+        btn.x=x;
+        btn.y=y;
+        btn.addChildAt(btnbg,0);
+        return btn;
+    }
+    buildButton(x,y,w,h,c,t,l,s){
+        // console.log("w", w);
+        var btnCont = new Container();
+        btnCont.x=x;
+        btnCont.y=y;
+        x=0;
+        y=0;
+        var txtWidth; 
+        var textAlign = 'end';
+        var btn = new Shape();
+        if(t=='pill'){
+            btn.graphics.beginFill(c).rc(x,y,w,h,h*0.5,h*0.5,h*0.5,h*0.5);
+            txtWidth = w-15;
+        }
+        if(t=='pill-left'){
+            btn.graphics.beginFill(c).rc(x,y,w,h,h*0.5,0,0,h*0.5);
+            txtWidth = w-10;
+        }
+        if(t=='pill-right'){
+            btn.graphics.beginFill(c).rc(x,y,w,h,0,h*0.5,h*0.5,0);
+            txtWidth = 5;
+            textAlign = 'start';
+        }
+        if(t=='cap-left'){
+            btn.graphics.beginFill(c).rc(x-10,y,h,h,h*0.5,0,0,h*0.5);
+            // console.log("h", h);
+            txtWidth = w-10;
+        }
+        if(t=='cap-right'){
+            btn.graphics.beginFill(c).rc(x+10,y,h,h,0,h*0.5,h*0.5,0);
+            txtWidth = 5;
+            textAlign = 'start';
+        }
+        if(t=='rect'){
+            btn.graphics.beginFill(c).rect(x,y,w,h);
+            txtWidth = w-10;
+        }
+        var txt = this.addText(txtWidth,(h/2)-10,l,textAlign,(s==1?18:30)+'px');
+        if(c!='none'){
+            btnCont.addChild(btn);
             btnCont.addChild(txt);
             // btnCont.addEventListener("click", handleClick);
         }
         return btnCont;
+    }
+    addPillButton(x,y,c,w,h,s,t){
+        // w = w==null?buttonWidth:w;
+        // h = h==null?buttonHeight:h;
+        t = t==null?randomButtonLabel():t;
+        return this.buildButton(x,y,w,h,c,'pill',t,s);
+    }
+    addPillLeftButton(x,y,c,w,h,s,t){
+        // w = w==null?buttonWidth:w;
+        // h = h==null?buttonHeight:h;
+        t = t==null?randomButtonLabel():t;
+        return this.buildButton(x,y,w,h,c,'pill-left',t,s);
+    }
+    addPillRightButton(x,y,c,w,h,s,t){
+        // w = w==null?buttonWidth:w;
+        // h = h==null?buttonHeight:h;
+        t = t==null?randomButtonLabel():t;
+        return this.buildButton(x,y,w,h,c,'pill-right',t,s);
+    }
+    addCapLeftButton(x,y,c,w,h,s,t){
+        // w = w==null?buttonWidth:w;
+        // h = h==null?buttonHeight:h;
+        t = t==null?randomButtonLabel():t;
+        return this.buildButton(x,y,w,h,c,'cap-left',null,s);
+    }
+    addCapRightButton(x,y,c,w,h,s,t){
+        // w = w==null?buttonWidth:w;
+        // h = h==null?buttonHeight:h;
+        t = t==null?randomButtonLabel():t;
+        return this.buildButton(x,y,w,h,c,'cap-right',null,s);
+    }
+    addRectButton(x,y,c,w,h,s,t){
+        // w = w==null?buttonWidth:w;
+        // h = h==null?buttonHeight:h;
+        t = t==null?randomButtonLabel():t;
+        return this.buildButton(x,y,w,h,c,'rect',t,s);
+    }
+    addRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,s,l){
+        // console.log("x", x);
+        var btnCont = new Container();
+        btnCont.x = x;
+        btnCont.y = y;
+        btnCont.addChild(this.addRectButton(0,0,c,buttonWidth-20,buttonHeight,s,l));
+        btnCont.addChild(this.addCapRightButton(buttonWidth-20,0,randomColor(),buttonHeight,buttonHeight,s,''));
+        return btnCont;
+    }
+    addRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,s){
+        var btnCont = new Container();
+        btnCont.x = x;
+        btnCont.y = y;
+        btnCont.addChild(this.addRectButton(buttonHeight,0,c,buttonWidth-20,buttonHeight,s));
+        btnCont.addChild(this.addCapLeftButton(0,0,randomColor(),buttonHeight,buttonHeight,s,''));
+        return btnCont;
+    }
+    addTinyRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,s){
+        // console.log("x", x);
+        var btnCont = new Container();
+        btnCont.x = x;
+        btnCont.y = y;
+        btnCont.addChild(this.addRectButton(0,0,c,(buttonWidth*0.20),buttonHeight,s));
+        btnCont.addChild(this.addCapRightButton(buttonWidth-10,0,randomColor(),buttonHeight,buttonHeight,s,''));
+        return btnCont;
+    }
+    addTinyRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,s){
+        var btnCont = new Container();
+        btnCont.x = x;
+        btnCont.y = y;
+        btnCont.addChild(this.addRectButton(buttonHeight,0,c,(buttonWidth*0.20),buttonHeight,s,''));
+        btnCont.addChild(this.addCapLeftButton(0,0,randomColor(),buttonHeight,buttonHeight,s,''));
+        return btnCont;
+    }
+    addRectWithPillLeftButton(x,y,c,buttonWidth,buttonHeight,s){
+        var btnCont = new Container();
+        btnCont.x = x-30;
+        btnCont.y = y;
+        btnCont.addChild(this.addPillLeftButton(0,0,c,buttonWidth,buttonHeight,s));
+        btnCont.addChild(this.addRectButton(buttonWidth+10,0,randomColor(),15,buttonHeight,s,''));
+        return btnCont;
+    }
+    addRectWithPillRightButton(x,y,c,buttonWidth,buttonHeight,s){
+        var btnCont = new Container();
+        btnCont.x = x-30;
+        btnCont.y = y;
+        btnCont.addChild(this.addPillRightButton(25,0,c,buttonWidth,buttonHeight,s));
+        btnCont.addChild(this.addRectButton(0,0,randomColor(),15,buttonHeight,s,''));
+        return btnCont;
+    }
+    addTitledLeftPillButton(x,y,c,buttonWidth,buttonHeight,s){
+        var cont = new Container();
+        var crbtn = this.addRectWithCapLeftButton(x,0,c,buttonWidth,buttonHeight,s);
+        crbtn.x = 0;
+        cont.addChild(crbtn);
+        cont.addChild(this.addRectButton((s==1?75:90)+buttonWidth,0,randomColor(),15,buttonHeight,s,''));
+        cont.addChild(this.addText(buttonWidth+(s==1?67:86),-8,this.randomButtonTitle(),null,(s==1?46:56)+'px',randomColor()))
+        return cont;
+    }
+    addTitledRightPillButton(x,y,c,buttonWidth,buttonHeight,s){
+        var cont = new Container();
+        var crbtn = this.addRectWithCapRightButton(x,0,c,buttonWidth,buttonHeight,s);
+        crbtn.x = s==1?75:85;
+        cont.addChild(crbtn);
+        cont.addChild(this.addRectButton(0,0,randomColor(),15,buttonHeight,s,''));
+        cont.addChild(this.addText(20,-8,this.randomButtonTitle(),'start',(s==1?46:56)+'px',randomColor()))
+        return cont;
+    }
+
+    addTitledLeftButton(x,y,c,buttonWidth,buttonHeight,s){
+        var cont = new Container();
+        var crbtn = this.addRectButton(x,0,c,buttonWidth,buttonHeight,s);
+        crbtn.x = 0;
+        cont.addChild(crbtn);
+        cont.addChild(this.addRectButton((s==1?75:90)+buttonWidth,0,randomColor(),15,buttonHeight,s,''));
+        cont.addChild(this.addText(buttonWidth+(s==1?67:86),-8,this.randomButtonTitle(),null,(s==1?46:56)+'px',randomColor()))
+        return cont;
+    }
+    addTitledRightButton(x,y,c,buttonWidth,buttonHeight,s){
+        var cont = new Container();
+        var crbtn = this.addRectButton(x,0,c,buttonWidth,buttonHeight,s);
+        crbtn.x = s==1?75:85;
+        cont.addChild(crbtn);
+        cont.addChild(this.addRectButton(0,0,randomColor(),15,buttonHeight,s,''));
+        cont.addChild(this.addText(20,-8,this.randomButtonTitle(),'start',(s==1?46:56)+'px',randomColor()))
+        return cont;
+    }
+
+    addTitledRightTab(x,y,c,buttonWidth,buttonHeight,l){
+        var s=2;
+        var cont = new Container();
+
+        cont.addChild(this.addRectButton(0,0,c,150,buttonHeight,s,l));
+        cont.addChild(this.addText(155,-8,this.randomButtonTitle()+this.randomButtonTitle(),'start','56px',c))
+
+        cont.addChild(this.addCapRightButton(245,0,c,buttonHeight,buttonHeight,s,''));
+
+        return cont;
+    }
+    addTitledLeftTab(x,y,c,buttonWidth,buttonHeight,l){
+        var s=2;
+        var cont = new Container();
+
+        cont.addChild(this.addCapLeftButton(0,0,c,buttonHeight,buttonHeight,s,''));
+        cont.addChild(this.addText(130,-8,this.randomButtonTitle()+this.randomButtonTitle(),null,'56px',c))
+
+        cont.addChild(this.addRectButton(135,0,c,150,buttonHeight,s,l));
+        return cont;
+    }
+    addRightTab(x,y,c,buttonWidth,buttonHeight,l){
+        var s=2;
+        var cont = new Container();
+        cont.addChild(this.addRectButton(0,0,c,275,buttonHeight,s,l));
+        cont.addChild(this.addCapRightButton(280,0,c,buttonHeight,buttonHeight,s,''));
+        return cont;
+    }
+    addLeftTab(x,y,c,buttonWidth,buttonHeight,l){
+        var s=2;
+        var cont = new Container();
+        cont.addChild(this.addCapLeftButton(0,0,c,buttonHeight,buttonHeight,s,''));
+        cont.addChild(this.addRectButton(buttonHeight,0,c,275,buttonHeight,s,l));
+        return cont;
     }
 }
 class LCARS_PillButton extends LCARS_Button{
@@ -2128,10 +2084,11 @@ class LCARS_ButtonCol extends LCARS_Button{
             }else{
                 color = this.colors[i];
             }
-            // let btn = new LCARS_Button({type:this.type,x:0,y:i*(this.height+this.buttonMargin)});
-            //btn.y
-            buttonCont.addChild(new LCARS_Button({type:this.type,x:0,y:i*(this.height+this.buttonMargin),color:color}).build());
+            console.log('y',i*(this.height+this.buttonMargin))
+            buttonCont.addChild(new LCARS_Button({type:this.type,x:0,y:i*(this.height+this.buttonMargin),color:color,text:''}).build());
+            
         }
+        console.log(buttonCont.getBounds())
         return buttonCont;
     }
 }
