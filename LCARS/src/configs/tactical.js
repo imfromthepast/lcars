@@ -38,7 +38,7 @@ class LCARS_TACTICAL extends LCARS{
                         {text:'we kep',color:yellow,onclick:tabClick(4)}
                     ]}) 
                 ]
-            }) /*,
+            }),
             new LCARS_Section({
                 name:'status',
                 width:100,
@@ -134,7 +134,7 @@ class LCARS_TACTICAL extends LCARS{
                     new LCARS_Subheader({width:370,color:tan,text:'ga pdf',radius:[0,10,10,0]}),
                     new LCARS_Scanner({y:50,width:370,colors:[white,white,blue,tan,white],reticule:{x:200,y:80}}) //.Y(50).W(370).C([white,white,blue,tan,white]).R([200,80])
                 ]
-            })*/
+            })
         ];
         this.build();
     }
