@@ -20,7 +20,7 @@ class LCARS_TACTICAL extends LCARS_Panel{
 
         this.sections=[
             new LCARS_Section({
-                name:'Phaser Power Test',
+                name:'Phaser Power Status',
                 width:300,
                 header:new LCARS_Header({
                     text:'phaser power status',
@@ -29,7 +29,7 @@ class LCARS_TACTICAL extends LCARS_Panel{
                     margin:[0,20,100,0]
                 }),
                 body:[
-                    new LCARS_Subheader({radius:[15,0,0,15]}),
+                    new LCARS_Subheader({name:'subheader',radius:[15,0,0,15]}),
                     new LCARS_TitledTabs({x:10,y:50,tabs:[
                         {text:'al hoc',color:this.uiTheme.action,onclick:tabClick(1)},
                         {text:'rh jus',color:this.uiTheme.accent,onclick:tabClick(2)},
@@ -50,7 +50,7 @@ class LCARS_TACTICAL extends LCARS_Panel{
             new LCARS_Section({
                 name:'weapons',
                 width:420,
-                header:new LCARS_Header({color:this.uiTheme.warning,text:'weapons systems',margin:[0,20,100,0]}),
+                header:new LCARS_Header({color:this.uiTheme.accent,text:'weapons systems',margin:[0,20,100,0]}),
                 body:[
                     new LCARS_Readout({y:-90,rows:4,cols:[6,9,2]}),
                     new LCARS_Subheader({color:this.uiTheme.action}),

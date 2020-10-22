@@ -174,26 +174,32 @@ function handleJoystickClick(event){
 function tabClick(i){
     //console.log('tab click',i);
 }
-
-yellow = '#e1eea4';
-paleYellow = '#ece6c1';
-white = '#ece6c1';
-gold = '#eec331';
-blue = '#a0c0de';
-tan = '#d7a474';
-red = '#d20a15';
-salmon = 'salmon';
-gray = '#999';
-black = '#000';
-none = 'none';
-const standardUITheme = {
-    base:yellow,
-    accent:white,
-    emphasis:gold,
-    action:blue,
-    warning:salmon,
-    alert:red,
-    neutral:tan
+const yellowTheme = {
+    base:'yellow',
+    accent:'paleYellow',
+    emphasis:'gold',
+    neutral:'tan',
+    action:'blue',
+    warning:'paleRed',
+    alert:'red'
+}
+const redTheme = {
+    accent:'paleRed',
+    base:'red',
+    emphasis:'darkRed',
+    neutral:'tan',
+    action:'paleTan',
+    warning:'paleRed',
+    alert:'darkTan'
+}
+const blueTheme = {
+    accent:'paleBlue',
+    base:'blue',
+    emphasis:'darkBlue',
+    neutral:'gray',
+    action:'paleGray',
+    warning:'paleRed',
+    alert:'darkGray'
 }
 
 function joystickButtonFunction(bid,name){}
@@ -217,45 +223,69 @@ class LCARS_Object{
     x=0;
     y=0;
     width;
-    height;
-    color=this.black;    
-    yellow = '#e1eea4';
+    height;  
+    white = '#ece6c1';  
+
     paleYellow = '#ece6c1';
-    white = '#ece6c1';
+    yellow = '#e1eea4';
     gold = '#eec331';
+
+    paleBlue = '#cce5fc';
     blue = '#a0c0de';
-    darkBlue='#b0e0ee';
+    darkBlue='#728ea8';
+
+    paleTan = '#facfa7';
     tan = '#d7a474';
+    darkTan = '#997553';
+    
+    paleRed = 'salmon';
     red = '#d20a15';
-    salmon = 'salmon';
+    darkRed = 'darkred';
+    
+    paleGray='#ccc';
     gray = '#999';
+    darkGray='#555';
+
     black = '#000';
     none = 'none';
     buttonMargin=12;
-    colorList = [this.white,this.yellow,this.gold,this.blue,this.darkBlue,this.tan,this.red,this.salmon,this.gray,this.none];
-    randomColor(){
-        return this.colorList[rifi(0,(this.colorList.length - 1))];
-    } 
     uiTheme = {
         base:this.yellow,
         accent:this.white,
         emphasis:this.gold,
         action:this.blue,
-        warning:this.salmon,
+        warning:this.paleRed,
         alert:this.red,
         neutral:this.tan
     }
+    colorList = [this.white,this.yellow,this.gold,this.blue,this.darkBlue,this.tan,this.red,this.paleRed,this.gray,this.none];
+    randomColor(){
+        return this.colorList[rifi(0,(this.colorList.length - 1))];
+    } 
+    //color;
     getColorCode(c){
-        if(c=='yellow'){return this.yellow;}
+        if(c=='white'){return this.white;}
+
         else if(c=='paleYellow'){return this.paleYellow;}
-        else if(c=='white'){return this.white;}
+        else if(c=='yellow'){return this.yellow;}
         else if(c=='gold'){return this.gold;}
+
+        else if(c=='paleBlue'){return this.paleBlue;}
         else if(c=='blue'){return this.blue;}
         else if(c=='darkBlue'){return this.darkBlue;}
+
+        else if(c=='paleTan'){return this.paleTan;}
         else if(c=='tan'){return this.tan;}
+        else if(c=='darkTan'){return this.darkTan;}
+
+        else if(c=='paleRed'){return this.paleRed;}
         else if(c=='red'){return this.red;}
-        else if(c=='salmon'){return this.salmon;}
+        else if(c=='darkRed'){return this.darkRed;}
+
+        else if(c=='paleGray'){return this.paleGray;}
         else if(c=='gray'){return this.gray;}
+        else if(c=='darkGray'){return this.darkGray;}
+
         else if(c=='black'){return this.black;}
         else if(c=='none'){return this.none;}
         else{return c;}        
@@ -269,17 +299,8 @@ class LCARS_Object{
             if(opt.width)   this.width=opt.width;
             if(opt.height)  this.height=opt.height;
             if(opt.color)   this.color=opt.color;
-            if(opt.uiTheme) {
-                this.uiTheme.base=this.getColorCode(opt.uiTheme.base);
-                this.uiTheme.accent=this.getColorCode(opt.uiTheme.accent);
-                this.uiTheme.emphasis=this.getColorCode(opt.uiTheme.emphasis);
-                this.uiTheme.action=this.getColorCode(opt.uiTheme.action);
-                this.uiTheme.warning=this.getColorCode(opt.uiTheme.warning);
-                this.uiTheme.alert=this.getColorCode(opt.uiTheme.alert);
-                this.uiTheme.neutral=this.getColorCode(opt.uiTheme.neutral);
-                console.log('theme',this.uiTheme);
-            }
         }
+        console.log(this.name+' color',this.color);
     }
     get isObject(){return true;}
 }
@@ -288,7 +309,7 @@ class LCARS_Element extends LCARS_Object{
     margin=[0,0,0,0];
     radius=[0,0,0,0];
     text;
-    color=this.uiTheme.base;
+    // color=uiTheme.base;
     element;
     constructor(opt){
         super(opt);
@@ -322,7 +343,25 @@ class LCARS_Panel extends LCARS_Object{
         if(opt.sections) this.sections=opt.sections;        
         if(opt.id) this.canvasId = opt.id;
         // add uilayer to canvas
-        
+        if(opt.uiTheme) {
+            if(opt.uiTheme.base) this.uiTheme.base=this.getColorCode(opt.uiTheme.base);
+            if(opt.uiTheme.accent) this.uiTheme.accent=this.getColorCode(opt.uiTheme.accent);
+            if(opt.uiTheme.emphasis) this.uiTheme.emphasis=this.getColorCode(opt.uiTheme.emphasis);
+            if(opt.uiTheme.action) this.uiTheme.action=this.getColorCode(opt.uiTheme.action);
+            if(opt.uiTheme.warning) this.uiTheme.warning=this.getColorCode(opt.uiTheme.warning);
+            if(opt.uiTheme.alert) this.uiTheme.alert=this.getColorCode(opt.uiTheme.alert);
+            if(opt.uiTheme.neutral) this.uiTheme.neutral=this.getColorCode(opt.uiTheme.neutral);
+            console.log('theme', this.uiTheme);
+        }else{
+            //this.uiTheme = yellowTheme;
+            this.uiTheme.base=this.getColorCode(yellowTheme.base); //this.yellow;
+            this.uiTheme.accent=this.getColorCode(yellowTheme.accent); //this.paleYellow;
+            this.uiTheme.emphasis=this.getColorCode(yellowTheme.emphasis); //this.gold;
+            this.uiTheme.neutral=this.getColorCode(yellowTheme.neutral); //this.tan;
+            this.uiTheme.action=this.getColorCode(yellowTheme.action); //this.blue;
+            this.uiTheme.warning=this.getColorCode(yellowTheme.warning); //this.paleRed;
+            this.uiTheme.alert=this.getColorCode(yellowTheme.alert); //this.red;
+        }
     }
     build(){
         let cnvs = document.getElementById(this.canvasId);
@@ -365,8 +404,19 @@ class LCARS_Panel extends LCARS_Object{
 			const margin_top = header?headerMargins[0]:elementMargins[0];
             x+=margin_left;
             y+=margin_top;
-            if(sec.header) sec.header.width = sec.width;
-            if(sec.footer) sec.footer.width = sec.width;
+            if(sec.header){
+                sec.header.width = sec.width;
+                if(!sec.header.color) sec.header.color=this.uiTheme.base;
+            }
+            if(sec.body){
+                sec.body.forEach(el=>{
+                    if(!el.color) el.color=this.uiTheme.base;
+                })
+            }
+            if(sec.footer){
+                sec.footer.width = sec.width;
+                if(!sec.footer.color) sec.footer.color=this.uiTheme.base;
+            }
             sec.x=x;
             sec.y=y;
             sec.height=this.innerHeight;
@@ -576,7 +626,7 @@ class LCARS_Footer extends LCARS_Header{
 class LCARS_Elbow extends LCARS_Header{
     size;
     dir;
-    color=this.uiTheme.base;
+    //color=this.uiTheme.base;
     constructor(opt){
         super(opt);
         if(opt.size)    this.size=opt.size;
