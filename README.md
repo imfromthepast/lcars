@@ -5,7 +5,7 @@ Canvas library for making LCARS styled UI
 This project is designed to allow the creation of LCARS style UI using the HTML canvas tag. The library is dependant on createjs and isjs. It offers three levels of customization:
 - Loading existing layouts
 - Using pre-built components to built layouts
-- extending existing components to build new ones
+- Extending existing components to build new ones
 
 Examples for all three are included in this readme file.
 
