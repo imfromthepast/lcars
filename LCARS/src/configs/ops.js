@@ -8,164 +8,107 @@
  |  $$$$$$/| $$      |  $$$$$$/
   \______/ |__/       \______/ 
 */
-class LCARS__OPS extends LCARS{
-    constructor(id,debug){
-        super({n:'ops',w:2500,h:690,g:20,id:id},debug);
-        this.setSections([
-            {
-                y: 0,
-                w: 200, 
-                header: new LCARS__Header()
-                    .H(200)
-                    .R([20,0,0,20])
-                    .C(yellow)
-                    .M([0,20,100,0])
-                    .T('emergency override'),
+class LCARS_OPS extends LCARS_Panel{
+    id;
+    name='ops';
+    width=2420;
+    height=690;
+    padding=20;
+    debug=false;
+    constructor(opt){
+        super(opt);
+        this.sections=[
+            new LCARS_Section({
+                name: 'override',
+                width: 200, 
+                header: new LCARS_Header({height:200,radius:[20,0,0,20],color:this.uiTheme.base,margin:[0,20,100,0],text:'emergency override'}),
                 body: [               
-                    new LCARS__Subheader().W(200).C(gold).R([15,0,0,15]).T('engineering systems'),
-                    new LCARS__ButtonGroups().X(10).Y(40).Q(3).T(['titled-pill-left']),
-                    new LCARS__ButtonGroups().X(10).Y(180).Q(3).T(['titled-pill-right'])
+                    new LCARS_Subheader({width:200,color:this.uiTheme.emphasis,radius:[15,0,0,15],text:'engineering systems'}),
+                    new LCARS_ButtonGroups({x:10,y:50,rows:3, cols:['titled-pill-left']}),
+                    new LCARS_ButtonGroups({x:10,y:190,rows:3,cols:['titled-pill-right']})
                 ],
-                footer: new LCARS__Header()
-                    .H('xs')
-                    .C(tan)
-            },
-            {
-                y: 0,
-                w: 400,
-                header: new LCARS__Header()
-                    .H(200)
-                    .R([0,0,0,0])
-                    .C(yellow)
-                    .M([0,40,100,0])
-                    .T('warp drive systems'),
+                footer: new LCARS_Footer({color:this.uiTheme.neutral,radius:[10,0,0,10]})
+            }),
+            new LCARS_Section({
+                name: '',
+                width: 400,
+                header: new LCARS_Header({height:200,margin:[0,40,100,0],text:'warp drive systems'}),
                 body: [                
-                    new LCARS__Subheader().W(400).C(yellow).T('power consumption'),
-                    // new LCARS__ButtonGroups().X(10).Y(40).Q(6).T(['pill','titled-pill-right'])
-                    {
-                        type:'textblock',
-                        header:'atmospheric process',
-                        rows:8,
-                        cols:[6,2,6,6,2,6],
-                        x:0,
-                        y:40
-                    },
-                    {
-                        type:'textblock',
-                        header:'',
-                        rows:8,
-                        cols:[2,8,4],
-                        x:210,
-                        y:40
-                    },
-                    {
-                        type:'textblock',
-                        header:'',
-                        rows:8,
-                        cols:[3,2,4],
-                        x:320,
-                        y:40
-                    }
+                    new LCARS_Subheader({width:400,text:'power consumption'}),
+                    new LCARS_ReadoutDisplay({header:'atmospheric process',rows:8,cols:[6,2,6,6,2,6],x:0,y:50}),
+                    new LCARS_ReadoutDisplay({header:'',rows:8,cols:[2,8,4],x:210,y:50}),
+                    new LCARS_ReadoutDisplay({header:'',rows:8,cols:[3,2,4],x:320,y:50})
                 ],
-                footer: new LCARS__Header()
-                    .H('xs')
-                    .C(tan)
-            },
-            // spacerSection,
-            {
-                y: 0,
-                w: 200,
-                header: new LCARS__Header()
-                    .H(200)
-                    .R([0,0,0,0])
-                    .C(yellow)
-                    .M([0,20,100,0])
-                    .T('operational priorities'),
+                footer: new LCARS_Footer({color:this.uiTheme.neutral})
+            }),
+            new LCARS_Section({
+                name: '',
+                width: 200,
+                header: new LCARS_Header({height:200,margin:[0,20,100,0],text:'operational priorities'}), 
                 body: [               
-                    new LCARS__Subheader().W(200).C(gold).T('lcars mode select'),
-                    new LCARS__ButtonGroups().X(10).Y(40).Q(6).T(['titled-pill-right'])
+                    new LCARS_Subheader({color:this.uiTheme.emphasis,text:'lcars mode select'}),
+                    new LCARS_ButtonGroups({x:0,y:50,rows:6,cols:['titled-pill-right']})
                 ],
-                footer: new LCARS__Header().H('xs').C(tan)
-            },
-            // joystickSection,
-            {
-                y:0,
-                w:360,
-                header: new LCARS__Header()
-                    .H(200)
-                    .R([0,0,0,0])
-                    .C(yellow)
-                    .M([0,0,100,0])
-                    .T('operations management','left'),
+                footer: new LCARS_Footer({color:this.uiTheme.neutral})
+            }),
+            new LCARS_Section({
+                name: 'joystick',
+                width: 360,
+                header: new LCARS_Header({height:200,margin:[0,0,100,0],text:'operations management',alignment:'start'}),
                 body: [               
-                    new LCARS__Subheader().W(360),
-                    new LCARS__ButtonGroups().X(10).Y(40).Q(6).T(['pill','titled-pill-left'])
+                    new LCARS_Subheader({width:360}),
+                    new LCARS_ButtonGroups({x:0,y:50,rows:6,cols:['pill','titled-pill-left','cap-right']})
                 ],
-                footer: new LCARS__Header().H('xs').C(yellow)
-            },
-            {
-                y:0,
-                w:110,
-                header: new LCARS__Header()
-                    .H(240)
-                    .R([0,120,0,-40])
-                    .C(yellow)
-                    .M([0,20,0,0]),
-                    //elbow_lg_left,
+                footer: new LCARS_Footer()
+            }),
+            new LCARS_Section({
+                name: 'elbox',
+                width: 110,
+                header: new LCARS_Elbow({size:'lg',dir:'left',height:240,margin:[0,20,0,0]}),
                 body: [                                               
-                    new LCARS__Header().X(40).W(70).H(40),                                             
-                    new LCARS__Header().X(40).Y(60).W(70).H(30).C(blue),                                             
-                    new LCARS__Header().X(40).Y(110).W(70).H(285)
+                    new LCARS_Header({x:40,y:0,width:70,height:40}),                                            
+                    new LCARS_Header({x:40,y:60,width:70,height:30,color:this.uiTheme.action}),                                             
+                    new LCARS_Header({x:40,y:110,width:70,height:285})
                 ],
-                footer:  new LCARS__Header().H('xs').C(yellow).R([0,0,15,0])
-            },
-            {
-                y:0,
-                w:360,
-                m:[0,20,0,0],
+                footer:  new LCARS_Footer({color:this.uiTheme.base,radius:[0,0,15,0]})
+            }),
+            new LCARS_Section({
+                name: 'tabs',
+                width: 360,
+                margin:[0,20,0,0],
                 body:[
                     new LCARS_TitledTabs({x:70,tabs:[
-                        {text:'departmental',color:blue},
-                        {text:'status',color:blue},
-                        {text:'communications',color:white},
-                        {text:'mission status',color:gold},
+                        {text:'departmental',color:this.uiTheme.action},
+                        {text:'status',color:this.uiTheme.action},
+                        {text:'communications',color:this.uiTheme.accent},
+                        {text:'mission status',color:this.uiTheme.emphasis},
                     ]}),
-                    new LCARS__Header().Y(300).W(350).R([50,0,0,50]).H(350),                        
-                    new LCARS__Header().Y(330).W(250).R([30,0,0,10]).H(305).X(100).C(black),
-                    new LCARS__ButtonGroups().X(130).Y(340).Q(6).T(['pill','pill'])
-    
+                    new LCARS_Header({y:300,width:350,radius:[50,0,0,50],height:350}),                       
+                    new LCARS_Header({x:100,y:330,width:250,radius:[30,0,0,10],height:305,color:this.black}),
+                    new LCARS_ButtonGroups({x:60,y:350,rows:6,cols:['pill','pill']})
                 ]
-            },
-            {
-                y:0,
-                w:200,
-                header: new LCARS__Header()
-                    .H(200)
-                    .R([0,0,0,0])
-                    .C(blue)
-                    .M([0,20,100,0]),
+            }),
+            new LCARS_Section({
+                name: '',
+                width: 200,
+                header: new LCARS_Header({height:200,color:this.uiTheme.action,margin:[0,20,100,0]}),
                 body: [ 
-                    new LCARS__Subheader().W(100), 
-                    new LCARS__ButtonGroups().X(10).Y(40).Q(6).T(['pill','pill'])
+                    new LCARS_Subheader({width:200}),
+                    new LCARS_ButtonGroups({x:0,y:50,rows:6,cols:['pill','pill']})
                 ],
-                footer: new LCARS__Header().H('xs').C(yellow)
-            },
-            {
-                y:0,
-                w:400,
-                header: new LCARS__Header()
-                    .H(200)
-                    .R([0,20,20,0])
-                    .C(yellow)
-                    .M([0,20,100,0])
-                    .T('communications'),
+                footer: new LCARS_Footer()
+            }),
+            new LCARS_Section({
+                name: 'comms',
+                width: 400,
+                header: new LCARS_Header({height:200,margin:[0,20,100,0],text:'communications',radius:[0,20,20,0]}),
                 body: [ 
-                    new LCARS__Subheader().W(360).T('channel select').R([0,15,15,0]), 
-                    new LCARS__ButtonGroups().X(10).Y(40).Q(6).T(['rect-pill-left','rect','rect-pill-right'])
+                    new LCARS_Subheader({width:400,text:'channel select',radius:[0,15,15,0]}), //.W(360).T('').R([0,15,15,0]), 
+                    new LCARS_ButtonGroups({x:0,y:50,rows:6,cols:['rect-pill-left','rect','rect-pill-right']}) //.X(10).Y(40).Q(6).T(['rect-pill-left','rect','rect-pill-right'])
                 ],
-                footer: new LCARS__Header().H('xs').C(yellow)
-            }
-        ])
+                footer: new LCARS_Footer({radius:[0,10,10,0]})
+            })
+        ];
         this.build();
     }
 }
