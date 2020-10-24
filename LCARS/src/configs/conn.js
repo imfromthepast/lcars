@@ -46,7 +46,7 @@ class LCARS_CON extends LCARS_Panel{
                 width:420,
                 header:new LCARS_Header({height:210,margin:[0,40,100,0],text:'flight control'}),
                 body:[
-                    new LCARS_Subheader({text:'navigation to cache',height:350,radius:[50,0,0,50]}),
+                    new LCARS_Subheader({text:'navigation to cache',radius:[10,0,0,10]}),
                     new LCARS_Header({height:295,width:445,x:75,y:30,color:this.black,radius:[50,0,0,10]}),
                     new LCARS_ButtonGroups({x:50,y:90,rows:5,cols:['rect-pill-right','pill','pill']})
                 ]
