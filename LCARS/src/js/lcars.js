@@ -199,9 +199,14 @@ const blueTheme = {
     neutral:'gray',
     action:'paleGray',
     warning:'paleRed',
-    alert:'darkGray'
+    alert:'red'
 }
 
+//colorList = [this.white,this.yellow,this.gold,this.blue,this.darkBlue,this.tan,this.red,this.paleRed,this.gray,this.none];
+colorList = []
+function randomColor(){
+    return this.colorList[rifi(0,(this.colorList.length - 1))];
+} 
 function joystickButtonFunction(bid,name){}
 /*
  
@@ -224,8 +229,6 @@ class LCARS_Object{
     y=0;
     width;
     height;  
-    parentWidth;
-    parentHeight;
     panel={};
     section={};
 
@@ -263,10 +266,6 @@ class LCARS_Object{
         alert:this.red,
         neutral:this.tan
     }
-    colorList = [this.white,this.yellow,this.gold,this.blue,this.darkBlue,this.tan,this.red,this.paleRed,this.gray,this.none];
-    randomColor(){
-        return this.colorList[rifi(0,(this.colorList.length - 1))];
-    } 
     //color;
     getColorCode(c){
         if(c=='white'){return this.white;}
@@ -303,8 +302,6 @@ class LCARS_Object{
             if(opt.y)               this.y=opt.y;
             if(opt.width)           this.width=opt.width;
             if(opt.height)          this.height=opt.height;
-            if(opt.parentWidth)     this.parentWidth=opt.parentWidth;
-            if(opt.parentHeight)    this.parentHeight=opt.parentHeight;
             if(opt.color)           this.color=opt.color;
         }
         // console.log(this.name+' color',this.color);
@@ -317,7 +314,6 @@ class LCARS_Element extends LCARS_Object{
     radius=[0,0,0,0];
     text;
     // color=uiTheme.base;
-    element;
     constructor(opt){
         super(opt);
         if(opt){
@@ -369,6 +365,7 @@ class LCARS_Panel extends LCARS_Object{
             this.uiTheme.warning=this.getColorCode(yellowTheme.warning); //this.paleRed;
             this.uiTheme.alert=this.getColorCode(yellowTheme.alert); //this.red;
         }
+        colorList = [this.uiTheme.action,this.uiTheme.alert,this.uiTheme.base,this.uiTheme.accent,this.uiTheme.emphasis,this.uiTheme.neutral,this.uiTheme.warning];
     }
     build(){
         let cnvs = document.getElementById(this.canvasId);
@@ -387,14 +384,14 @@ class LCARS_Panel extends LCARS_Object{
         uilayer.name = 'uilayer';
         uilayer.x = this.padding/2;
         uilayer.y = this.padding/2;
-        uilayer.width = innerWidth;
-        uilayer.height = innerHeight;
+        uilayer.width = this.innerWidth;
+        uilayer.height = this.innerHeight;
         var x = 0,y = 0;
         this.sections.forEach(sec=>{
             // let sec = s.build();
-            sec.panel=this;
+            sec.panel=this.config();
             var header = sec.header;
-            console.log('section',sec)
+            console.log('section',sec);
             /*
             var headerMargins = [0,0,0,0];
             if(is.not.undefined(header)){
@@ -415,7 +412,7 @@ class LCARS_Panel extends LCARS_Object{
             y+=margin_top;
             */
             if(sec.header){
-                sec.header.width = sec.width-this.padding;
+                // sec.header.width = sec.width-this.padding;
                 if(!sec.header.color) sec.header.color=this.uiTheme.base;
             }
             if(sec.body){
@@ -459,6 +456,17 @@ class LCARS_Panel extends LCARS_Object{
     doFourTimesPerSecond(){}
     doTwicePerSecond(){}
     doOncePerSecond(){}
+    config(){
+        return {
+            x:this.x,
+            y:this.y,
+            width:this.width,
+            height:this.height,
+            padding:this.padding,
+            uiTheme:this.uiTheme,
+            debug:this.debug
+        }
+    }
 }
 
 class LCARS_Section extends LCARS_Element {
@@ -518,33 +526,68 @@ class LCARS_Section extends LCARS_Element {
         this.body.forEach(el=>{
             if(el.isObject){
                 // console.log('el',el)
-                el.section=this;
-                if(is.undefined(el.width)) el.width=this.width-20; //this.padding;
+                el.panel = this.panel;
+                el.section=this.config();
+                if(is.undefined(el.width)) el.width=this.width-this.panel.padding;
                 bodyCont.addChild(el.build());
             }
         })
+        //let bodyBounds = bodyCont.getBounds();
+        //if(bodyBounds) this.width=bodyBounds.width+20;
+        if(this.panel.debug) bodyCont.addChild(new LCARS_Debug({color:'green',width:this.width-this.panel.padding,height:bodyHeight}).build());
+        
         //headerCont.x=10; //this.padding/2;
-        footerCont.y=footerY;
-        if(this.footer!= null) footerCont.addChild(this.footer.build());
-        //console.log('footerCont',footerCont)
-        if(this.header!=null) headerCont.addChild(this.header.build());
+        footerCont.y=this.height-footerHeight-this.panel.padding; //footerY;
+        if(this.footer!= null){
+            if(!this.footer.width) this.footer.width=this.width-this.panel.padding;
+            footerCont.addChild(this.footer.build());
+        }
+        
+        if(this.header!=null){
+            if(!this.header.width) this.header.width=this.width-this.panel.padding;
+            this.header.section=this.config();
+            this.header.panel=this.panel;
+            headerCont.addChild(this.header.build());
+        }
         sectionCont.addChild(headerCont,leftSidebarCont,bodyCont,rightSidebarCont,footerCont);
         sectionCont.y=10; //this.padding/2;
         sectionCont.x=10; //this.padding/2;
+        if(this.panel.debug) sectionCont.addChild(new LCARS_Debug({color:'purple',width:this.width-this.panel.padding,height:this.height-this.panel.padding}).build());
         cont.addChild(sectionCont);
-        if(this.panel.debug){            
-            var boundingBox = new Shape();
-            boundingBox.graphics.ss(2).beginStroke('#fff').drawRect(0,0,this.width,this.height);
-            var txtbg = new Shape();
-            txtbg.graphics.beginFill('rgba(255,255,255,0.75)').rect(5,5,this.width-10,25);
-            var txt = new Text(makeCap(this.width+'x'+this.height),"20px Arial",'#000');
-            txt.x=8;
-            txt.y=8;
-            cont.addChild(boundingBox,txtbg,txt);
-        }
+        if(this.panel.debug) cont.addChild(new LCARS_Debug({width:this.width,height:this.height,text:this.width+'x'+this.height}).build());
+        
         cont.x=this.x;
         cont.y=this.y;
         return cont;        
+    }
+    config(){
+        return {
+            x:this.x,
+            y:this.y,
+            width:this.width,
+            height:this.height
+        }
+    }
+}
+class LCARS_Debug extends LCARS_Object{
+    text='';
+    color='#fff'
+    constructor(opt){
+        super(opt);
+        if(opt.text) this.text=opt.text;
+        if(opt.color) this.color=opt.color;
+    }
+    build(){
+        var cont = new Container();
+        var boundingBox = new Shape();
+        boundingBox.graphics.ss(4).beginStroke(this.color).drawRect(0,0,this.width,this.height);
+        var txtbg = new Shape();
+        if(this.text) txtbg.graphics.beginFill('rgba(255,255,255,0.75)').rect(5,5,this.width-10,25);
+        var txt = new Text(makeCap(this.text),"20px Arial",'#000');
+        txt.x=8;
+        txt.y=8;
+        cont.addChild(boundingBox,txtbg,txt);
+        return cont;
     }
 }
 class LCARS_Section_1w extends LCARS_Section{
@@ -621,7 +664,7 @@ class LCARS_Header extends LCARS_Element{
         if(opt){
             if(opt.height) this.height=opt.height;
             if(opt.text) this.text=opt.text;
-            if(opt.width) this.width= opt.width;
+            if(opt.width) this.width=opt.width;
             if(opt.size) this.size=opt.size;
             if(opt.alignment) this.alignment=opt.alignment;
             if(opt.valign) this.valign=opt.valign;
@@ -658,7 +701,7 @@ class LCARS_Subheader extends LCARS_Header{
     valign='top';
     constructor(opt){
         super(opt);
-        //if(opt.height) this.height=opt.height;
+        if(opt.height) this.height=opt.height;
         if(opt.size) this.size=opt.size; 
         if(opt.alignment) this.alignment = opt.alignment;
         if(opt.valign) this.valign=opt.valign;
@@ -738,6 +781,27 @@ class LCARS_Elbow extends LCARS_Header{
         }
     }
     build(){
+        let widthMod = 0;
+        let heightMod = 0;
+        let xMod = 0;
+        if(this.size=='sm'){
+            widthMod=-10;
+            heightMod=30;
+            xMod=-10;
+        }
+        if(this.size=='md'){
+            widthMod=0;
+            heightMod=20;
+            xMod=-20;
+        }
+        if(this.size=='lg'){
+            widthMod=20;
+            heightMod=0;
+            xMod=-40;
+        }
+        this.height=this.height-heightMod;
+        this.width = this.width+this.panel.padding+widthMod;
+        this.x=this.dir=='left'?this.x+xMod:this.x;
         return super.build();
     }
 }
@@ -766,7 +830,7 @@ class LCARS_Joystick extends LCARS_Element{
         cont.x=this.x;
         cont.y=this.y;
         var base = new Shape();
-        base.graphics.beginFill(this.uiTheme.action).dc(100,100,100);
+        base.graphics.beginFill(this.panel.uiTheme.action).dc(100,100,100);
         var buttons = new Container();
         var cross = new Shape();    
         var w = 40;
@@ -775,7 +839,7 @@ class LCARS_Joystick extends LCARS_Element{
         var w2 = w1+w;
         var l1 = (200-l)/2;
         var l2 = l1+l;
-        cross.graphics.beginFill(this.uiTheme.base).setStrokeStyle(4).beginStroke(this.black).lt(w1,l1).lt(w2,l1).lt(w2,w1).lt(l2,w1).lt(l2,w2).lt(w2,w2).lt(w2,l2).lt(w1,l2).lt(w1,w2).lt(l1,w2).lt(l1,w1).lt(w1,w1).cp().beginFill(this.c1).dr(w1,0-5,w,w).beginFill(this.c2).dr(l2,w1,w,w).beginFill(this.c3).dr(w1,l2,w,w).beginFill(this.c4).dr(l1-w,w1,w,w);
+        cross.graphics.beginFill(this.panel.uiTheme.base).setStrokeStyle(4).beginStroke(this.black).lt(w1,l1).lt(w2,l1).lt(w2,w1).lt(l2,w1).lt(l2,w2).lt(w2,w2).lt(w2,l2).lt(w1,l2).lt(w1,w2).lt(l1,w2).lt(l1,w1).lt(w1,w1).cp().beginFill(this.c1).dr(w1,0-5,w,w).beginFill(this.c2).dr(l2,w1,w,w).beginFill(this.c3).dr(w1,l2,w,w).beginFill(this.c4).dr(l1-w,w1,w,w);
         var accents = new Shape();
         accents.graphics.ss(2).beginStroke(this.black).mt(w1,74).lt(w2,74).mt(w1,152).lt(w2,152).ss(3).mt(w1,45).lt(w2,45).mt(w1,69).lt(w2,69).mt(w1,128).lt(w2,128).mt(w1,138).lt(w2,138).mt(w1+16,15).lt(w1+16,30).mt(w1+23,15).lt(w1+23,30).ss(6).mt(w1+30,15).lt(w1+30,30).mt(l2+5,w2-10).lt(l2+20,w2-10).mt(w1+10,l2+5).lt(w1+10,l2+20).mt(l1-w+20,w1+10).lt(l1-w+35,w1+10)
         cross.clip = base;  
@@ -787,6 +851,7 @@ class LCARS_Joystick extends LCARS_Element{
         //     console.log("type: "+evt.type+" target: "+evt.target+" stageX: "+evt.stageX);
 
         // });
+        cont.setBounds(0,0,200,200);
         cross.addEventListener("click", handleJoystickClick);
         cont.addChild(base);
         cont.addChild(buttons);
@@ -862,6 +927,7 @@ class LCARS_Readout extends LCARS_Element{
     type='readout';
     rows=0;
     cols=[];
+    datumColors = [];
     constructor(opt){
         super(opt);
         if(opt.rows) this.rows=opt.rows;
@@ -874,6 +940,7 @@ class LCARS_Readout extends LCARS_Element{
         var x = 0;
         var y = 0;
         var maxX = 0;
+        this.datumColors = [this.panel.uiTheme.base,this.panel.uiTheme.action,this.panel.uiTheme.emphasis];
         for (var ri = 0; ri < this.rows; ri++) {
             for (var i = 0; i < this.cols.length; i++) {
                 var datum = this.makeDatum(rifi((this.cols[i]<4?2:this.cols[i]-2),this.cols[i]));
@@ -889,7 +956,7 @@ class LCARS_Readout extends LCARS_Element{
         }  
         return readout;
     }
-    datumColors = [this.uiTheme.base,this.uiTheme.action,this.uiTheme.emphasis];
+    
     makeDatum(datumLength){
         var datum = '';
         var datumval = 0;
@@ -912,10 +979,11 @@ class LCARS_ReadoutDisplay extends LCARS_Readout{
         if(opt.header) this.header=opt.header;
     }
     build(){
+        super.build();
         var header = new Text();
         header.font='20px Okuda';
         header.text = this.header==''?this.makeDatum(6).text:makeCap(this.header);
-        header.color = this.uiTheme.accent;
+        header.color = this.panel.uiTheme.accent;
         header.textAlign='end';
         var bbg = new Shape();
         bbg.graphics.f(this.black).r(5,0,165,25);
@@ -1228,7 +1296,7 @@ class LCARS_Button extends LCARS_Element{
         btnCont.x = x;
         btnCont.y = y;
         btnCont.addChild(this.addRectButton(0,0,c,buttonWidth-20,buttonHeight,s,l));
-        btnCont.addChild(this.addCapRightButton(buttonWidth-20,0,this.randomColor(),buttonHeight,buttonHeight,s,''));
+        btnCont.addChild(this.addCapRightButton(buttonWidth-20,0,randomColor(),buttonHeight,buttonHeight,s,''));
         return btnCont;
     }
     addRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,s){
@@ -1236,7 +1304,7 @@ class LCARS_Button extends LCARS_Element{
         btnCont.x = x;
         btnCont.y = y;
         btnCont.addChild(this.addRectButton(buttonHeight,0,c,buttonWidth-20,buttonHeight,s));
-        btnCont.addChild(this.addCapLeftButton(0,0,this.randomColor(),buttonHeight,buttonHeight,s,''));
+        btnCont.addChild(this.addCapLeftButton(0,0,randomColor(),buttonHeight,buttonHeight,s,''));
         return btnCont;
     }
     addTinyRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,s){
@@ -1245,7 +1313,7 @@ class LCARS_Button extends LCARS_Element{
         btnCont.x = x;
         btnCont.y = y;
         btnCont.addChild(this.addRectButton(0,0,c,(buttonWidth*0.20),buttonHeight,s));
-        btnCont.addChild(this.addCapRightButton(buttonWidth-10,0,this.randomColor(),buttonHeight,buttonHeight,s,''));
+        btnCont.addChild(this.addCapRightButton(buttonWidth-10,0,randomColor(),buttonHeight,buttonHeight,s,''));
         return btnCont;
     }
     addTinyRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,s){
@@ -1253,7 +1321,7 @@ class LCARS_Button extends LCARS_Element{
         btnCont.x = x;
         btnCont.y = y;
         btnCont.addChild(this.addRectButton(buttonHeight,0,c,(buttonWidth*0.20),buttonHeight,s,''));
-        btnCont.addChild(this.addCapLeftButton(0,0,this.randomColor(),buttonHeight,buttonHeight,s,''));
+        btnCont.addChild(this.addCapLeftButton(0,0,randomColor(),buttonHeight,buttonHeight,s,''));
         return btnCont;
     }
     addRectWithPillLeftButton(x,y,c,buttonWidth,buttonHeight,s){
@@ -1261,7 +1329,7 @@ class LCARS_Button extends LCARS_Element{
         btnCont.x = x-30;
         btnCont.y = y;
         btnCont.addChild(this.addPillLeftButton(0,0,c,buttonWidth,buttonHeight,s));
-        btnCont.addChild(this.addRectButton(buttonWidth+10,0,this.randomColor(),15,buttonHeight,s,''));
+        btnCont.addChild(this.addRectButton(buttonWidth+10,0,randomColor(),15,buttonHeight,s,''));
         return btnCont;
     }
     addRectWithPillRightButton(x,y,c,buttonWidth,buttonHeight,s){
@@ -1269,7 +1337,7 @@ class LCARS_Button extends LCARS_Element{
         btnCont.x = x-30;
         btnCont.y = y;
         btnCont.addChild(this.addPillRightButton(25,0,c,buttonWidth,buttonHeight,s));
-        btnCont.addChild(this.addRectButton(0,0,this.randomColor(),15,buttonHeight,s,''));
+        btnCont.addChild(this.addRectButton(0,0,randomColor(),15,buttonHeight,s,''));
         return btnCont;
     }
     addTitledLeftPillButton(x,y,c,buttonWidth,buttonHeight,s){
@@ -1277,8 +1345,8 @@ class LCARS_Button extends LCARS_Element{
         var crbtn = this.addRectWithCapLeftButton(x,0,c,buttonWidth,buttonHeight,s);
         crbtn.x = 0;
         cont.addChild(crbtn);
-        cont.addChild(this.addRectButton((s==1?75:90)+buttonWidth,0,this.randomColor(),15,buttonHeight,s,''));
-        cont.addChild(this.addText(buttonWidth+(s==1?67:86),-8,randomButtonTitle(),null,(s==1?46:56)+'px',this.randomColor()))
+        cont.addChild(this.addRectButton((s==1?75:90)+buttonWidth,0,randomColor(),15,buttonHeight,s,''));
+        cont.addChild(this.addText(buttonWidth+(s==1?67:86),-8,randomButtonTitle(),null,(s==1?46:56)+'px',randomColor()))
         return cont;
     }
     addTitledRightPillButton(x,y,c,buttonWidth,buttonHeight,s){
@@ -1286,8 +1354,8 @@ class LCARS_Button extends LCARS_Element{
         var crbtn = this.addRectWithCapRightButton(x,0,c,buttonWidth,buttonHeight,s);
         crbtn.x = s==1?75:85;
         cont.addChild(crbtn);
-        cont.addChild(this.addRectButton(0,0,this.randomColor(),15,buttonHeight,s,''));
-        cont.addChild(this.addText(20,-8,randomButtonTitle(),'start',(s==1?46:56)+'px',this.randomColor()))
+        cont.addChild(this.addRectButton(0,0,randomColor(),15,buttonHeight,s,''));
+        cont.addChild(this.addText(20,-8,randomButtonTitle(),'start',(s==1?46:56)+'px',randomColor()))
         return cont;
     }
 
@@ -1296,8 +1364,8 @@ class LCARS_Button extends LCARS_Element{
         var crbtn = this.addRectButton(x,0,c,buttonWidth,buttonHeight,s);
         crbtn.x = 0;
         cont.addChild(crbtn);
-        cont.addChild(this.addRectButton((s==1?75:90)+buttonWidth,0,this.randomColor(),15,buttonHeight,s,''));
-        cont.addChild(this.addText(buttonWidth+(s==1?67:86),-8,randomButtonTitle(),null,(s==1?46:56)+'px',this.randomColor()))
+        cont.addChild(this.addRectButton((s==1?75:90)+buttonWidth,0,randomColor(),15,buttonHeight,s,''));
+        cont.addChild(this.addText(buttonWidth+(s==1?67:86),-8,randomButtonTitle(),null,(s==1?46:56)+'px',randomColor()))
         return cont;
     }
     addTitledRightButton(x,y,c,buttonWidth,buttonHeight,s){
@@ -1305,8 +1373,8 @@ class LCARS_Button extends LCARS_Element{
         var crbtn = this.addRectButton(x,0,c,buttonWidth,buttonHeight,s);
         crbtn.x = s==1?75:85;
         cont.addChild(crbtn);
-        cont.addChild(this.addRectButton(0,0,this.randomColor(),15,buttonHeight,s,''));
-        cont.addChild(this.addText(20,-8,randomButtonTitle(),'start',(s==1?46:56)+'px',this.randomColor()))
+        cont.addChild(this.addRectButton(0,0,randomColor(),15,buttonHeight,s,''));
+        cont.addChild(this.addText(20,-8,randomButtonTitle(),'start',(s==1?46:56)+'px',randomColor()))
         return cont;
     }
 
@@ -1417,7 +1485,7 @@ class LCARS_ButtonCol extends LCARS_Button{
         for (var i = 0; i < this.rows; i++) {
             var color = '';
             if(this.colors.length==0){
-                color = this.randomColor();
+                color = randomColor();
             }else{
                 color = this.colors[i];
             }

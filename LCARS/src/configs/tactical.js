@@ -14,7 +14,6 @@ class LCARS_TACTICAL extends LCARS_Panel{
     width=3000;
     height=600;
     padding=20;
-    //debug=false;
     constructor(opt){
         super(opt);
         
@@ -99,7 +98,7 @@ class LCARS_TACTICAL extends LCARS_Panel{
                 header:new LCARS_Header({color:this.uiTheme.action,margin:[0,20,100,0],text:'auxilliary targeting scanners'}),
                 body:[
                     new LCARS_Readout({y:-90,rows:4,cols:[6,9,2,5,11,5,3,7,7]}),
-                    new LCARS_Subheader({width:500}),
+                    new LCARS_Subheader({xxwidth:500}),
                     new LCARS_Header({color:this.uiTheme.neutral,x:280,y:50,width:200,radius:[0,0,40,0]}),
                     new LCARS_Header({color:this.black,x:280,y:50,width:120,height:190,radius:[0,0,20,0]}),
                     new LCARS_ReadoutDisplay({y:35,rows:5,cols:[6,6,4,3,2,5,3],header:'shield harmonics'}),
