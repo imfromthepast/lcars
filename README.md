@@ -87,5 +87,18 @@ That is the basic layout of LCARS_Panel. Where you will be doing most of your wo
             ]
         })
     ]
+## Styling
+The constructor option "uiTheme" is used to set color themes to the panel. The Library comes with three themes; blue, yellow (default) and red. You can see each of these used in the sample html page. In order to role your own simply create a JSON and identify the values of each of the styles. For example, this is how the yellow theme is defined:
+    
+    const yellowTheme = {
+        base:'yellow',
+        accent:'paleYellow',
+        emphasis:'gold',
+        neutral:'tan',
+        action:'blue',
+        warning:'paleRed',
+        alert:'red'
+    }
 
+## To do
 When I get time I will document all the element classes here and comment the code.
