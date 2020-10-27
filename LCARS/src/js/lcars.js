@@ -421,7 +421,7 @@ class LCARS_Panel extends LCARS_Object{
                 })
             }
             if(sec.footer){
-                sec.footer.width = sec.width-this.padding;
+                if(!sec.footer.width) sec.footer.width = sec.width-this.padding;
                 if(!sec.footer.color) sec.footer.color=this.uiTheme.base;
             }
             sec.x=x;
@@ -1542,6 +1542,38 @@ class LCARS_Scanner extends LCARS_Element{
         scannerCont.addChild(screen,frame,topLeftFrame,reticule);
         return scannerCont;
 	}
+}
+class LCARS_Slider extends LCARS_Element {
+    ticks=7;
+    color=this.uiTheme.base;
+    constructor(opt){
+        super(opt);
+        if(opt.color) this.color=opt.color;
+    }
+    build(){
+        const padding = 5;
+        let cont = new Container();
+        const height=(this.height-((this.ticks-1)*padding))/this.ticks;
+        for(let i=0;i<this.ticks;i++){
+            let tlr=0,trr=0,blr=0,brr=0;
+            let tick=new Shape();
+            if(i==0){
+                tlr=this.width/2;
+                trr=this.width/2;
+            }
+            if(i==(this.ticks-1)){
+                blr=this.width/2;
+                brr=this.width/2;
+            }
+            tick.alpha=0.5;
+            tick.graphics.beginFill(this.color).rc(0,i*(height+padding),this.width,height,tlr,trr,brr,blr);
+            cont.addChild(tick);
+        }
+        cont.x=this.x;
+        cont.y=this.y;
+
+        return cont;
+    }
 }
 
 (function() {

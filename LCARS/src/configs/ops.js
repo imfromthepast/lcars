@@ -20,7 +20,7 @@ class LCARS_OPS extends LCARS_Panel{
             new LCARS_Section({
                 name: 'override',
                 width: 220, 
-                header: new LCARS_Header({height:200,radius:[20,0,0,20],color:this.uiTheme.base,margin:[0,20,100,0],text:'emergency override'}),
+                header: new LCARS_Header({height:200,radius:[20,0,0,20],color:this.uiTheme.accent,margin:[0,20,100,0],text:'emergency override'}),
                 body: [               
                     new LCARS_Subheader({color:this.uiTheme.active,radius:[15,0,0,15],text:'engineering systems'}),
                     new LCARS_ButtonGroups({x:5,y:50,rows:5, cols:['titled-pill-left']})
@@ -30,7 +30,7 @@ class LCARS_OPS extends LCARS_Panel{
             new LCARS_Section({
                 name: '',
                 width: 420,
-                header: new LCARS_Header({height:200,margin:[0,40,100,0],text:'warp drive systems'}),
+                header: new LCARS_Header({color:this.uiTheme.emphasis,height:200,margin:[0,40,100,0],text:'warp drive systems'}),
                 body: [                
                     new LCARS_Subheader({color:this.uiTheme.emphasis,text:'power consumption'}),
                     new LCARS_ReadoutDisplay({header:'atmospheric process',rows:6,cols:[6,2,6,6,2,6],x:0,y:50}),
@@ -41,9 +41,9 @@ class LCARS_OPS extends LCARS_Panel{
             }),
             new LCARS_Section({
                 width:100,
-                header: new LCARS_Header({margin:[0,40,100,0]}),
+                header: new LCARS_Header({margin:[0,40,100,0],color:this.uiTheme.action}),
                 body:[
-                    new LCARS_Header({height:285})
+                    new LCARS_Header({height:285,color:this.uiTheme.accent})
                 ],
                 footer: new LCARS_Footer({color:this.uiTheme.neutral})
             }),
@@ -60,7 +60,7 @@ class LCARS_OPS extends LCARS_Panel{
             new LCARS_Section({
                 name:'joystick',
                 width:220,
-                header:new LCARS_Header({height:200,margin:[0,20,100,0]}),
+                header:new LCARS_Header({color:this.uiTheme.action,height:200,margin:[0,20,100,0]}),
                 body:[
                     new LCARS_Subheader({color:this.uiTheme.active}),
                     new LCARS_Readout({y:-90,x:90,rows:4,cols:[3,2,5,3]}),
@@ -73,10 +73,10 @@ class LCARS_OPS extends LCARS_Panel{
                 width: 320,
                 header: new LCARS_Header({height:200,width:280,margin:[0,0,100,0],text:'operations management',alignment:'start'}),
                 body: [               
-                    new LCARS_Subheader({}),
+                    new LCARS_Subheader({color:this.uiTheme.neutral}),
                     new LCARS_ButtonGroups({x:0,y:50,rows:5,cols:['pill','titled-pill-left']})
                 ],
-                footer: new LCARS_Footer({width:500})
+                footer: new LCARS_Footer({width:350})
             }),
             new LCARS_Section({
                 name: 'elbow',
@@ -113,7 +113,7 @@ class LCARS_OPS extends LCARS_Panel{
                     new LCARS_Subheader({}),
                     new LCARS_ButtonGroups({x:0,y:50,rows:5,cols:['pill']})
                 ],
-                footer: new LCARS_Footer()
+                footer: new LCARS_Footer({color:this.uiTheme.neutral})
             }),
             new LCARS_Section({
                 name: 'comms',
