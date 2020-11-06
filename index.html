@@ -52,7 +52,6 @@
             console.log('tab one click');
         }
         let trans = new LCARS_Panel({id:'trans',uiTheme:yellowTheme,debug:false,width:2500,height:630}); //,bgimgsrc:'src/img/trans.jpg'}); 
-        /**/
         trans.sections=[
             new LCARS_Section({
                 width:220,
@@ -60,7 +59,7 @@
                 body:[
                     new LCARS_Subheader({text:''}),
                     new LCARS_ButtonGroups({rows:5,cols:['titled-pill-left'],y:50,x:5}),
-                    
+
                 ],
                 footer:new LCARS_Footer()
             }),
@@ -151,7 +150,6 @@
                 ]
             })
         ]
-        /**/
         trans.build();
 
     </script>
