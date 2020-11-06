@@ -3,8 +3,8 @@
         <script type="text/javascript" src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
         <script type="text/javascript" src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script>
         <script type="text/javascript" src="src/js/isjs.js"></script>
-        <!-- <script type="text/javascript" src="https://code.createjs.com/soundjs-0.6.2.min.js"></script> -->
-        <!-- <script type="text/javascript" src="src/soundjs.min.js"></script> -->
+        <script src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
+        <!-- <script type="text/javascript" src="src/js/soundjs.min.js"></script> -->
         <link rel="stylesheet" href="src/lcars.css"></link>
         <style>
             body{
@@ -15,8 +15,8 @@
         <!-- Place this tag in your head or just before your close body tag. -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>
     </head>
-    <body>
-        <h1>LCARS JavaScript Library</h1>
+    <body onload="loadSounds();">
+        <h1>LCARS UI JavaScript Library</h1>
         <!-- Place this tag where you want the button to render. -->
         <a class="github-button" href="https://github.com/imfromthepast/lcars/" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Download imfromthepast/lcars on GitHub">Visit Repo</a><h2>Tactical Layout</h2>
         <canvas id="tac"></canvas> 
@@ -32,18 +32,35 @@
     <script type="text/javascript" src="src/configs/conn.js"></script>
     <script type="text/javascript" src="src/configs/ops.js"></script>
     <script>  
-        
+       
+        function doFourTimesPerSecond(){
+            console.log('tick');
+        }
         let tac = new LCARS_TACTICAL({id:'tac',uiTheme:blueTheme,debug:false});
+        function updateCanvas(){
+            tac.lcarsCanvas.update();
+        }        
+        function doFourTimesPerSecond(){}
+        function doTwicePerSecond(){}
+        function doOncePerSecond(){
+            console.log('second')
+        }
+
         let con = new LCARS_CON({id:'con',debug:false});
         let ops = new LCARS_OPS({id:'ops',uiTheme:redTheme,debug:false}); 
-        let trans = new LCARS_Panel({id:'trans',uiTheme:yellowTheme,debug:false,width:2500,height:630}); 
+        function tabOneClick(){
+            console.log('tab one click');
+        }
+        let trans = new LCARS_Panel({id:'trans',uiTheme:yellowTheme,debug:false,width:2500,height:630}); //,bgimgsrc:'src/img/trans.jpg'}); 
+        /**/
         trans.sections=[
             new LCARS_Section({
                 width:220,
                 header:new LCARS_Header({radius:[20,0,0,20],text:'sequence select',margin:[0,20,100,0]}),
                 body:[
                     new LCARS_Subheader({text:''}),
-                    new LCARS_ButtonGroups({rows:5,cols:['titled-pill-left'],y:50,x:5})
+                    new LCARS_ButtonGroups({rows:5,cols:['titled-pill-left'],y:50,x:5}),
+                    
                 ],
                 footer:new LCARS_Footer()
             }),
@@ -62,7 +79,7 @@
                     new LCARS_TitledTabs({
                         y:0,
                         tabs:[
-                            {text:'level 1',color:trans.uiTheme.base},
+                            {text:'level 1',color:trans.uiTheme.base,onClickFunction:tabOneClick},
                             {text:'level 2',color:trans.uiTheme.emphasis},
                             {text:'level 3',color:trans.uiTheme.neutral},
                             {text:'level 4',color:trans.uiTheme.accent}
@@ -81,7 +98,7 @@
                         reticule:{x:100,y:80}
                     }),
                     new LCARS_Subheader({y:300}),
-                    new LCARS_Joystick({y:350,x:0,color:trans.uiTheme.action})
+                    new LCARS_Joystick({y:350,x:0,color:trans.uiTheme.emphasis})
                 ],
                 footer:new LCARS_Footer()
             }),
@@ -134,6 +151,7 @@
                 ]
             })
         ]
+        /**/
         trans.build();
 
     </script>
