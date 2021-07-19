@@ -32,7 +32,7 @@
     <script type="text/javascript" src="src/configs/conn.js"></script>
     <script type="text/javascript" src="src/configs/ops.js"></script>
     <script>  
-       
+        
         function doFourTimesPerSecond(){
             console.log('tick');
         }
@@ -55,7 +55,7 @@
         trans.sections=[
             new LCARS_Section({
                 width:220,
-                header:new LCARS_Header({radius:[20,0,0,20],text:'sequence select',margin:[0,20,100,0]}),
+                header:new LCARS_Header({color:trans.uiTheme.emphasis,radius:[20,0,0,20],text:'sequence select',margin:[0,20,100,0]}),
                 body:[
                     new LCARS_Subheader({text:''}),
                     new LCARS_ButtonGroups({rows:5,cols:['titled-pill-left'],y:50,x:5}),
@@ -85,7 +85,7 @@
                         ]
                     }),
                     new LCARS_Subheader({y:300, text:'targeting coordinate reference'}),
-                    new LCARS_ReadoutDisplay({y:350,text:'',rows:5,cols:[7,3,4,0,0,3,4,7,6]})
+                    new LCARS_ReadoutDisplay({y:355,text:'',rows:7,cols:[7,3,4,0,0,3,4,7,6,2]})
                 ]
             }),
             new LCARS_Section({
