@@ -126,41 +126,41 @@ function playSound(soundID) {
 }
 function handleClick(event){
     console.log(event);
-    this.playSound(rifi(1,4));
+    playSound(rifi(1,4));
 }
 function handleRectClick(event){
-    this.playSound(6);
-    console.log(event);
-    console.log('btn',event.target.parent.name);
-}
-function handleRectPillClick(event){
-    this.playSound(1);
-    console.log(event);
-    console.log('btn',event.target.parent.name);
-}
-function handleRectCapClick(event){
-    this.playSound(2);
-    console.log(event);
-    console.log('btn',event.target.parent.name);
-}
-function handleTabClick(event){
-    this.playSound(3); 
-    console.log(event);
-    console.log('btn',event.target.parent.name);           
-}
-function handlePillClick(event){
     playSound(4);
     console.log(event);
     console.log('btn',event.target.parent.name);
 }
+function handleRectPillClick(event){
+    playSound(1);
+    console.log(event);
+    console.log('btn',event.target.parent.name);
+}
+function handleRectCapClick(event){
+    playSound(2);
+    console.log(event);
+    console.log('btn',event.target.parent.name);
+}
+function handleTabClick(event){
+    playSound(3); 
+    console.log(event);
+    console.log('btn',event.target.parent.name);           
+}
+function handlePillClick(event){
+    playSound(rifi(2,4));
+    console.log(event);
+    console.log('btn',event.target.parent.name);
+}
 function handleCapClick(event){
-    this.playSound(4);
+    playSound(4);
     console.log(event);
     console.log('btn',event.target.parent.name);
 }
 function handleTitledPillClick(event){
-    this.playSound(4);
-    this.playSound(6);
+    playSound(4);
+    // playSound(6);
     console.log(event);
 }
 function handleJoystickClick(event){
@@ -168,21 +168,24 @@ function handleJoystickClick(event){
     var x=event.localX,y=event.localY;
     if(x>=80 && y<=35 && x<=120){
         console.log('up');
-        this.playSound(1);
+        playSound(1);
         joystickButtonFunction(1,event.target.name);
     }else if(x>=165 & y>=80 && y<=120){
         console.log('right');
-        this.playSound(2);
+        playSound(2);
         joystickButtonFunction(2,event.target.name);
     }else if(x>=80 && y>=165 && x<=120){
         console.log('down');
-        this.playSound(3);
+        playSound(3);
         joystickButtonFunction(3,event.target.name);
     }else if(x<=35 && y>=80 && y<=120){
         console.log('left');
-        this.playSound(4);
+        playSound(4);
         joystickButtonFunction(4,event.target.name);
     }
+}
+function tabClick(i){
+    //console.log('tab click',i);
 }
 const yellowTheme = {
     base:'yellow',
@@ -259,6 +262,7 @@ function handleTick(event){
 */
 class LCARS_Object{
     strClassName='Object';
+    constructorOptions={};
     name='';
     x=0;
     y=0;
@@ -305,6 +309,7 @@ class LCARS_Object{
     circleColors = [this.white,this.yellow,this.gold];
     constructor(opt){
         if(opt){
+            this.constructorOptions = opt;
             if(opt.name)            this.name=opt.name;
             if(opt.x)               this.x=opt.x;
             if(opt.y)               this.y=opt.y;
@@ -314,6 +319,11 @@ class LCARS_Object{
         }
     }
     get isObject(){return true;}
+    stringify(){
+        return 'new LCARS_'+this.strClassName+'('+
+            JSON.stringify(this.constructorOptions)+
+        +')';
+    }
 }
 class LCARS_Element extends LCARS_Object{
     strClassName='Element';
