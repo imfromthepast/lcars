@@ -3,8 +3,10 @@
         <script type="text/javascript" src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
         <script type="text/javascript" src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script>
         <script type="text/javascript" src="src/js/isjs.js"></script>
+
         <script src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
         <!-- <script type="text/javascript" src="src/js/soundjs.min.js"></script> -->
+
         <link rel="stylesheet" href="src/lcars.css"></link>
         <style>
             body{
@@ -20,6 +22,7 @@
         <!-- Place this tag where you want the button to render. -->
         <a class="github-button" href="https://github.com/imfromthepast/lcars/" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Download imfromthepast/lcars on GitHub">Visit Repo</a>
         <h2>Tactical Layout</h2>
+
         <canvas id="tac"></canvas> 
         <h2>Conn Layout</h2>       
         <canvas id="con"></canvas>    
@@ -37,6 +40,7 @@
         let tac = new LCARS_TACTICAL({id:'tac',uiTheme:blueTheme,debug:false});
         let con = new LCARS_CON({id:'con',debug:false});
         let ops = new LCARS_OPS({id:'ops',uiTheme:redTheme,debug:false}); 
+
 
         function tab1Click(){
             console.log('tab 1 click');
