@@ -3,8 +3,10 @@
         <script type="text/javascript" src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
         <script type="text/javascript" src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script>
         <script type="text/javascript" src="src/js/isjs.js"></script>
-        <!-- <script type="text/javascript" src="https://code.createjs.com/soundjs-0.6.2.min.js"></script> -->
-        <!-- <script type="text/javascript" src="src/soundjs.min.js"></script> -->
+
+        <script src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
+        <!-- <script type="text/javascript" src="src/js/soundjs.min.js"></script> -->
+
         <link rel="stylesheet" href="src/lcars.css"></link>
         <style>
             body{
@@ -15,10 +17,12 @@
         <!-- Place this tag in your head or just before your close body tag. -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>
     </head>
-    <body>
-        <h1>LCARS JavaScript Library</h1>
+    <body onload="loadSounds();">
+        <h1>LCARS UI JavaScript Library</h1>
         <!-- Place this tag where you want the button to render. -->
-        <a class="github-button" href="https://github.com/imfromthepast/lcars/" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Download imfromthepast/lcars on GitHub">Visit Repo</a><h2>Tactical Layout</h2>
+        <a class="github-button" href="https://github.com/imfromthepast/lcars/" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Download imfromthepast/lcars on GitHub">Visit Repo</a>
+        <h2>Tactical Layout</h2>
+
         <canvas id="tac"></canvas> 
         <h2>Conn Layout</h2>       
         <canvas id="con"></canvas>    
@@ -36,23 +40,81 @@
         let tac = new LCARS_TACTICAL({id:'tac',uiTheme:blueTheme,debug:false});
         let con = new LCARS_CON({id:'con',debug:false});
         let ops = new LCARS_OPS({id:'ops',uiTheme:redTheme,debug:false}); 
-        let trans = new LCARS_Panel({id:'trans',uiTheme:yellowTheme,debug:false,width:2500,height:630}); 
+
+
+        function tab1Click(){
+            console.log('tab 1 click');
+            playSound(4);
+            trans.setUiTheme(yellowTheme);
+        }
+        function tab2Click(){
+            console.log('tab 2 click');
+            playSound(4);
+            trans.setUiTheme(blueTheme);
+        }
+        function tab3Click(){
+            console.log('tab 3 click');
+            playSound(4);
+            trans.setUiTheme(redTheme);
+        }
+        function tab4Click(){
+            console.log('tab 4 click');
+            playSound(4);
+            trans.setUiTheme(grayTheme);
+        }
+        function doButtonClick1(){
+            console.log('do button click 1');
+            playSound(4);
+            trans.refresh();
+        }
+        function doButtonClick2(){
+            console.log('do button click 2');
+            playSound(4);
+            trans.refresh();
+        }
+        function doButtonClick3(){
+            console.log('do button click 3');
+            playSound(4);
+            trans.refresh();
+        }
+        function doButtonClick4(){
+            console.log('do button click 4');
+            playSound(4);
+            trans.refresh();
+        }
+        function doButtonClick5(){
+            console.log('do button click 5');
+            playSound(4);
+            trans.refresh();
+        }
+        let trans = new LCARS_Panel({id:'trans',uiTheme:yellowTheme,debug:false,width:2500,height:630}); //,bgimgsrc:'src/img/trans.jpg'}); 
         trans.sections=[
             new LCARS_Section({
                 width:220,
-                header:new LCARS_Header({radius:[20,0,0,20],text:'sequence select',margin:[0,20,100,0]}),
+                header:new LCARS_Header({colorClass:'emphasis',radius:[20,0,0,20],text:'sequence select',margin:[0,20,100,0]}),
                 body:[
                     new LCARS_Subheader({text:''}),
-                    new LCARS_ButtonGroups({rows:5,cols:['titled-pill-left'],y:50,x:5})
+                    new LCARS_ButtonGroups({rows:5,cols:['titled-pill-left'],y:50,x:5,onClickFunctions:[
+                        [
+                            doButtonClick1,doButtonClick2,doButtonClick3,doButtonClick4,doButtonClick5
+                        ]
+                    ]})
                 ],
                 footer:new LCARS_Footer()
             }),
             new LCARS_Section({
                 width:240,
-                header:new LCARS_Header({text:'pattern buffer',margin:[0,20,100,0]}),
+                header:new LCARS_Header({colorClass:'accent',text:'pattern buffer',margin:[0,20,100,0]}),
                 body:[
-                    new LCARS_Subheader({text:'phase coils'}),
-                    new LCARS_ButtonGroups({rows:5,cols:['rect','rect'],y:50,x:5})
+                    new LCARS_Subheader({colorClass:'emphasis',text:'phase coils'}),
+                    new LCARS_ButtonGroups({rows:5,cols:['rect','rect'],y:50,x:5,onClickFunctions:[
+                        [
+                            doButtonClick1,doButtonClick2,doButtonClick3,doButtonClick4,doButtonClick5
+                        ],
+                        [
+                            doButtonClick1,doButtonClick2,doButtonClick3,doButtonClick4,doButtonClick5
+                        ]
+                    ]})
                 ],
                 footer:new LCARS_Footer()
             }),
@@ -62,14 +124,14 @@
                     new LCARS_TitledTabs({
                         y:0,
                         tabs:[
-                            {text:'level 1',color:trans.uiTheme.base},
-                            {text:'level 2',color:trans.uiTheme.emphasis},
-                            {text:'level 3',color:trans.uiTheme.neutral},
-                            {text:'level 4',color:trans.uiTheme.accent}
+                            {text:'level 1',colorClass:'base',onClickFunction:tab1Click},
+                            {text:'level 2',colorClass:'emphasis',onClickFunction:tab2Click},
+                            {text:'level 3',colorClass:'neutral',onClickFunction:tab3Click},
+                            {text:'level 4',colorClass:'accent',onClickFunction:tab4Click}
                         ]
                     }),
                     new LCARS_Subheader({y:300, text:'targeting coordinate reference'}),
-                    new LCARS_ReadoutDisplay({y:350,text:'',rows:5,cols:[7,3,4,0,0,3,4,7,6]})
+                    new LCARS_ReadoutDisplay({y:355,text:'',rows:7,cols:[7,3,4,0,0,3,4,7,6,2]})
                 ]
             }),
             new LCARS_Section({
@@ -81,7 +143,7 @@
                         reticule:{x:100,y:80}
                     }),
                     new LCARS_Subheader({y:300}),
-                    new LCARS_Joystick({y:350,x:0,color:trans.uiTheme.action})
+                    new LCARS_Joystick({y:350,x:0,colorClass:'emphasis'})
                 ],
                 footer:new LCARS_Footer()
             }),
@@ -106,9 +168,9 @@
             new LCARS_Section({
                 width:500,
                 body:[
-                    new LCARS_Slider({x:50,width:80,height:550,ticks:7,color:trans.uiTheme.base}),
-                    new LCARS_Slider({x:200,width:80,height:550,ticks:7,color:trans.uiTheme.base}),
-                    new LCARS_Slider({x:350,width:80,height:550,ticks:7,color:trans.uiTheme.base}),
+                    new LCARS_Slider({x:50,width:80,height:550,ticks:7,colorClass:'base'}),
+                    new LCARS_Slider({x:200,width:80,height:550,ticks:7,colorClass:'base'}),
+                    new LCARS_Slider({x:350,width:80,height:550,ticks:7,colorClass:'base'}),
                     new LCARS_Header({x:-20,y:565,radius:[0,-30,0,0],width:30,height:30})
                 ],
                 footer:new LCARS_Footer({x:-20,width:520})
@@ -120,7 +182,7 @@
                     new LCARS_Subheader({height:40}),
                     new LCARS_Subheader({y:60,text:'molecular imaging scanners'}),
                     new LCARS_Subheader({y:110,height:260,radius:[0,0,30,0]}),
-                    new LCARS_Subheader({width:193,height:55,y:300,color:'#000'}),
+                    new LCARS_Subheader({width:193,height:55,y:300,colorClass:'black'}),
                     new LCARS_Header({x:163,y:325,radius:[-30,0,0,0],width:30,height:30}),
                     new LCARS_ButtonGroups({rows:5,cols:['titled-left'],y:110})
                 ]
