@@ -67,7 +67,7 @@ That is the basic layout of LCARS_Panel. Where you will be doing most of your wo
             header:                                                     // the header appears at the top of the section
                 new LCARS_Header({                                      // instance of the LCARS_Header class
                     text:'test header',                                 // text that appears in the header
-                    color:this.uiTheme.neutral,                         // color of the header, using the uiTheme object
+                    colorClass:'neutral',                               // color of the header, using the uiTheme object class name
                     radius:[20,0,0,20],                                 // radius array for setting the roundness of the corners of the headers
                                                                         //      [top-left,top-right,bottom-right,bottom-left]
                     margin:[0,20,100,0]                                 // margins around the header (used to define the seperation between sections
