@@ -34,55 +34,53 @@
     <script type="text/javascript" src="src/configs/ops.js"></script>
     <script>  
         
-        function doFourTimesPerSecond(){
-            console.log('tick');
-        }
         let tac = new LCARS_TACTICAL({id:'tac',uiTheme:blueTheme,debug:false});
-        function updateCanvas(){
-            tac.lcarsCanvas.update();
-        }        
-        function doFourTimesPerSecond(){}
-        function doTwicePerSecond(){}
-        function doOncePerSecond(){
-            console.log('second')
-        }
-
         let con = new LCARS_CON({id:'con',debug:false});
         let ops = new LCARS_OPS({id:'ops',uiTheme:redTheme,debug:false}); 
+
         function tab1Click(){
             console.log('tab 1 click');
+            playSound(4);
             trans.setUiTheme(yellowTheme);
         }
         function tab2Click(){
             console.log('tab 2 click');
+            playSound(4);
             trans.setUiTheme(blueTheme);
         }
         function tab3Click(){
             console.log('tab 3 click');
+            playSound(4);
             trans.setUiTheme(redTheme);
         }
         function tab4Click(){
             console.log('tab 4 click');
-            trans.setUiTheme(yellowTheme);
+            playSound(4);
+            trans.setUiTheme(grayTheme);
         }
         function doButtonClick1(){
             console.log('do button click 1');
+            playSound(4);
             trans.refresh();
         }
         function doButtonClick2(){
             console.log('do button click 2');
+            playSound(4);
             trans.refresh();
         }
         function doButtonClick3(){
             console.log('do button click 3');
+            playSound(4);
             trans.refresh();
         }
         function doButtonClick4(){
             console.log('do button click 4');
+            playSound(4);
             trans.refresh();
         }
         function doButtonClick5(){
             console.log('do button click 5');
+            playSound(4);
             trans.refresh();
         }
         let trans = new LCARS_Panel({id:'trans',uiTheme:yellowTheme,debug:false,width:2500,height:630}); //,bgimgsrc:'src/img/trans.jpg'}); 

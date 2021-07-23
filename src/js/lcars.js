@@ -214,6 +214,16 @@ const blueTheme = {
     warning:'paleRed',
     alert:'red'
 }
+const grayTheme = {
+    accent:'paleGray',
+    base:'gray',
+    emphasis:'darkGray',
+    neutral:'gray',
+    action:'paleGray',
+    warning:'paleGray',
+    alert:'gray'
+}
+
 colorList = []
 function randomColor(){
     return this.colorList[rifi(0,(this.colorList.length - 1))];
@@ -307,7 +317,7 @@ class LCARS_Object{
         neutral:this.tan,
         black:this.black
     }
-    circleColors = [this.white,this.yellow,this.gold];
+    circleColors = ['accent','base','emphasis'];
     constructor(opt){
         if(opt){
             this.constructorOptions = opt;
@@ -316,7 +326,7 @@ class LCARS_Object{
             if(opt.y)               this.y=opt.y;
             if(opt.width)           this.width=opt.width;
             if(opt.height)          this.height=opt.height;
-            if(opt.colorClass)           this.colorClass=opt.colorClass;
+            if(opt.colorClass)      this.colorClass=opt.colorClass;
         }
     }
     get isObject(){return true;}
@@ -1610,7 +1620,7 @@ class LCARS_Scanner extends LCARS_Element{
         for (var i = 0; i < rifi(10,20); i++) {
             var star = new Shape();
             var r = rifi(2,7);
-            star.graphics.beginFill(rae(this.circleColors)).dc(rifi(20,w-20),rifi(20,h-20),r);
+            star.graphics.beginFill(this.panel.uiTheme[rae(this.circleColors)]).dc(rifi(20,w-20),rifi(20,h-20),r);
             star.name=r;
             screen.addChild(star);
         }
