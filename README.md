@@ -79,9 +79,9 @@ That is the basic layout of LCARS_Panel. Where you will be doing most of your wo
                                                                         // and has smaller text as well as having left-aligned text
                                                                         // radius works as in LCARS_Header
                 new LCARS_TitledTabs({x:10,y:50,tabs:[                  // there are an assortment of classes that render UI elements, such as buttons,
-                    {text:'al hoc',colorClass:'action'},          // readouts, scanners, joysticks, etc. They each have their own unique parameters
-                    {text:'rh jus',colorClass:'accent'},          // and will be documented fully at a later date. For now, look at the layout files
-                    {text:'ma kal',colorClass:'emphasis'},        // for examples
+                    {text:'al hoc',colorClass:'action'},                // readouts, scanners, joysticks, etc. They each have their own unique parameters
+                    {text:'rh jus',colorClass:'accent'},                // and will be documented fully at a later date. For now, look at the layout files
+                    {text:'ma kal',colorClass:'emphasis'},              // for examples
                     {text:'we kep',colorClass:'base'}
                 ]}) 
             ]
