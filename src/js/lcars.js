@@ -484,8 +484,7 @@ class LCARS_Panel extends LCARS_Object{
     }
     refresh(){
         console.log('refresh');
-        //this.lcarsCanvas.removeAllChildren();
-        //this.build();
+        
         this.lcarsCanvas.update();
     }
     setUiTheme(theme){
@@ -503,6 +502,8 @@ class LCARS_Panel extends LCARS_Object{
         colorList = [this.uiTheme.action,this.uiTheme.alert,this.uiTheme.base,this.uiTheme.accent,this.uiTheme.emphasis,this.uiTheme.neutral,this.uiTheme.warning];
     
         console.log('this.uiTheme',this.uiTheme);
+        this.lcarsCanvas.removeAllChildren();
+        this.build();
         this.refresh();
     }
     config(){
