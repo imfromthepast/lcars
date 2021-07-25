@@ -41,7 +41,6 @@
         let con = new LCARS_CON({id:'con',debug:false});
         let ops = new LCARS_OPS({id:'ops',uiTheme:redTheme,debug:false}); 
 
-
         function tab1Click(){
             console.log('tab 1 click');
             playSound(4);
@@ -61,6 +60,36 @@
             console.log('tab 4 click');
             playSound(4);
             trans.setUiTheme(grayTheme);
+        }
+        
+        function doSec1ButtonClick1(){
+            console.log('do Sec 1 button click 1');
+            playSound(4);
+            sequenceSelectReadout.setVals([
+                ['NAME','HEIGHT','WEIGHT','AGE','QNTM SIG']
+            ]);
+            trans.refresh();
+        }
+        function doSec1ButtonClick2(){
+            console.log('do Sec 1 button click 2');
+            playSound(4);
+            if(sequenceSelectReadout.vals.length<4) 
+                sequenceSelectReadout.addVals(['PICARD','6\'','165lb','50','7B99']);
+            trans.refresh();
+        }
+        function doSec1ButtonClick3(){
+            console.log('do Sec 1 button click 3');
+            playSound(4);
+            if(sequenceSelectReadout.vals.length<4) 
+                sequenceSelectReadout.addVals(['RIKER','6\'6"','190lb','32','0F3EE']);
+            trans.refresh();
+        }
+        function doSec1ButtonClick4(){
+            console.log('do Sec 1 button click 4');
+            playSound(4);
+            if(sequenceSelectReadout.vals.length<4) 
+                sequenceSelectReadout.addVals(['DATA','6\'','240lb','6','F33E0']);
+            trans.refresh();
         }
         function doButtonClick1(){
             console.log('do button click 1');
@@ -87,16 +116,40 @@
             playSound(4);
             trans.refresh();
         }
+        function handleSliderMouseover(event){
+            console.log('tick '+event.target.name+' mouseover');
+            //console.log('event.target',event.target);
+            sliderVal = event.target.name-1;
+            sliderCont[0].setVal(sliderVal);
+            sliderCont[1].setVal(sliderVal);
+            sliderCont[2].setVal(sliderVal);
+            trans.refresh(); //lcarsCanvas.update();
+        }
+        function handleSliderMouseout(event){
+            sliderCont[0].setVal(6);
+            sliderCont[1].setVal(6);
+            sliderCont[2].setVal(6);
+            trans.refresh(); //lcarsCanvas.update();
+        }
+        let sliderVal = 6;
         let trans = new LCARS_Panel({id:'trans',uiTheme:yellowTheme,debug:false,width:2500,height:630}); //,bgimgsrc:'src/img/trans.jpg'}); 
         trans.sections=[
             new LCARS_Section({
                 width:220,
                 header:new LCARS_Header({colorClass:'emphasis',radius:[20,0,0,20],text:'sequence select',margin:[0,20,100,0]}),
                 body:[
+                    new LCARS_Readout(
+                        {
+                            y:-90,
+                            vals:[
+                                ['NAME','HEIGHT','WEIGHT','AGE','QNTM SIG']
+                            ] //,rows:4,cols:[6,9,2,8]
+                        }
+                    ),
                     new LCARS_Subheader({text:''}),
                     new LCARS_ButtonGroups({rows:5,cols:['titled-pill-left'],y:50,x:5,onClickFunctions:[
                         [
-                            doButtonClick1,doButtonClick2,doButtonClick3,doButtonClick4,doButtonClick5
+                            doSec1ButtonClick1,doSec1ButtonClick2,doSec1ButtonClick3,doSec1ButtonClick4,doButtonClick5
                         ]
                     ]})
                 ],
@@ -168,9 +221,9 @@
             new LCARS_Section({
                 width:500,
                 body:[
-                    new LCARS_Slider({x:50,width:80,height:550,ticks:7,colorClass:'base'}),
-                    new LCARS_Slider({x:200,width:80,height:550,ticks:7,colorClass:'base'}),
-                    new LCARS_Slider({x:350,width:80,height:550,ticks:7,colorClass:'base'}),
+                    new LCARS_Slider({x:50,width:80,height:550,ticks:7,val:sliderVal,colorClass:'base'}),
+                    new LCARS_Slider({x:200,width:80,height:550,ticks:7,val:sliderVal,colorClass:'base'}),
+                    new LCARS_Slider({x:350,width:80,height:550,ticks:7,val:sliderVal,colorClass:'base'}),
                     new LCARS_Header({x:-20,y:565,radius:[0,-30,0,0],width:30,height:30})
                 ],
                 footer:new LCARS_Footer({x:-20,width:520})
@@ -197,6 +250,7 @@
             })
         ]
         trans.build();
-
+        var sequenceSelectReadout = trans.sections[0].body[0];
+        let sliderCont = trans.sections[6].body;
     </script>
 </html>

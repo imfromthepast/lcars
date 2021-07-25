@@ -280,7 +280,7 @@ class LCARS_Object{
     height;  
     panel={};
     section={};
-
+    colorClass='base';
     white = '#ece6c1';  
 
     paleYellow = '#ece6c1';
@@ -349,7 +349,7 @@ class LCARS_Element extends LCARS_Object{
     radiusTopLeft=0;
     radiusBottomRight=0;
     radiusBottomLeft=0;
-    text;
+    text='';
     constructor(opt){
         super(opt);
         if(opt){
@@ -376,6 +376,9 @@ class LCARS_Element extends LCARS_Object{
             this.radius=[0,0,this.radiusBottom,this.radiusBottom];
         if(this.radiusTopRight>0 || this.radiusTopLeft>0 || this.radiusBottomRight>0 || this.radiusBottomLeft>0)
             this.radius=[this.radiusTopLeft,this.radiusTopRight,this.radiusBottomRight,this.radiusBottomLeft];
+    }
+    setText(t){
+        this.text = t;
     }
     build(){}
 }
@@ -434,6 +437,8 @@ class LCARS_Panel extends LCARS_Object{
         let bitmap = new createjs.Bitmap(this.bgimgsrc);        
         let uilayer = new Container();
         this.lcarsCanvas= new Stage(this.canvasId);
+        this.lcarsCanvas.enableMouseOver(10);
+        createjs.Touch.enable(this.lcarsCanvas); //,false,true);
         Ticker.on("tick", this.lcarsCanvas);
         bg.graphics.beginFill(this.black).drawRect(0, 0, cnvs.width, cnvs.height);
         if(this.bgimgsrc){
@@ -479,9 +484,9 @@ class LCARS_Panel extends LCARS_Object{
     }
     refresh(){
         console.log('refresh');
-        this.lcarsCanvas.removeAllChildren();
-        this.build();
-        //this.lcarsCanvas.update();
+        //this.lcarsCanvas.removeAllChildren();
+        //this.build();
+        this.lcarsCanvas.update();
     }
     setUiTheme(theme){
         console.log(' ');
@@ -732,10 +737,10 @@ class LCARS_Header extends LCARS_Element{
     }
     build(){
         let colorVal = !this.panel.uiTheme?'green':this.panel.uiTheme[this.colorClass];
-        console.log('--- '+this.text+' Header ---');
-        console.log('this.panel',this.panel);
-        console.log('LCARS_Header this.colorClass',this.colorClass);
-        console.log('LCARS_Header colorVal',colorVal);
+        //console.log('--- '+this.text+' Header ---');
+        //console.log('this.panel',this.panel);
+        //console.log('LCARS_Header this.colorClass',this.colorClass);
+        //console.log('LCARS_Header colorVal',colorVal);
         var hdrCont = new Container();
         hdrCont.x=this.x;
         hdrCont.y=this.y;
@@ -1007,36 +1012,82 @@ class LCARS_Readout extends LCARS_Element{
     type='readout';
     rows=0;
     cols=[];
+    vals=[];
     datumColors = [];
+    cont=new Container();
     constructor(opt){
         super(opt);
         if(opt.rows) this.rows=opt.rows;
         if(opt.cols) this.cols=opt.cols;
+        if(opt.vals) this.vals=opt.vals;
     }
     build(){
-        var readout = new Container();
-        readout.x = this.x;
-        readout.y = this.y;
+        this.cont.removeAllChildren();
+        this.cont.x = this.x;
+        this.cont.y = this.y;
         var x = 0;
         var y = 0;
         var maxX = 0;
         this.datumColors = [this.panel.uiTheme.base,this.panel.uiTheme.action,this.panel.uiTheme.emphasis];
-        for (var ri = 0; ri < this.rows; ri++) {
-            for (var i = 0; i < this.cols.length; i++) {
-                var datum = this.makeDatum(rifi((this.cols[i]<4?2:this.cols[i]-2),this.cols[i]));
-                datum.textAlign='end';
-                x+=(this.cols[i]+2)*5;
-                datum.x=x;
-                datum.y=y;
-                readout.addChild(datum);
+        console.log('vals',this.vals);
+        if(this.vals.length==0){
+            for (var ri = 0; ri < this.rows; ri++) {
+                for (var i = 0; i < this.cols.length; i++) {
+                    x+=(this.cols[i]+2)*5;
+                    this.addText(this.makeDatum(rifi((this.cols[i]<4?2:this.cols[i]-2),this.cols[i])),x,y);
+                    maxX=x;
+                }
+                y+=20;
+                x=0;
+            }
+        }else{
+            this.setVals();
+        }
+        return this.cont;
+    }
+    addText(t,x,y){
+        var txt = new Text();
+        txt.font='16px Okuda';
+        txt.text=t;
+        txt.color=rae(this.datumColors);
+        txt.textAlign='end';
+        txt.x=x;
+        txt.y=y;
+        this.cont.addChild(txt);
+    }
+    addVals(vals){
+        this.vals.push(vals);
+        this.setVals(this.vals);
+    }
+    setVals(vals){
+        let x=0;
+        let y=0;
+        let maxX=0;
+        if(vals) this.vals = vals;
+        let colWidths = []; 
+        this.cont.removeAllChildren();           
+        for(var ri=0;ri<this.vals.length;ri++){                
+            for(var i=0;i<this.vals[ri].length;i++){
+                let colWidth=(this.vals[ri][i].length+2)*5;
+                console.log('colWidths.length',colWidths.length);
+                console.log('colWidth',colWidth);
+                if(colWidths.length>=i){
+                    if(colWidths[i]==null)colWidths[i]=0;
+                    colWidths[i]=colWidths[i]<=colWidth?colWidth:colWidths[i];
+                }
+            }
+        }
+        console.log('colWidths',colWidths);
+        for(var ri=0;ri<this.vals.length;ri++){
+            for(var i=0;i<this.vals[ri].length;i++){
+                x+=colWidths[i];
+                this.addText(this.vals[ri][i],x,y);
                 maxX=x;
             }
             y+=20;
             x=0;
-        }  
-        return readout;
+        }
     }
-    
     makeDatum(datumLength){
         var datum = '';
         var datumval = 0;
@@ -1044,11 +1095,11 @@ class LCARS_Readout extends LCARS_Element{
             datum += rifi(0,9);
             datumval = parseInt(datum);
         }
-        var txt = new Text();
-        txt.font='16px Okuda';
-        txt.text = datum;
-        txt.color=rae(this.datumColors);
-        return txt;
+        // var txt = new Text();
+        // txt.font='16px Okuda';
+        // txt.text = datum;
+        // txt.color=rae(this.datumColors);
+        return datum; //txt;
     }
     refresh(){
         this.build();
@@ -1070,21 +1121,25 @@ class LCARS_ReadoutDisplay extends LCARS_Readout{
         header.textAlign='end';
         var bbg = new Shape();
         bbg.graphics.f(this.black).r(5,0,165,25);
-        var data = new Container();
-        data.x = this.x;
-        data.y = this.y;
-        data.addChild(header);
+        this.cont.removeAllChildren();
+        this.cont.x = this.x;
+        this.cont.y = this.y;
+        this.cont.addChild(header);
         var x = 0;
         var y = 40;
         var maxX = 0;
         for (var ri = 0; ri < this.rows; ri++) {
             for (var i = 0; i < this.cols.length; i++) {
-                var datum = this.makeDatum(rifi((this.cols[i]<4?2:this.cols[i]-2),this.cols[i]));
-                datum.textAlign='end';
                 x+=(this.cols[i]+2)*5;
-                datum.x=x;
-                datum.y=y;
-                data.addChild(datum);
+                this.addText(this.makeDatum(rifi((this.cols[i]<4?2:this.cols[i]-2),this.cols[i])),x,y);
+                // var txt = new Text();
+                // txt.font = '16px Okuda';
+                // txt.text = this.makeDatum(rifi((this.cols[i]<4?2:this.cols[i]-2),this.cols[i]));
+                // txt.color=rae(this.datumColors);
+                // txt.textAlign='end';
+                // txt.x=x;
+                // txt.y=y;
+                // this.cont.addChild(txt);
                 maxX=x;
             }
             y+=20;
@@ -1095,9 +1150,9 @@ class LCARS_ReadoutDisplay extends LCARS_Readout{
         hbg.graphics.f(rae(this.datumColors)).mt(0,0).lt(5,0).lt(5,25).lt(maxX,25).lt(maxX,35).lt(maxX*0.66,35).lt(maxX*0.66,30).lt(0,30)
         var ftr = new Shape();
         ftr.graphics.f(rae(this.datumColors)).mt(0,y+5).lt(maxX*0.66,y+5).lt(maxX*0.66,y).lt(maxX,y).lt(maxX,y+75).lt(0,y+75).lt(0,y+60).lt(maxX/3,y+60).lt(maxX/3,y+70).lt(maxX-20,y+70).lt(maxX-20,y+10).lt(0,y+10)
-        data.addChildAt(hbg,0);
-        data.addChild(ftr);
-        return data;
+        this.cont.addChildAt(hbg,0);
+        this.cont.addChild(ftr);
+        return this.cont;
     }
 }
 class LCARS_Button extends LCARS_Element{   
@@ -1353,6 +1408,7 @@ class LCARS_Button extends LCARS_Element{
             btn.graphics.beginFill(c).rect(x,y,w,h);
             txtWidth = w-10;
         }
+        //btn.cache(x,y,w,h);
         var txt = this.addText(txtWidth,(h/2)-10,l,textAlign,(s==1?18:30)+'px');
         if(c!='none'){
             btnCont.addChild(btn);
@@ -1631,13 +1687,17 @@ class LCARS_Scanner extends LCARS_Element{
 class LCARS_Slider extends LCARS_Element {
     ticks=7;
     colorClass=this.uiTheme.base;
+    val=0;
+    bar;
     constructor(opt){
         super(opt);
         if(opt.colorClass) this.colorClass=opt.colorClass;
+        if(opt.val) this.val=opt.val;
     }
     build(){
         const padding = 5;
         let cont = new Container();
+        cont.removeAllChildren();
         const height=(this.height-((this.ticks-1)*padding))/this.ticks;
         for(let i=0;i<this.ticks;i++){
             let tlr=0,trr=0,blr=0,brr=0;
@@ -1650,13 +1710,25 @@ class LCARS_Slider extends LCARS_Element {
                 blr=this.width/2;
                 brr=this.width/2;
             }
-            tick.alpha=0.5;
+            tick.name=i;
+            tick.alpha=i<=this.val?0.5:1;
             tick.graphics.beginFill(this.panel.uiTheme[this.colorClass]).rc(0,i*(height+padding),this.width,height,tlr,trr,brr,blr);
+            tick.addEventListener('mouseover',handleSliderMouseover);
+            tick.addEventListener('mouseout',handleSliderMouseout);
             cont.addChild(tick);
         }
         cont.x=this.x;
         cont.y=this.y;
+        this.bar=cont;
         return cont;
+    }
+    setVal(v){
+        console.log('setVal',v);
+        this.val=v;
+        for(var i=0;i<this.bar.children.length;i++){
+            let tick = this.bar.children[i];
+            tick.alpha=i<=this.val?0.5:1;
+        }
     }
 }
 
