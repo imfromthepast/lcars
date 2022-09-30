@@ -125,67 +125,67 @@ function playSound(soundID) {
     Sound.play(soundID.toString());
 }
 function handleClick(event){
-    console.log(event);
+    //console.log(event);
     playSound(rifi(1,4));
 }
 function handleRectClick(event){
     playSound(4);
-    console.log(event);
-    console.log('btn',event.target.parent.name);
+    //console.log(event);
+    //console.log('btn',event.target.parent.name);
 }
 function handleRectPillClick(event){
     playSound(1);
-    console.log(event);
-    console.log('btn',event.target.parent.name);
+    //console.log(event);
+    //console.log('btn',event.target.parent.name);
 }
 function handleRectCapClick(event){
     playSound(2);
-    console.log(event);
-    console.log('btn',event.target.parent.name);
+    //console.log(event);
+    //console.log('btn',event.target.parent.name);
 }
 function handleTabClick(event){
     playSound(3); 
-    console.log(event);
-    console.log('btn',event.target.parent.name);           
+    //console.log(event);
+    //console.log('btn',event.target.parent.name);           
 }
 function handlePillClick(event){
     playSound(rifi(2,4));
-    console.log(event);
-    console.log('btn',event.target.parent.name);
+    //console.log(event);
+    //console.log('btn',event.target.parent.name);
 }
 function handleCapClick(event){
     playSound(4);
-    console.log(event);
-    console.log('btn',event.target.parent.name);
+    //console.log(event);
+    //console.log('btn',event.target.parent.name);
 }
 function handleTitledPillClick(event){
     playSound(4);
     // playSound(6);
-    console.log(event);
+    //console.log(event);
 }
 function handleJoystickClick(event){
-    console.log('handleJoystickClick()');         
+    //console.log('handleJoystickClick()');         
     var x=event.localX,y=event.localY;
     if(x>=80 && y<=35 && x<=120){
-        console.log('up');
+        //console.log('up');
         playSound(1);
         joystickButtonFunction(1,event.target.name);
     }else if(x>=165 & y>=80 && y<=120){
-        console.log('right');
+        //console.log('right');
         playSound(2);
         joystickButtonFunction(2,event.target.name);
     }else if(x>=80 && y>=165 && x<=120){
-        console.log('down');
+        //console.log('down');
         playSound(3);
         joystickButtonFunction(3,event.target.name);
     }else if(x<=35 && y>=80 && y<=120){
-        console.log('left');
+        //console.log('left');
         playSound(4);
         joystickButtonFunction(4,event.target.name);
     }
 }
 function tabClick(i){
-    //console.log('tab click',i);
+    ////console.log('tab click',i);
 }
 const yellowTheme = {
     base:'yellow',
@@ -229,8 +229,8 @@ function randomColor(){
     return this.colorList[rifi(0,(this.colorList.length - 1))];
 } 
 function joystickButtonFunction(bid,name){
-    console.log('bid',bid);
-    console.log('name',name);
+    //console.log('bid',bid);
+    //console.log('name',name);
 }
 /*
 Ticker.addEventListener("tick", handleTick);
@@ -453,12 +453,12 @@ class LCARS_Panel extends LCARS_Object{
         uilayer.width = this.width;
         uilayer.height = this.height;
         var x = 0,y = 0;
-        console.log('setting up sections');
+        //console.log('setting up sections');
         this.sections.forEach(sec=>{
             sec.panel=this.config();
             if(sec.header){
-                console.log('sec.header.colorClass',sec.header.colorClass);
-                console.log('!sec.header.colorClass',!sec.header.colorClass);
+                //console.log('sec.header.colorClass',sec.header.colorClass);
+                //console.log('!sec.header.colorClass',!sec.header.colorClass);
                 if(!sec.header.colorClass) 
                     sec.header.colorClass= 'base';
             }
@@ -480,17 +480,17 @@ class LCARS_Panel extends LCARS_Object{
         });
         this.lcarsCanvas.addChild(uilayer);
         this.lcarsCanvas.update();
-        console.log('panel build complete')
+        //console.log('panel build complete')
     }
     refresh(){
-        console.log('refresh');
+        //console.log('refresh');
         
         this.lcarsCanvas.update();
     }
     setUiTheme(theme){
-        console.log(' ');
-        console.log('set theme');
-        console.log('theme',theme);
+        //console.log(' ');
+        //console.log('set theme');
+        //console.log('theme',theme);
         //this.panel.uiTheme = theme;
         if(theme.base) this.uiTheme.base=this[theme.base];
         if(theme.accent) this.uiTheme.accent=this[theme.accent];
@@ -501,7 +501,7 @@ class LCARS_Panel extends LCARS_Object{
         if(theme.neutral) this.uiTheme.neutral=this[theme.neutral];
         colorList = [this.uiTheme.action,this.uiTheme.alert,this.uiTheme.base,this.uiTheme.accent,this.uiTheme.emphasis,this.uiTheme.neutral,this.uiTheme.warning];
     
-        console.log('this.uiTheme',this.uiTheme);
+        //console.log('this.uiTheme',this.uiTheme);
         this.lcarsCanvas.removeAllChildren();
         this.build();
         this.refresh();
@@ -539,6 +539,7 @@ class LCARS_Section extends LCARS_Element {
     rightSidebar;
     footer;
     margin=[0,0,0,20];
+    bodyCont;
     constructor(opt){
         super(opt);
         if(opt.header)          this.header=opt.header;
@@ -554,7 +555,7 @@ class LCARS_Section extends LCARS_Element {
         let sectionCont = new Container();
         let headerCont = new Container();
         let rightSidebarCont = new Container();
-        let bodyCont = new Container();
+        this.bodyCont = new Container();
         let leftSidebarCont = new Container();
         let footerCont = new Container();
         var headerMargins = [0,0,0,0];
@@ -578,19 +579,20 @@ class LCARS_Section extends LCARS_Element {
         var midY = headerHeight;
         var footerY = headerHeight+bodyHeight+footerMargins[0];
         leftSidebarCont.y=midY;
-        bodyCont.removeAllChildren();
-        bodyCont.x=leftSidebarWidth; //this.leftSidebar.w;
-        bodyCont.y=midY;
-        bodyCont.name='body';
+        this.bodyCont.removeAllChildren();
+        this.bodyCont.x=leftSidebarWidth; //this.leftSidebar.w;
+        this.bodyCont.y=midY;
+        this.bodyCont.name='body';
         this.body.forEach(el=>{
-            if(el.isObject){
-                el.panel = this.panel;
-                el.section=this.config();
-                if(is.undefined(el.width)) el.width=this.width-this.panel.padding;
-                bodyCont.addChild(el.build());
-            }
+            this.addToBody(el);
+            // if(el.isObject){
+            //     el.panel = this.panel;
+            //     el.section=this.config();
+            //     if(is.undefined(el.width)) el.width=this.width-this.panel.padding;
+            //     this.bodyCont.addChild(el.build());
+            // }
         })
-        if(this.panel.debug) bodyCont.addChild(new LCARS_Debug({colorClass:'green',width:this.width-this.panel.padding,height:bodyHeight}).build());
+        if(this.panel.debug) this.bodyCont.addChild(new LCARS_Debug({colorClass:'green',width:this.width-this.panel.padding,height:bodyHeight}).build());
         footerCont.y=this.height-footerHeight-this.panel.padding;
         if(this.footer!= null){
             if(!this.footer.width) this.footer.width=this.width-this.panel.padding;
@@ -603,7 +605,7 @@ class LCARS_Section extends LCARS_Element {
             this.header.panel=this.panel;
             headerCont.addChild(this.header.build());
         }
-        sectionCont.addChild(headerCont,leftSidebarCont,bodyCont,rightSidebarCont,footerCont);
+        sectionCont.addChild(headerCont,leftSidebarCont,this.bodyCont,rightSidebarCont,footerCont);
         sectionCont.y=10; //this.padding/2;
         sectionCont.x=10; //this.padding/2;
         if(this.panel.debug) sectionCont.addChild(new LCARS_Debug({colorClass:'purple',width:this.width-this.panel.padding,height:this.height-this.panel.padding}).build());
@@ -614,6 +616,18 @@ class LCARS_Section extends LCARS_Element {
         cont.x=this.x;
         cont.y=this.y;
         return cont;        
+    }
+    removeFromBodyAt(i){
+        this.bodyCont.removeChildAt(i);
+        // this.panel.refresh();
+    }
+    addToBody(el){
+        if(el.isObject){
+            el.panel = this.panel;
+            el.section=this.config();
+            if(is.undefined(el.width)) el.width=this.width-this.panel.padding;
+            this.bodyCont.addChild(el.build());
+        }
     }
     config(){
         return {
@@ -738,10 +752,10 @@ class LCARS_Header extends LCARS_Element{
     }
     build(){
         let colorVal = !this.panel.uiTheme?'green':this.panel.uiTheme[this.colorClass];
-        //console.log('--- '+this.text+' Header ---');
-        //console.log('this.panel',this.panel);
-        //console.log('LCARS_Header this.colorClass',this.colorClass);
-        //console.log('LCARS_Header colorVal',colorVal);
+        ////console.log('--- '+this.text+' Header ---');
+        ////console.log('this.panel',this.panel);
+        ////console.log('LCARS_Header this.colorClass',this.colorClass);
+        ////console.log('LCARS_Header colorVal',colorVal);
         var hdrCont = new Container();
         hdrCont.x=this.x;
         hdrCont.y=this.y;
@@ -983,30 +997,66 @@ class LCARS_ButtonGroups extends LCARS_Element{
     rows=0;
     x=0;
     onClickFunctions=[];
+    labels=[];
+    colors=[];
+    buttonCont;
+    onClickFunction;
     constructor(opt){
         super(opt);
         if(opt.cols) this.cols=opt.cols;
         if(opt.rows) this.rows=opt.rows;
         if(opt.x) this.x=opt.x;
         if(opt.onClickFunctions) this.onClickFunctions=opt.onClickFunctions;
+        if(opt.onClickFunction) this.onClickFunction=opt.onClickFunction;
+        if(opt.labels) this.labels=opt.labels;
+        if(opt.colors) this.colors=opt.colors;
     }
     build(){
-        let buttonCont = new Container();
-        buttonCont.x=this.x;
-        buttonCont.y=this.y;
+        this.buttonCont = new Container();
+        this.buttonCont.x=this.x;
+        this.buttonCont.y=this.y;
         let tempX = this.x;
         let incWidth = 0;
         for (var i = 0; i < this.cols.length; i++) {
             const colType=this.cols[i];
-            let onClickFunctionCol;
-            if(this.onClickFunctions[i]) onClickFunctionCol=this.onClickFunctions[i];
+            let onClickFunctionCol=[];
+            let labelCol=[];
+            let colorCol=[];
+            //if(this.onClickFunctions[i]) onClickFunctionCol=this.onClickFunctions[i];
+            
+            for(let j=0;j<this.onClickFunctions.length;j++){
+                if(this.onClickFunctions[j]) onClickFunctionCol.push(this.onClickFunctions[j][i])
+            }
+            
+            for(let j=0;j<this.labels.length;j++){
+                if(this.labels[j]) labelCol.push(this.labels[j][i])
+            }
+            
+            
+            for(let j=0;j<this.colors.length;j++){
+                if(this.colors[j]) colorCol.push(this.panel.uiTheme[this.colors[j][i]])
+            }
+            
+            //if(this.colors[i]) colorCol=this.colors[i];
             tempX+=incWidth;
-            let btnCol = new LCARS_ButtonCol({x:tempX,type:colType,rows:this.rows,onClickFunctions:onClickFunctionCol}).build();
+            let btnCol = new LCARS_ButtonCol({x:tempX,type:colType,rows:this.rows,onClickFunction:this.onClickFunction,onClickFunctions:onClickFunctionCol,colors:colorCol,labels:labelCol}).build();
             incWidth=btnCol.getBounds().width;
-            buttonCont.addChild(btnCol);
+            this.buttonCont.addChild(btnCol);
         }
         tempX = this.x;
-        return buttonCont;
+        return this.buttonCont;
+    }
+    changeLabels(i,arr){
+        console.log('changeLabels('+i+',['+arr+'])');
+        console.log('this.labels[i]',this.labels[i])
+        this.labels[i]=arr;
+        console.log('this.labels[i]',this.labels[i])
+        this.build();
+    }
+    changeColors(i,arr){
+        console.log('changeColors('+i+',['+arr+'])');
+        this.colors[i]=arr;
+        this.build();
     }
 }
 class LCARS_Readout extends LCARS_Element{
@@ -1014,13 +1064,25 @@ class LCARS_Readout extends LCARS_Element{
     rows=0;
     cols=[];
     vals=[];
+    fontSize=16;
+    value='';
     datumColors = [];
+    textAlign='end';
+    colorClass='action';
     cont=new Container();
+    lineWidth=200;
+    lineHeight=20;
     constructor(opt){
         super(opt);
         if(opt.rows) this.rows=opt.rows;
         if(opt.cols) this.cols=opt.cols;
         if(opt.vals) this.vals=opt.vals;
+        if(opt.value) this.value=opt.value;
+        if(opt.fontSize) this.fontSize=opt.fontSize;
+        if(opt.textAlign) this.textAlign=opt.textAlign;
+        if(opt.colorClass) this.colorClass=opt.colorClass;
+        if(opt.lineWidth) this.lineWidth=opt.lineWidth;
+        if(opt.lineHeight) this.lineHeight=opt.lineHeight;
     }
     build(){
         this.cont.removeAllChildren();
@@ -1030,37 +1092,57 @@ class LCARS_Readout extends LCARS_Element{
         var y = 0;
         var maxX = 0;
         this.datumColors = [this.panel.uiTheme.base,this.panel.uiTheme.action,this.panel.uiTheme.emphasis];
-        console.log('vals',this.vals);
-        if(this.vals.length==0){
+        //console.log('vals',this.vals);
+        if(this.value!=''){
+            this.textAlign = 'start';
+            this.addText(this.value,0,0,this.panel.uiTheme[this.colorClass]);
+        }else if(this.vals.length>0){
+            this.setVal();
+        }else{
             for (var ri = 0; ri < this.rows; ri++) {
                 for (var i = 0; i < this.cols.length; i++) {
                     x+=(this.cols[i]+2)*5;
-                    this.addText(this.makeDatum(rifi((this.cols[i]<4?2:this.cols[i]-2),this.cols[i])),x,y);
+                    this.addText(this.makeDatum(rifi((this.cols[i]<4?2:this.cols[i]-2),this.cols[i])),x,y,rae(this.datumColors));
                     maxX=x;
                 }
-                y+=20;
+                y+=this.fontSize+4;
                 x=0;
             }
-        }else{
-            this.setVals();
         }
         return this.cont;
     }
-    addText(t,x,y){
+    setValue(value){
+        this.cont.removeAllChildren();
+        this.textAlign = 'start';
+        this.value+=value;
+        this.addText(this.value,0,0,this.panel.uiTheme[this.colorClass]);
+    }
+    addText(t,x,y,c){
         var txt = new Text();
-        txt.font='16px Okuda';
-        txt.text=t;
-        txt.color=rae(this.datumColors);
-        txt.textAlign='end';
-        txt.x=x;
-        txt.y=y;
+        txt.set({
+            font:this.fontSize+'px Okuda',
+            text:t,
+            color:c,
+            textAlign:this.textAlign,
+            x:x,
+            y:y,
+            lineWidth: this.lineWidth,
+            lineHeight: this.lineHeight
+        });
+
+        // txt.font=this.fontSize+'px Okuda';
+        // txt.text=t;
+        // txt.color=c;
+        // txt.textAlign=this.textAlign;
+        // txt.x=x;
+        // txt.y=y;
         this.cont.addChild(txt);
     }
     addVals(vals){
         this.vals.push(vals);
-        this.setVals(this.vals);
+        this.setVal(this.vals);
     }
-    setVals(vals){
+    setVal(vals){
         let x=0;
         let y=0;
         let maxX=0;
@@ -1070,22 +1152,19 @@ class LCARS_Readout extends LCARS_Element{
         for(var ri=0;ri<this.vals.length;ri++){                
             for(var i=0;i<this.vals[ri].length;i++){
                 let colWidth=(this.vals[ri][i].length+2)*5;
-                console.log('colWidths.length',colWidths.length);
-                console.log('colWidth',colWidth);
                 if(colWidths.length>=i){
                     if(colWidths[i]==null)colWidths[i]=0;
                     colWidths[i]=colWidths[i]<=colWidth?colWidth:colWidths[i];
                 }
             }
         }
-        console.log('colWidths',colWidths);
         for(var ri=0;ri<this.vals.length;ri++){
             for(var i=0;i<this.vals[ri].length;i++){
                 x+=colWidths[i];
-                this.addText(this.vals[ri][i],x,y);
+                this.addText(this.vals[ri][i],x,y,rae(this.datumColors));
                 maxX=x;
             }
-            y+=20;
+            y+=this.fontSize+4;
             x=0;
         }
     }
@@ -1169,7 +1248,8 @@ class LCARS_Button extends LCARS_Element{
     txtWidth;
     constructor(opt){
         super(opt);
-        if(opt.text) this.text = opt.text;
+        //if(opt.text) 
+        this.text = opt.text;
         if(opt.width) this.width=opt.width;
         if(opt.height) this.height=opt.height;
         if(opt.txtWidth) this.txtWidth=opt.txtWidth;
@@ -1218,49 +1298,49 @@ class LCARS_Button extends LCARS_Element{
         var btn = new Container();
         var btnbg = new Shape();
         if(t=='pill'){
-            btn = this.addPillButton(x,y,c,buttonWidth,buttonHeight,scale);
+            btn = this.addPillButton(x,y,c,buttonWidth,buttonHeight,scale,l);
             btnbg.graphics.beginFill(this.black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
             btn.addEventListener("click", handlePillClick);
         }
         if(t=='pill-left'){
-            btn = this.addPillLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addPillLeftButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
             btn.addEventListener("click", handlePillClick);
         }
         if(t=='pill-right'){
-            btn = this.addPillRightButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addPillRightButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
             btn.addEventListener("click", handlePillClick);
         }
         if(t=='cap-left'){
-            btn = this.addCapLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addCapLeftButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
             btn.addEventListener("click", handleCapClick);
         }
         if(t=='cap-right'){
-            btn = this.addCapRightButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addCapRightButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
             btn.addEventListener("click", handleCapClick);
         }
         if(t=='rect'){
-            btn = this.addRectButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addRectButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin)
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin,buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectClick);
         }
         if(t=='rect-pill-right'){
-            btn = this.addRectWithPillRightButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addRectWithPillRightButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectPillClick);
         }
         if(t=='rect-pill-left'){
-            btn = this.addRectWithPillLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addRectWithPillLeftButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectPillClick);
@@ -1272,19 +1352,19 @@ class LCARS_Button extends LCARS_Element{
             btn.addEventListener("click", handleRectCapClick);
         }
         if(t=='rect-cap-left'){
-            btn = this.addRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),buttonWidthPlusMargin+15,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),buttonWidthPlusMargin+15,buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectCapClick);
         }
         if(t=='tiny-rect-cap-right'){
-            btn = this.addTinyRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addTinyRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),(buttonWidth*0.20)+15+(this.buttonMargin*2),buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),(buttonWidth*0.20)+15+(this.buttonMargin*2),buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectCapClick);
         }
         if(t=='tiny-rect-cap-left'){
-            btn = this.addTinyRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addTinyRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),(buttonWidth*0.20)+15+(this.buttonMargin*2),buttonHeightPlusMargin)
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),(buttonWidth*0.20)+15+(this.buttonMargin*2),buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectCapClick);
@@ -1292,14 +1372,14 @@ class LCARS_Button extends LCARS_Element{
         if(t=='medium-rect-cap-right'){
             buttonWidthPlusMargin = buttonWidthPlusMargin+buttonWidth;
             buttonWidth = buttonWidth*2;
-            btn = this.addRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectCapClick);
         }
         if(t=='medium-rect-cap-left'){
             buttonWidth = buttonWidth*2;
-            btn = this.addRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectCapClick);
@@ -1307,39 +1387,39 @@ class LCARS_Button extends LCARS_Element{
         if(t=='wide-rect-cap-right'){
             buttonWidthPlusMargin = buttonWidthPlusMargin+(buttonWidth*2);
             buttonWidth = buttonWidth*3;
-            btn = this.addRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-(this.buttonMargin/2),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectCapClick);
         }
         if(t=='wide-rect-cap-left'){
             buttonWidth = buttonWidth*3;
-            btn = this.addRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleRectCapClick);
         }
         if(t=='titled-pill-left'){
-            btn = this.addTitledLeftPillButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addTitledLeftPillButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleTitledPillClick);
         }
         if(t=='titled-pill-right'){
-            btn = this.addTitledRightPillButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addTitledRightPillButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleTitledPillClick);
         }
 
         if(t=='titled-left'){
-            btn = this.addTitledLeftButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addTitledLeftButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleTitledPillClick);
         }
         if(t=='titled-right'){
-            btn = this.addTitledRightButton(x,y,c,buttonWidth,buttonHeight,scale); 
+            btn = this.addTitledRightButton(x,y,c,buttonWidth,buttonHeight,scale,l); 
             btnbg.graphics.beginFill(this.black).r(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin)
             btn.setBounds(-((this.buttonMargin/2)+10),-(this.buttonMargin/2),75+buttonWidthPlusMargin+25,buttonHeightPlusMargin);
             btn.addEventListener("click", handleTitledPillClick);
@@ -1370,7 +1450,8 @@ class LCARS_Button extends LCARS_Element{
             btn.addEventListener("click", handleTabClick);
         }
         btn.x=x;
-        btn.y=y;
+        btn.y=y;        
+        btn.name=l;
         btn.addChildAt(btnbg,0);
         return btn;
     }
@@ -1449,58 +1530,58 @@ class LCARS_Button extends LCARS_Element{
         btnCont.addChild(this.addCapRightButton(buttonWidth-20,0,randomColor(),buttonHeight,buttonHeight,s,''));
         return btnCont;
     }
-    addRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,s){
+    addRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,s,l){
         var btnCont = new Container();
         btnCont.x = x;
         btnCont.y = y;
-        btnCont.addChild(this.addRectButton(buttonHeight,0,c,buttonWidth-20,buttonHeight,s));
-        btnCont.addChild(this.addCapLeftButton(0,0,randomColor(),buttonHeight,buttonHeight,s,''));
+        btnCont.addChild(this.addRectButton(buttonHeight,0,c,buttonWidth-20,buttonHeight,s,l));
+        btnCont.addChild(this.addCapLeftButton(0,0,randomColor(),buttonHeight,buttonHeight,s,l));
         return btnCont;
     }
-    addTinyRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,s){
+    addTinyRectWithCapRightButton(x,y,c,buttonWidth,buttonHeight,s,l){
         var btnCont = new Container();
         btnCont.x = x;
         btnCont.y = y;
-        btnCont.addChild(this.addRectButton(0,0,c,(buttonWidth*0.20),buttonHeight,s));
-        btnCont.addChild(this.addCapRightButton(buttonWidth-10,0,randomColor(),buttonHeight,buttonHeight,s,''));
+        btnCont.addChild(this.addRectButton(0,0,c,(buttonWidth*0.20),buttonHeight,s,''));
+        btnCont.addChild(this.addCapRightButton(buttonWidth-10,0,randomColor(),buttonHeight,buttonHeight,s,l));
         return btnCont;
     }
-    addTinyRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,s){
+    addTinyRectWithCapLeftButton(x,y,c,buttonWidth,buttonHeight,s,l){
         var btnCont = new Container();
         btnCont.x = x;
         btnCont.y = y;
         btnCont.addChild(this.addRectButton(buttonHeight,0,c,(buttonWidth*0.20),buttonHeight,s,''));
-        btnCont.addChild(this.addCapLeftButton(0,0,randomColor(),buttonHeight,buttonHeight,s,''));
+        btnCont.addChild(this.addCapLeftButton(0,0,randomColor(),buttonHeight,buttonHeight,s,l));
         return btnCont;
     }
-    addRectWithPillLeftButton(x,y,c,buttonWidth,buttonHeight,s){
+    addRectWithPillLeftButton(x,y,c,buttonWidth,buttonHeight,s,l){
         var btnCont = new Container();
         btnCont.x = x-30;
         btnCont.y = y;
-        btnCont.addChild(this.addPillLeftButton(0,0,c,buttonWidth,buttonHeight,s));
+        btnCont.addChild(this.addPillLeftButton(0,0,c,buttonWidth,buttonHeight,s,l));
         btnCont.addChild(this.addRectButton(buttonWidth+10,0,randomColor(),15,buttonHeight,s,''));
         return btnCont;
     }
-    addRectWithPillRightButton(x,y,c,buttonWidth,buttonHeight,s){
+    addRectWithPillRightButton(x,y,c,buttonWidth,buttonHeight,s,l){
         var btnCont = new Container();
         btnCont.x = x-30;
         btnCont.y = y;
-        btnCont.addChild(this.addPillRightButton(25,0,c,buttonWidth,buttonHeight,s));
+        btnCont.addChild(this.addPillRightButton(25,0,c,buttonWidth,buttonHeight,s,l));
         btnCont.addChild(this.addRectButton(0,0,randomColor(),15,buttonHeight,s,''));
         return btnCont;
     }
-    addTitledLeftPillButton(x,y,c,buttonWidth,buttonHeight,s){
+    addTitledLeftPillButton(x,y,c,buttonWidth,buttonHeight,s,l){
         var cont = new Container();
-        var crbtn = this.addRectWithCapLeftButton(x,0,c,buttonWidth,buttonHeight,s);
+        var crbtn = this.addRectWithCapLeftButton(x,0,c,buttonWidth,buttonHeight,s,l);
         crbtn.x = 0;
         cont.addChild(crbtn);
         cont.addChild(this.addRectButton((s==1?75:90)+buttonWidth,0,randomColor(),15,buttonHeight,s,''));
         cont.addChild(this.addText(buttonWidth+(s==1?67:86),-8,randomButtonTitle(),null,(s==1?46:56)+'px',randomColor()))
         return cont;
     }
-    addTitledRightPillButton(x,y,c,buttonWidth,buttonHeight,s){
+    addTitledRightPillButton(x,y,c,buttonWidth,buttonHeight,s,l){
         var cont = new Container();
-        var crbtn = this.addRectWithCapRightButton(x,0,c,buttonWidth,buttonHeight,s);
+        var crbtn = this.addRectWithCapRightButton(x,0,c,buttonWidth,buttonHeight,s,l);
         crbtn.x = s==1?75:85;
         cont.addChild(crbtn);
         cont.addChild(this.addRectButton(0,0,randomColor(),15,buttonHeight,s,''));
@@ -1508,18 +1589,18 @@ class LCARS_Button extends LCARS_Element{
         return cont;
     }
 
-    addTitledLeftButton(x,y,c,buttonWidth,buttonHeight,s){
+    addTitledLeftButton(x,y,c,buttonWidth,buttonHeight,s,l){
         var cont = new Container();
-        var crbtn = this.addRectButton(x,0,c,buttonWidth,buttonHeight,s);
+        var crbtn = this.addRectButton(x,0,c,buttonWidth,buttonHeight,s,l);
         crbtn.x = 0;
         cont.addChild(crbtn);
         cont.addChild(this.addRectButton((s==1?75:90)+buttonWidth,0,randomColor(),15,buttonHeight,s,''));
         cont.addChild(this.addText(buttonWidth+(s==1?67:86),-8,randomButtonTitle(),null,(s==1?46:56)+'px',randomColor()))
         return cont;
     }
-    addTitledRightButton(x,y,c,buttonWidth,buttonHeight,s){
+    addTitledRightButton(x,y,c,buttonWidth,buttonHeight,s,l){
         var cont = new Container();
-        var crbtn = this.addRectButton(x,0,c,buttonWidth,buttonHeight,s);
+        var crbtn = this.addRectButton(x,0,c,buttonWidth,buttonHeight,s,l);
         crbtn.x = s==1?75:85;
         cont.addChild(crbtn);
         cont.addChild(this.addRectButton(0,0,randomColor(),15,buttonHeight,s,''));
@@ -1617,11 +1698,15 @@ class LCARS_ButtonCol extends LCARS_Button{
     colors=[];
     height=33;
     onClickFunctions=[];
+    labels=[];
+    onClickFunction;
     constructor(opt){
         super(opt);
         if(opt.rows) this.rows=opt.rows;
-        if(opt.colors) this.colors=opt.colors;        
+        if(opt.colors) this.colors=opt.colors;
+        if(opt.labels) this.labels=opt.labels;
         if(opt.onClickFunctions) this.onClickFunctions=opt.onClickFunctions;
+        if(opt.onClickFunction) this.onClickFunction=opt.onClickFunction;
     }
     build(){
         var scale = 1;
@@ -1630,14 +1715,20 @@ class LCARS_ButtonCol extends LCARS_Button{
         buttonCont.y=this.y;
         for (var i = 0; i < this.rows; i++) {
             var colorClass = '';
+            let text = null;
             if(this.colors.length==0){
                 colorClass = randomColor();
             }else{
                 colorClass = this.colors[i];
             }
             let onClickFunctionRow;
-            if(this.onClickFunctions[i]) onClickFunctionRow=this.onClickFunctions[i];
-            buttonCont.addChild(new LCARS_Button({type:this.type,x:0,y:i*(this.height+this.buttonMargin),colorClass:colorClass,text:'',onClickFunction:onClickFunctionRow}).build());
+            if(this.onClickFunctions[i]){
+                onClickFunctionRow=this.onClickFunctions[i];
+            }else{
+                onClickFunctionRow = this.onClickFunction;
+            }
+            text=this.labels[i];
+            buttonCont.addChild(new LCARS_Button({type:this.type,x:0,y:i*(this.height+this.buttonMargin),colorClass:colorClass,text:text,onClickFunction:onClickFunctionRow}).build());
         }
         return buttonCont;
     }
@@ -1647,6 +1738,8 @@ class LCARS_Scanner extends LCARS_Element{
     colors=['accent','base','emphasis','accent','base'];
     width=200;
     height=200;
+    scannerCont;
+    screen;
     constructor(opt){
         super(opt);
         if(opt.reticule) this.reticule=opt.reticule;
@@ -1662,44 +1755,72 @@ class LCARS_Scanner extends LCARS_Element{
 		let ry = this.reticule.y;
 		let w = this.width;
 		let h = this.height;		
-		var scannerCont = new Container();
-        scannerCont.name='lcarsScanner';
-        var topLeftFrame = new Shape();
-        var frame = new Shape();
-        var reticule = new Shape();
-        var screen = new Container();
-        scannerCont.x=x;
-        scannerCont.y=y;
-        topLeftFrame.graphics.f(this.panel.uiTheme[c[0]]).mt(0,0).lt(rx-25,0).lt(rx-25,30).lt(0,30).cp();
-        frame.graphics.f(this.panel.uiTheme[c[1]]).mt(rx+25,0).lt(w,0).lt(w,h).lt(0,h).lt(0,h-15).lt(w-20,h-15).lt(w-20,30).lt(rx+25,30).cp();
-        reticule.graphics.f(this.panel.uiTheme[c[2]]).mt(rx-20,0).lt(rx+20,0).lt(rx+20,ry-30).lt(w-40,ry-30).lt(w-40,ry).lt(w-50,ry).lt(w-50,ry-20).lt(40,ry-20).lt(40,ry).lt(30,ry).lt(30,ry-30).lt(rx-20,ry-30).cp().f(c[3]).dr(30,ry+70,w-70,10).f(this.black).dr(rx-20,20,40,2).dr(rx-20,30,40,2).dr(rx-20,40,40,5).f(c[3]).ss(5).s(this.black).dr(rx-22,h-38,45,40);
-        screen.removeAllChildren();
+		this.scannerCont = new Container();
+        this.scannerCont.name='lcarsScanner';
+        // var topLeftFrame = new Shape();
+        // var frame = new Shape();
+        // var reticule = new Shape();
+        this.screen = new Container();
+        this.scannerCont.x=x;
+        this.scannerCont.y=y;
+        // topLeftFrame.graphics.f(this.panel.uiTheme[c[0]]).mt(0,0).lt(rx-25,0).lt(rx-25,30).lt(0,30).cp();
+        // frame.graphics.f(this.panel.uiTheme[c[1]]).mt(rx+25,0).lt(w,0).lt(w,h).lt(0,h).lt(0,h-15).lt(w-20,h-15).lt(w-20,30).lt(rx+25,30).cp();
+        // reticule.graphics.f(this.panel.uiTheme[c[2]]).mt(rx-20,0).lt(rx+20,0).lt(rx+20,ry-30).lt(w-40,ry-30).lt(w-40,ry).lt(w-50,ry).lt(w-50,ry-20).lt(40,ry-20).lt(40,ry).lt(30,ry).lt(30,ry-30).lt(rx-20,ry-30).cp().f(c[3]).dr(30,ry+70,w-70,10).f(this.black).dr(rx-20,20,40,2).dr(rx-20,30,40,2).dr(rx-20,40,40,5).f(c[3]).ss(5).s(this.black).dr(rx-22,h-38,45,40);
+        this.screen.removeAllChildren();
         for (var i = 0; i < rifi(10,20); i++) {
             var star = new Shape();
             var r = rifi(2,7);
             star.graphics.beginFill(this.panel.uiTheme[rae(this.circleColors)]).dc(rifi(20,w-20),rifi(20,h-20),r);
             star.name=r;
-            screen.addChild(star);
+            this.screen.addChild(star);
         }
-        scannerCont.addChild(screen,frame,topLeftFrame,reticule);
-        return scannerCont;
+        // this.scannerCont.addChild(screen); //,frame,topLeftFrame,reticule);
+        this.drawReticule(rx,ry);
+        return this.scannerCont;
 	}
+    drawReticule(rx,ry){
+        this.reticule = {x:rx,y:ry};
+		let w = this.width;
+		let h = this.height;
+		let c = this.colors;	
+        var topLeftFrame = new Shape();
+        var frame = new Shape();
+        var reticule = new Shape();
+        // var screen = new Container();
+        topLeftFrame.graphics.f(this.panel.uiTheme[c[0]]).mt(0,0).lt(rx-25,0).lt(rx-25,30).lt(0,30).cp();
+        frame.graphics.f(this.panel.uiTheme[c[1]]).mt(rx+25,0).lt(w,0).lt(w,h).lt(0,h).lt(0,h-15).lt(w-20,h-15).lt(w-20,30).lt(rx+25,30).cp();
+        reticule.graphics.f(this.panel.uiTheme[c[2]]).mt(rx-20,0).lt(rx+20,0).lt(rx+20,ry-30).lt(w-40,ry-30).lt(w-40,ry).lt(w-50,ry).lt(w-50,ry-20).lt(40,ry-20).lt(40,ry).lt(30,ry).lt(30,ry-30).lt(rx-20,ry-30).cp().f(c[3]).dr(30,ry+70,w-70,10).f(this.black).dr(rx-20,20,40,2).dr(rx-20,30,40,2).dr(rx-20,40,40,5).f(c[3]).ss(5).s(this.black).dr(rx-22,h-38,45,40);
+        // screen.removeAllChildren();
+        // for (var i = 0; i < rifi(10,20); i++) {
+        //     var star = new Shape();
+        //     var r = rifi(2,7);
+        //     star.graphics.beginFill(this.panel.uiTheme[rae(this.circleColors)]).dc(rifi(20,w-20),rifi(20,h-20),r);
+        //     star.name=r;
+        //     screen.addChild(star);
+        // }
+        this.scannerCont.removeAllChildren();
+        this.scannerCont.addChild(this.screen,frame,topLeftFrame,reticule);
+    }
 }
 class LCARS_Slider extends LCARS_Element {
     ticks=7;
     colorClass=this.uiTheme.base;
     val=0;
     bar;
+    tickHeight;
     constructor(opt){
         super(opt);
         if(opt.colorClass) this.colorClass=opt.colorClass;
         if(opt.val) this.val=opt.val;
+        if(opt.ticks) this.ticks=opt.ticks;
+        if(opt.name) this.name = opt.name;
     }
     build(){
         const padding = 5;
         let cont = new Container();
         cont.removeAllChildren();
-        const height=(this.height-((this.ticks-1)*padding))/this.ticks;
+        this.tickHeight=(this.height-((this.ticks-1)*padding))/this.ticks;
+        //console.log('tickHeight',this.tickHeight);
         for(let i=0;i<this.ticks;i++){
             let tlr=0,trr=0,blr=0,brr=0;
             let tick=new Shape();
@@ -1713,18 +1834,33 @@ class LCARS_Slider extends LCARS_Element {
             }
             tick.name=i;
             tick.alpha=i<=this.val?0.5:1;
-            tick.graphics.beginFill(this.panel.uiTheme[this.colorClass]).rc(0,i*(height+padding),this.width,height,tlr,trr,brr,blr);
-            tick.addEventListener('mouseover',handleSliderMouseover);
-            tick.addEventListener('mouseout',handleSliderMouseout);
+            tick.graphics.beginFill(this.panel.uiTheme[this.colorClass]).rc(0,i*(this.tickHeight+padding),this.width,this.tickHeight,tlr,trr,brr,blr);
             cont.addChild(tick);
         }
         cont.x=this.x;
         cont.y=this.y;
         this.bar=cont;
+        cont.name = this.name;
+        //console.log('this slider name:',cont.name);
+        cont.addEventListener('pressmove',handleSliderMouseover);
+        cont.addEventListener('pressup',handleSliderMouseout);
         return cont;
     }
+    handleSliderStopInteraction(){
+        for(var i=0; i<this.bar.children.length; i++){
+            this.bar.getChildAt(i).alpha=0.5;
+        }
+    }
+    handleSliderInteraction(y){
+        this.handleSliderStopInteraction();
+        for(let i=0;i<this.ticks;i++){
+            if(y>0&&y<this.height-(i*this.height/this.ticks)){
+                this.bar.getChildAt(this.ticks-(i+1)).alpha=1;
+            }
+        }
+    }
     setVal(v){
-        console.log('setVal',v);
+        ////console.log('setVal',v);
         this.val=v;
         for(var i=0;i<this.bar.children.length;i++){
             let tick = this.bar.children[i];

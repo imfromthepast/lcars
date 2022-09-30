@@ -1,0 +1,213 @@
+<html>
+    <head>            
+        <script type="text/javascript" src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+        <script type="text/javascript" src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script>
+        <script type="text/javascript" src="src/js/isjs.js"></script>
+
+        <script src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
+        <!-- <script type="text/javascript" src="src/js/soundjs.min.js"></script> -->
+
+        <link rel="stylesheet" href="src/lcars.css"></link>
+        <style>
+            body{
+                color:#fff;
+                font-family: Okuda, sans-serif;
+            }
+            #textbox{
+                position:absolute;
+                top: 210px;
+                left: 37px;
+                font-size: 24;
+            }
+        </style>
+        <!-- Place this tag in your head or just before your close body tag. -->
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+    </head>
+    <body onload="loadSounds();">
+        <!-- <div id="textbox">test</div> -->
+        <canvas id="txt"></canvas>
+    </body>
+    <script type="text/javascript" src="src/js/lcars.js"></script>
+    <script> 
+        const qwerty1 = ['q','w','e','r','t','y','u','i','o','p'];
+        const qwerty2 = ['a','s','d','f','g','h','j','k','l',';'];
+        const qwerty3 = ['z','x','c','v','b','n','m','<','>','?'];
+        const qcolors1 = ['base','base','base','base','base','base','base','base','base','base'];
+        const qcolors2 = ['base','base','base','base','base','base','base','base','base','action'];
+        const qcolors3 = ['base','base','base','base','base','base','base','action','action','action'];
+
+        const dvorak1 = ['<','>','p','y','f','g','c','r','l','?'];
+        const dvorak2 = ['a','o','e','u','i','d','h','t','n','s'];
+        const dvorak3 = [';','q','j','k','x','b','m','w','v','z'];
+        const dcolors1 = ['action','action','base','base','base','base','base','base','base','action'];
+        const dcolors2 = ['base','base','base','base','base','base','base','base','base','base'];
+        const dcolors3 = ['action','base','base','base','base','base','base','base','base','base'];
+
+        const abc1 = ['a','b','c','d','e','f','g','h','i','j'];
+        const abc2 = ['k','l','m','n','o','p','q','r','s',';'];
+        const abc3 = ['t','u','v','w','x','y','z','<','>','?'];
+        const acolors1 = ['base','base','base','base','base','base','base','base','base','base'];
+        const acolors2 = ['base','base','base','base','base','base','base','base','base','action'];
+        const acolors3 = ['base','base','base','base','base','base','base','action','action','action'];
+
+        let keys1 = qwerty1;
+        let keys2 = qwerty2;
+        let keys3 = qwerty3;
+        let colors1 = qcolors1;
+        let colors2 = qcolors2;
+        let colors3 = qcolors3;
+        let layout = 'qwerty';
+        
+        function changeLayoutToDVORAK(){
+            layout = 'dvorak';
+            keys1 = dvorak1;
+            keys2 = dvorak2;
+            keys3 = dvorak3;
+            colors1 = dcolors1;
+            colors2 = dcolors2;
+            colors3 = dcolors3;
+            setLayout();
+        }
+        function changeLayoutToABC(){
+            layout = 'abc';
+            keys1 = abc1;
+            keys2 = abc2;
+            keys3 = abc3;
+            colors1 = acolors1;
+            colors2 = acolors2;
+            colors3 = acolors3;
+            setLayout();
+        }
+        function changeLayoutToQWERTY(){
+            layout = 'qwerty';
+            keys1 = qwerty1;
+            keys2 = qwerty2;
+            keys3 = qwerty3;
+            colors1 = qcolors1;
+            colors2 = qcolors2;
+            colors3 = qcolors3;
+            setLayout();
+        }
+        function setLayout(){
+            txt.sections[0].body[1] = new LCARS_Subheader({text:'alpha input ('+layout+')',y:400})
+            txt.sections[0].body[2].changeLabels(2,keys1);
+            txt.sections[0].body[2].changeLabels(3,keys2);
+            txt.sections[0].body[2].changeLabels(4,keys3);
+            txt.sections[0].body[2].changeColors(2,colors1);
+            txt.sections[0].body[2].changeColors(3,colors2);
+            txt.sections[0].body[2].changeColors(4,colors3);
+            txt.build();
+            // txt.lcarsCanvas.update();
+            // txt.refresh();
+        }
+        let txt = new LCARS_Panel({id:'txt',uiTheme:blueTheme,debug:false,width:2500,height:1000});
+        txt.sections = [
+            new LCARS_Section({
+                width:1100,
+                header:new LCARS_Header({colorClass:'accent',radius:[20,0,0,20],alignment:'left',text:'* text editor',margin:[0,20,100,0]}),
+                body:[
+                    new LCARS_Readout({y:-90,x:10,fontSize:40,height:280,lineHeight:44,lineWidth:1970,value:''}),
+                    new LCARS_Subheader({text:'alpha input ('+layout+')',y:400}),
+                    new LCARS_ButtonGroups({rows:5,cols:['pill','pill','pill','pill','pill','pill','pill','pill','pill','pill'],y:440,x:5,
+                        labels:[
+                            ['f1','f2','f3','f4','f5','f6','f7','f8','f9',' '],
+                            ['!','@','#','$','%','^','&','*','(',')'],
+                            keys1,
+                            keys2,
+                            keys3
+                        ],
+                        colors:[
+                            ['warning','emphasis','emphasis','emphasis','emphasis','emphasis','emphasis','emphasis','emphasis','emphasis'],
+                            ['accent','accent','accent','accent','accent','accent','accent','accent','accent','accent'],
+                            colors1,
+                            colors2,
+                            colors3
+                        ],
+                        onClickFunction:onClick
+                    })
+                ],
+                footer:new LCARS_Footer()
+            }),
+            new LCARS_Section({
+                width:340,
+                header:new LCARS_Header({colorClass:'base',radius:[0,0,0,0],text:'',margin:[0,20,100,0]}),
+                body:[
+                    new LCARS_Subheader({text:'numeric input',y:400}),
+                    new LCARS_ButtonGroups({rows:5,cols:['pill','pill','pill'],y:440,x:5,
+                        labels:[
+                            ['1','2','3'],
+                            ['4','5','6'],
+                            ['7','8','9'],
+                            ['0','.',','],
+                            ['+','-','=']
+                        ],
+                        colors:[
+                            ['accent','accent','accent'],
+                            ['accent','accent','accent'],
+                            ['accent','accent','accent'],
+                            ['accent','base','base'],
+                            ['base','base','base']
+                        ],
+                        // onClickFunctions:[
+                        //     [press1,press2,press3],
+                        //     [press4,press5,press6],
+                        //     [press7,press8,press9],
+                        //     [press0,pressDot,pressComma],
+                        //     [pressPlus,pressMinus,pressEquals]
+                        // ]
+                        onClickFunction:onClick
+                    })
+                ],
+                footer:new LCARS_Footer()
+            }),
+            new LCARS_Section({
+                width:220,
+                header:new LCARS_Header({colorClass:'base',radius:[0,0,0,0],text:'',margin:[0,20,100,0]}),
+                body:[
+                    new LCARS_Subheader({text:'nav input',y:400}),
+                    new LCARS_Joystick({name:'dirpad',y:450,x:0,colorClass:'emphasis'})
+                ],
+                footer:new LCARS_Footer()
+            }),
+            new LCARS_Section({
+                width:340,
+                header:new LCARS_Header({colorClass:'base',radius:[0,0,0,0],margin:[0,20,100,0],colorClass:'emphasis'}),
+                body:[
+                    new LCARS_Subheader({text:'function input',y:400}),
+                    new LCARS_ButtonGroups({rows:5,cols:['titled-pill-left','pill-right'],y:440,x:5,
+                        labels:[
+                            ['qwerty','backspace'],
+                            ['dvorak','Delete'],
+                            ['abc','tab'],
+                            [null,'ctrl'],
+                            [null,'alt']
+                        ],
+                        onClickFunctions:[
+                            [changeLayoutToQWERTY,null],                            
+                            [changeLayoutToDVORAK,null],
+                            [changeLayoutToABC,null]
+                        ]
+                })
+                ],
+                footer:new LCARS_Footer()
+            }),
+            new LCARS_Section({
+                width:100,
+                header:new LCARS_Elbow({size:'lg',dir:'left',margin:[0,0,0,0], height:240,x:0,colorClass:'emphasis'}),
+                body:[
+                    new LCARS_Subheader({height:460,colorClass:'emphasis'}),
+                    new LCARS_Subheader({height:230,y:490,colorClass:'accent'})
+                ],
+                footer:new LCARS_Footer()
+            })
+        ];
+        txt.build();
+        let readout = txt.sections[0].body[0];
+        function onClick(event){
+            readout.setValue(event.currentTarget.name);
+            var div = document.getElementById('textbox');
+
+            div.innerHTML += event.currentTarget.name;
+        }
+    </script>
+</html>

@@ -117,21 +117,71 @@
             trans.refresh();
         }
         function handleSliderMouseover(event){
-            console.log('tick '+event.target.name+' mouseover');
-            //console.log('event.target',event.target);
-            sliderVal = event.target.name-1;
-            sliderCont[0].setVal(sliderVal);
-            sliderCont[1].setVal(sliderVal);
-            sliderCont[2].setVal(sliderVal);
-            trans.refresh(); //lcarsCanvas.update();
+            console.log('slider name: ',event.target.name);
+            let y = Math.floor(event.stageY)-20;
+            console.log('y',y);
+            sliderCont[0].handleSliderInteraction(y);
+            sliderCont[1].handleSliderInteraction(y);
+            sliderCont[2].handleSliderInteraction(y);
         }
         function handleSliderMouseout(event){
-            sliderCont[0].setVal(6);
-            sliderCont[1].setVal(6);
-            sliderCont[2].setVal(6);
-            trans.refresh(); //lcarsCanvas.update();
+            sliderCont[0].handleSliderStopInteraction();
+            sliderCont[1].handleSliderStopInteraction();
+            sliderCont[2].handleSliderStopInteraction();
         }
-        let sliderVal = 6;
+        function doSetButtonsClick1(event){
+            let btns = trans.sections[8];
+            btns.removeFromBodyAt(1);
+            btns.addToBody(new LCARS_ButtonGroups({rows:5,cols:['rect','pill-right'],y:50}));
+            trans.refresh();
+        }
+        function doSetButtonsClick2(event){            
+            let btns = trans.sections[8];
+            btns.removeFromBodyAt(1);
+            btns.addToBody(new LCARS_ButtonGroups({rows:5,cols:['titled-pill-right'],y:50}));
+            trans.refresh();
+        }
+        function doSetButtonsClick3(event){
+            let btns = trans.sections[8];
+            btns.removeFromBodyAt(1);
+            btns.addToBody(new LCARS_ButtonGroups({rows:5,cols:['pill','pill'],y:50}));
+            trans.refresh();
+        }
+        function doSetButtonsClick4(event){
+            let btns = trans.sections[8];
+            btns.removeFromBodyAt(1);
+            btns.addToBody(new LCARS_ButtonGroups({rows:5,cols:['pill-left','rect'],y:50}));
+            trans.refresh();
+        }
+        function doSetButtonsClick5(event){
+            let btns = trans.sections[8];
+            btns.removeFromBodyAt(1);
+            btns.addToBody(new LCARS_ButtonGroups({rows:5,cols:['rect','rect'],y:50}));
+            trans.refresh();
+        }        
+        function joystickButtonFunction(bid,name){
+            console.log('bid',bid);
+            console.log('name',name);
+            if(name=='transCoord'){
+                let x = trans.sections[3].body[0].reticule.x;
+                let y = trans.sections[3].body[0].reticule.y;
+                if(bid==1){
+                    y-=5;
+                }
+                if(bid==2){
+                    x+=5;
+                }
+                if(bid==3){
+                    y+=5;
+                }
+                if(bid==4){
+                    x-=5;
+                }
+                trans.sections[3].body[0].drawReticule(x,y);
+                trans.refresh();
+            }
+        }
+        let sliderVal = 12;
         let trans = new LCARS_Panel({id:'trans',uiTheme:yellowTheme,debug:false,width:2500,height:630}); //,bgimgsrc:'src/img/trans.jpg'}); 
         trans.sections=[
             new LCARS_Section({
@@ -148,9 +198,11 @@
                     ),
                     new LCARS_Subheader({text:''}),
                     new LCARS_ButtonGroups({rows:5,cols:['titled-pill-left'],y:50,x:5,onClickFunctions:[
-                        [
-                            doSec1ButtonClick1,doSec1ButtonClick2,doSec1ButtonClick3,doSec1ButtonClick4,doButtonClick5
-                        ]
+                        [doSec1ButtonClick1],
+                        [doSec1ButtonClick2],
+                        [doSec1ButtonClick3],
+                        [doSec1ButtonClick4],
+                        [doButtonClick5]
                     ]})
                 ],
                 footer:new LCARS_Footer()
@@ -161,12 +213,11 @@
                 body:[
                     new LCARS_Subheader({colorClass:'emphasis',text:'phase coils'}),
                     new LCARS_ButtonGroups({rows:5,cols:['rect','rect'],y:50,x:5,onClickFunctions:[
-                        [
-                            doButtonClick1,doButtonClick2,doButtonClick3,doButtonClick4,doButtonClick5
-                        ],
-                        [
-                            doButtonClick1,doButtonClick2,doButtonClick3,doButtonClick4,doButtonClick5
-                        ]
+                        [doButtonClick1,doButtonClick1],
+                        [doButtonClick2,doButtonClick2],
+                        [doButtonClick3,doButtonClick3],
+                        [doButtonClick4,doButtonClick4],
+                        [doButtonClick5,doButtonClick5]
                     ]})
                 ],
                 footer:new LCARS_Footer()
@@ -196,7 +247,7 @@
                         reticule:{x:100,y:80}
                     }),
                     new LCARS_Subheader({y:300}),
-                    new LCARS_Joystick({y:350,x:0,colorClass:'emphasis'})
+                    new LCARS_Joystick({name:'transCoord',y:350,x:0,colorClass:'emphasis'})
                 ],
                 footer:new LCARS_Footer()
             }),
@@ -221,9 +272,9 @@
             new LCARS_Section({
                 width:500,
                 body:[
-                    new LCARS_Slider({x:50,width:80,height:550,ticks:7,val:sliderVal,colorClass:'base'}),
-                    new LCARS_Slider({x:200,width:80,height:550,ticks:7,val:sliderVal,colorClass:'base'}),
-                    new LCARS_Slider({x:350,width:80,height:550,ticks:7,val:sliderVal,colorClass:'base'}),
+                    new LCARS_Slider({name:'leftSlider',x:50,width:80,height:550,ticks:7,val:sliderVal,colorClass:'base'}),
+                    new LCARS_Slider({name:'midSlider',x:200,width:80,height:550,ticks:7,val:sliderVal,colorClass:'base'}),
+                    new LCARS_Slider({name:'rightSlider',x:350,width:80,height:550,ticks:7,val:sliderVal,colorClass:'base'}),
                     new LCARS_Header({x:-20,y:565,radius:[0,-30,0,0],width:30,height:30})
                 ],
                 footer:new LCARS_Footer({x:-20,width:520})
@@ -237,7 +288,11 @@
                     new LCARS_Subheader({y:110,height:260,radius:[0,0,30,0]}),
                     new LCARS_Subheader({width:193,height:55,y:300,colorClass:'black'}),
                     new LCARS_Header({x:163,y:325,radius:[-30,0,0,0],width:30,height:30}),
-                    new LCARS_ButtonGroups({rows:5,cols:['titled-left'],y:110})
+                    new LCARS_ButtonGroups({rows:5,cols:['titled-left'],y:110,onClickFunctions:[
+                    [
+                        doSetButtonsClick1,doSetButtonsClick2,doSetButtonsClick3,doSetButtonsClick4,doSetButtonsClick5
+                    ]
+                ]})
                 ]
             }),
             new LCARS_Section({
